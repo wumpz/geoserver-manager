@@ -140,9 +140,9 @@ public abstract class GeoserverRESTTest {
             }
             
             GSVersionDecoder v=reader.getGeoserverVersion();
-            if (v.compareTo(VERSION.getVersion(GS_VERSION))!=0){
+            if (v.compareTo(VERSION.getVersion(GS_VERSION))<=0){
                 LOGGER.debug("Failing tests  : geoserver version does not match.\nAccepted versions: "+VERSION.print());
-                fail("GeoServer version ("+v.getVersion()+") does not match the desired one ("+GS_VERSION+")");
+                fail("GeoServer version ("+v.getVersion().name()+") does not match the desired one ("+GS_VERSION+")");
             }
         } else {
             LOGGER.debug("Skipping tests ");
