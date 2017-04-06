@@ -38,6 +38,7 @@ import it.geosolutions.geoserver.rest.decoder.utils.NameLinkElem;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import org.geoserver.web.Start;
 
 import static org.junit.Assert.*;
 
@@ -123,7 +124,6 @@ public abstract class GeoserverRESTTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-
         if (enabled) {
             if (existgs == null) {
                 existgs = reader.existGeoserver();

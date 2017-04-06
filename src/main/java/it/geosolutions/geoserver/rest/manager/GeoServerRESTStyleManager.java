@@ -587,12 +587,19 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
     }
     
     public boolean publishStyleInWorkspace(final String workspace, File styleFile, String styleName, boolean raw) {
-        StringBuilder sUrl = new StringBuilder(buildPostUrl(workspace, styleFile.getName().toLowerCase()));
+        StringBuilder sUrl = new StringBuilder(buildPostUrl(workspace, styleName));
         if (raw) {
             Util.appendParameter(sUrl, "raw", "true");
         }
         LOGGER.debug("POSTing new style " + styleName + " to " + sUrl);
-        String result = HTTPUtils.post(sUrl.toString(), styleFile, "text/plain", gsuser, gspass);
+        
+        GeoServerRESTPublisher.Format format = GeoServerRESTPublisher.Format.SLD;
+        String fileName = styleFile.getName().toLowerCase();
+        
+        if (fileName.endsWith(".css"))
+            format = GeoServerRESTPublisher.Format.CSS;       
+        
+        String result = HTTPUtils.post(sUrl.toString(), styleFile, format.getContentType(), gsuser, gspass);
         return result != null;
     }
 
