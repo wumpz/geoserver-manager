@@ -355,13 +355,6 @@
             <version>${slf4j.version}</version>
             <scope>test</scope>
         </dependency>
-		<dependency>
-			<groupId>org.geoserver.web</groupId>
-			<artifactId>gs-web-app</artifactId>
-			<type>test-jar</type>
-			<version>2.10.2</version>
-			<scope>test</scope>
-		</dependency>
     </dependencies>
 
 </project>
