@@ -585,6 +585,16 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
         String result = HTTPUtils.post(sUrl, sldFile, GeoServerRESTPublisher.Format.SLD.getContentType(), gsuser, gspass);
         return result != null;
     }
+    
+    public boolean publishStyleInWorkspace(final String workspace, File styleFile, String styleName, boolean raw) {
+        StringBuilder sUrl = new StringBuilder(buildPostUrl(workspace, styleFile.getName().toLowerCase()));
+        if (raw) {
+            Util.appendParameter(sUrl, "raw", "true");
+        }
+        LOGGER.debug("POSTing new style " + styleName + " to " + sUrl);
+        String result = HTTPUtils.post(sUrl.toString(), styleFile, "text/plain", gsuser, gspass);
+        return result != null;
+    }
 
     /**
      * Update a Style.
