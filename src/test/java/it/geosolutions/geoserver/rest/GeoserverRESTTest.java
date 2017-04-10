@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest;
 
 import it.geosolutions.geoserver.rest.decoder.RESTCoverage;
@@ -31,6 +30,7 @@ import it.geosolutions.geoserver.rest.decoder.RESTDataStore;
 import it.geosolutions.geoserver.rest.decoder.RESTFeatureType;
 import it.geosolutions.geoserver.rest.decoder.RESTLayer;
 import it.geosolutions.geoserver.rest.decoder.RESTLayerGroup;
+import it.geosolutions.geoserver.rest.decoder.RESTLayerGroupList;
 import it.geosolutions.geoserver.rest.decoder.about.GSVersionDecoder;
 import it.geosolutions.geoserver.rest.decoder.about.GSVersionDecoder.VERSION;
 import it.geosolutions.geoserver.rest.decoder.utils.NameLinkElem;
@@ -52,7 +52,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Initializes REST params.
  * <P>
- * <B>These tests are destructive, so you have to explicitly enable them</B> by setting the env var <TT>resttest</TT> to <TT>true</TT>.
+ * <B>These tests are destructive, so you have to explicitly enable them</B> by setting the env var
+ * <TT>resttest</TT> to <TT>true</TT>.
  * <P>
  * The target geoserver instance can be customized by defining the following env vars:
  * <ul>
@@ -60,11 +61,12 @@ import org.slf4j.LoggerFactory;
  * <LI><TT>restuser</TT> (default: <TT>admin</TT>)</LI>
  * <LI><TT>restpw</TT> (default: <TT>geoserver</TT>)</LI>
  * </ul>
- * 
+ *
  * @author etj
  * @author carlo cancellieri - GeoSolutions
  */
 public abstract class GeoserverRESTTest {
+
     private final static Logger LOGGER = LoggerFactory.getLogger(GeoserverRESTTest.class);
 
     @Rule
@@ -101,8 +103,9 @@ public abstract class GeoserverRESTTest {
 
         // These tests will destroy data, so let's make sure we do want to run them
         enabled = getenv("gsmgr_resttest", "false").equalsIgnoreCase("true");
-        if (!enabled)
+        if (!enabled) {
             LOGGER.warn("Tests are disabled. Please read the documentation to enable them.");
+        }
 
         try {
             URL = new URL(RESTURL);
@@ -117,7 +120,7 @@ public abstract class GeoserverRESTTest {
     private static String getenv(String envName, String envDefault) {
         String env = System.getenv(envName);
         String prop = System.getProperty(envName, env);
-        LOGGER.debug("varname " + envName + " --> env:" + env + " prop:"+prop);
+        LOGGER.debug("varname " + envName + " --> env:" + env + " prop:" + prop);
         return prop != null ? prop : envDefault;
     }
 
@@ -133,15 +136,15 @@ public abstract class GeoserverRESTTest {
                     LOGGER.info("Using geoserver instance " + RESTUSER + ":" + RESTPW + " @ "
                             + RESTURL);
                 }
-            } else if (existgs == false){
+            } else if (existgs == false) {
                 LOGGER.debug("Failing tests  : geoserver not found");
                 fail("GeoServer not found");
             }
-            
-            GSVersionDecoder v=reader.getGeoserverVersion();
-            if (v.compareTo(VERSION.getVersion(GS_VERSION))<=0){
-                LOGGER.debug("Failing tests  : geoserver version does not match.\nAccepted versions: "+VERSION.print());
-                fail("GeoServer version ("+v.getVersion().name()+") does not match the desired one ("+GS_VERSION+")");
+
+            GSVersionDecoder v = reader.getGeoserverVersion();
+            if (v.compareTo(VERSION.getVersion(GS_VERSION)) <= 0) {
+                LOGGER.debug("Failing tests  : geoserver version does not match.\nAccepted versions: " + VERSION.print());
+                fail("GeoServer version (" + v.getVersion().name() + ") does not match the desired one (" + GS_VERSION + ")");
             }
         } else {
             LOGGER.debug("Skipping tests ");
@@ -150,7 +153,7 @@ public abstract class GeoserverRESTTest {
     }
 
     @Before
-    public void before(){
+    public void before() {
         String testName = _testName.getMethodName();
         LOGGER.warn("");
         LOGGER.warn("============================================================");
@@ -205,12 +208,13 @@ public abstract class GeoserverRESTTest {
         if (layers != null) {
             for (String layerName : layers) {
                 RESTLayer layer = reader.getLayer(layerName);
-                if (layer.getType() == RESTLayer.Type.VECTOR)
+                if (layer.getType() == RESTLayer.Type.VECTOR) {
                     deleteFeatureType(layer);
-                else if (layer.getType() == RESTLayer.Type.RASTER)
+                } else if (layer.getType() == RESTLayer.Type.RASTER) {
                     deleteCoverage(layer);
-                else
+                } else {
                     LOGGER.error("Unknown layer type " + layer.getType());
+                }
             }
         }
     }
@@ -242,7 +246,6 @@ public abstract class GeoserverRESTTest {
                 // LOGGER.info("Skipping PG datastore " + store.getWorkspaceName()+":"+store.getName());
                 // continue;
                 // }
-
                 LOGGER.warn("Deleting DataStore " + workspace + " : " + storename);
                 boolean removed = publisher.removeDatastore(workspace, storename, false, GeoServerRESTPublisher.Purge.METADATA);
                 assertTrue("DataStore not removed " + workspace + " : " + storename, removed);
@@ -292,7 +295,7 @@ public abstract class GeoserverRESTTest {
                 datastore.getName(), layer.getName());
         assertTrue(
                 "FeatureType not removed:" + datastore.getWorkspaceName() + " : "
-                        + datastore.getName() + " / " + featureType.getName(), removed);
+                + datastore.getName() + " / " + featureType.getName(), removed);
 
     }
 

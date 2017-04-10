@@ -59,6 +59,10 @@ public class RESTAbstractList<ELEM extends NameLinkElem> implements Iterable<ELE
 
     protected final List<Element> elementList;
 
+    protected RESTAbstractList() {
+        elementList = Collections.EMPTY_LIST;
+    }
+    
     protected RESTAbstractList(Element list) {
         List<Element> tempList = new ArrayList<Element>();
         String baseName = null;
