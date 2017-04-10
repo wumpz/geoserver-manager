@@ -87,9 +87,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
      * @throws RuntimeException if any other HTTP code than 200 or 404 was retrieved.
      */
    public boolean existsStyle(String name, boolean quietOnNotFound) {
-       String url = buildXmlUrl(null, name);
-       String composed = Util.appendQuietOnNotFound(quietOnNotFound, url);
-       return HTTPUtils.exists(composed , gsuser, gspass);
+       return existsStyle(null, name, quietOnNotFound);
    }
 
     /**
@@ -108,24 +106,14 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
     }
 
     public RESTStyle getStyle(String name) {
-        String url = buildXmlUrl(null, name);
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving Style " + name + " from " + url);
-        }
-
-        String response = HTTPUtils.get(url, gsuser, gspass);
-        return RESTStyle.build(response);
+        return getStyle(null, name);
     }
 
     /**
      * Get the SLD body of a Style.
      */
     public String getSLD(String styleName) {
-        String url = buildUrl(null, styleName, ".sld");
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving SLD body from " + url);
-        }
-        return HTTPUtils.get( url, gsuser, gspass);
+        return getSLD(null, styleName);
     }
 
 
@@ -180,17 +168,40 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
         String response = HTTPUtils.get(url, gsuser, gspass);
         return RESTStyle.build(response);
     }
-
+    
+    public String getStyleSource(String workspace, String styleName) {
+        RESTStyle style = getStyle(workspace, styleName);
+        return getStyleSource(workspace, styleName, style.getFormat());
+    }
+    
+    public String getStyleSource(String workspace, String styleName, GeoServerRESTPublisher.Format requestFormat) {
+        String url;
+        
+        switch (requestFormat) {
+            case CSS:
+                url = buildUrl(workspace, styleName, ".css");
+                break;
+            case SLD:
+            case SLD_1_1_0:
+                url = buildUrl(workspace, styleName, ".sld");
+                break;
+            default:
+                url = buildUrl(workspace, styleName, ".sld");
+                return null;
+        }
+        
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("### Retrieving SLD body from " + url);
+        }
+        return HTTPUtils.get(url, gsuser, gspass);
+    }
+    
     /**
      * Get the SLD body of a Style.
      * @since GeoServer 2.2
      */
     public String getSLD(String workspace, String name) {
-        String url = buildUrl(workspace, name, ".sld");
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving SLD body from " + url);
-        }
-        return HTTPUtils.get(url, gsuser, gspass);
+        return getStyleSource(workspace, name, GeoServerRESTPublisher.Format.SLD);
     }
 
     //=========================================================================

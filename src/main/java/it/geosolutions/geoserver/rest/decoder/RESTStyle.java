@@ -24,6 +24,7 @@
  */
 package it.geosolutions.geoserver.rest.decoder;
 
+import it.geosolutions.geoserver.rest.GeoServerRESTPublisher;
 import it.geosolutions.geoserver.rest.decoder.utils.JDOMBuilder;
 import org.jdom.Element;
 
@@ -61,10 +62,18 @@ public class RESTStyle {
     }
 
     public String getWorkspace() {
-        if(elem.getChild("workspace") != null)
+        if (elem.getChild("workspace") != null) {
             return elem.getChild("workspace").getChildText("name");
-        else
+        } else {
             return null;
+        }
     }
 
+    public GeoServerRESTPublisher.Format getFormat() {
+        if (elem.getChild("format") != null) {
+            return GeoServerRESTPublisher.Format.valueOf(elem.getChildText("format").toUpperCase());
+        } else {
+            return null;
+        }
+    }
 }

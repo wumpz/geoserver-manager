@@ -272,6 +272,10 @@ public class GeoServerRESTReader {
     public String getSLD(String workspace, String styleName) {
         return styleManager.getSLD(workspace, styleName);
     }
+    
+    public String getStyleSource(String workspace, String styleName) {
+        return styleManager.getStyleSource(workspace, styleName);
+    }
 
     //==========================================================================
     //=== DATASTORES
