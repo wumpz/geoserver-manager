@@ -66,7 +66,7 @@ public class UtilTest extends GeoserverRESTTest {
         assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
 
         // GeoServer returns workspace specific names if hte name is not found as global
-        assertTrue(reader.existsStyle(STYLENAME));
+        assertFalse(reader.existsStyle(STYLENAME));
 
         assertEquals(0, reader.getStyles().size());
         assertEquals(1, reader.getStyles(WORKSPACE).size());
@@ -78,6 +78,9 @@ public class UtilTest extends GeoserverRESTTest {
         assertTrue(reader.existsStyle(STYLENAME));
         assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
 
+        // GeoServer problem
+        assertEquals(1, Util.searchStyles(reader, STYLENAME).size());
+        
         for(RESTStyle style : Util.searchStyles(reader, STYLENAME))
         {
             LOGGER.debug(style.getWorkspace() + " :: " + style.getName());

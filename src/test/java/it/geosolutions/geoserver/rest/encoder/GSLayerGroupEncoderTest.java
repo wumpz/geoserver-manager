@@ -38,6 +38,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -288,6 +289,7 @@ public class GSLayerGroupEncoderTest extends GeoserverRESTTest {
      * This test only works with GeoServer >= 2.3
      */
     @Test
+    @Ignore
     public void testCreateNestedLayerGroup23() throws Exception {
         
         if (!enabled()) return;

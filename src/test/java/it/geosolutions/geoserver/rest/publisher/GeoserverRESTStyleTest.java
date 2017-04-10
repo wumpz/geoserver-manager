@@ -41,6 +41,7 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -57,6 +58,13 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(GeoserverRESTStyleTest.class);
 
+    @Before
+    public void setup() throws Exception {
+        if (enabled()){
+            deleteAll();
+        }
+    }
+    
     @Test
     public void testStyles() throws IOException
     {
@@ -132,6 +140,7 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
         if (!enabled()) {
             return;
         }
+        deleteAll();
         // Assume.assumeTrue(enabled);
         final String styleName = "restteststyle";
 
