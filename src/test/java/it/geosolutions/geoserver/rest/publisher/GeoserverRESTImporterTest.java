@@ -55,6 +55,7 @@ public class GeoserverRESTImporterTest extends GeoserverRESTTest {
     public void testShapeFileImport() throws Exception {
         if (!enabled())
             return;
+        deleteAll();
         
         // Creates a new Importer Context and gets back the ID
         int i = publisher.postNewImport();

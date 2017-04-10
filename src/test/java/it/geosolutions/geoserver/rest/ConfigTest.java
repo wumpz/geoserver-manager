@@ -57,7 +57,7 @@ public class ConfigTest extends GeoserverRESTTest {
     		LOGGER.info("Skipping test "+"insertStyles"+"for class:"+this.getClass().getSimpleName());
     		return;
     	}
-    	deleteAllStyles();
+    	deleteAll();
     	
         File sldDir = new ClassPathResource("testdata").getFile();
         for(File sldFile : sldDir.listFiles((FilenameFilter)new SuffixFileFilter(".sld"))) {
