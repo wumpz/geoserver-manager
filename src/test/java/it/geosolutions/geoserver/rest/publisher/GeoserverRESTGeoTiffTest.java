@@ -79,7 +79,7 @@ public class GeoserverRESTGeoTiffTest extends GeoserverRESTTest {
         boolean pc = publisher.publishExternalGeoTIFF(DEFAULT_WS, storeName, geotiff, layerName,"EPSG:4326",ProjectionPolicy.FORCE_DECLARED,"raster");
         assertTrue("publish() failed", pc);
         assertTrue(existsLayer(layerName));
-        assertFalse(reader.existsLayer(DEFAULT_WS, layerName));
+        assertTrue(reader.existsLayer(DEFAULT_WS, layerName));
         LOGGER.info("Published "+pc);
         RESTCoverageStore reloadedCS = reader.getCoverageStore(DEFAULT_WS, storeName);
 

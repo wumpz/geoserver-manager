@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.encoder.feature;
 
 import it.geosolutions.geoserver.rest.encoder.GSResourceEncoder;
@@ -33,9 +32,9 @@ import it.geosolutions.geoserver.rest.encoder.metadata.virtualtable.GSVirtualTab
 import org.jdom.Element;
 
 /**
- * 
+ *
  * Encode a GeoServer resource as FeatureType
- * 
+ *
  * @author ETj (etj at geo-solutions.it)
  * @author Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
  */
@@ -50,59 +49,59 @@ public class GSFeatureTypeEncoder extends GSResourceEncoder {
         addContent(attributes);
     }
 
-
     /**
-     * @deprecated Use {@link GSResourceEncoder#addMetadataDimension(String, GSDimensionInfoEncoder)} this method will be removed soon
+     * @deprecated Use {@link GSResourceEncoder#addMetadataDimension(String, GSDimensionInfoEncoder)} this method will
+     * be removed soon
      * @param key
      * @param dimensionInfo
-     * 
+     *
      */
     protected void addMetadata(String key, GSFeatureDimensionInfoEncoder dimensionInfo) {
         super.addMetadata(key, dimensionInfo);
     }
-   
-    
+
     /**
-     * @deprecated Use {@link GSResourceEncoder#setMetadataDimension(String, GSDimensionInfoEncoder)} this method will be removed soon
+     * @deprecated Use {@link GSResourceEncoder#setMetadataDimension(String, GSDimensionInfoEncoder)} this method will
+     * be removed soon
      * @param key
      * @param dimensionInfo
-     * 
+     *
      */
     public void setMetadata(String key, GSFeatureDimensionInfoEncoder dimensionInfo) {
         super.setMetadata(key, dimensionInfo);
     }
-    
+
     /**
-    * Add a VirtualTable (SQL View feature type)
-    * 
-    * @param virtualtable
-    */
+     * Add a VirtualTable (SQL View feature type)
+     *
+     * @param virtualtable
+     */
     protected void addMetadataVirtualTable(
-    	final GSVirtualTableEncoder virtualtable) {
+            final GSVirtualTableEncoder virtualtable) {
         super.addMetadata("JDBC_VIRTUAL_TABLE", virtualtable);
     }
-    
+
     /**
-    * Set a VirtualTable (SQL View feature type)
-    * 
-    * @param virtualtable
-    */
+     * Set a VirtualTable (SQL View feature type)
+     *
+     * @param virtualtable
+     */
     public void setMetadataVirtualTable(final GSVirtualTableEncoder virtualtable) {
-    	super.setMetadata("JDBC_VIRTUAL_TABLE", virtualtable);
-    } 
-    
+        super.setMetadata("JDBC_VIRTUAL_TABLE", virtualtable);
+    }
+
     /**
      * Deletes the VirtualTable metadata
-     * 
+     *
      * @return true if deleted, false otherwise
      */
-    public boolean delMetadataVirtualTable(){
-    	return super.delMetadata("JDB_VIRTUAL_TABLE");
-    }    
-    
+    public boolean delMetadataVirtualTable() {
+        return super.delMetadata("JDB_VIRTUAL_TABLE");
+    }
+
     /**
      * delete a keyword from the list
-     * 
+     *
      * @param keyword
      * @return true if something is removed, false otherwise
      */
@@ -127,5 +126,12 @@ public class GSFeatureTypeEncoder extends GSResourceEncoder {
         delAttribute(attribute.getAttribute(FeatureTypeAttribute.name));
         addAttribute(attribute);
     }
-    
+
+    public void setCqlFilter(String cqlFilter) {
+        if (cqlFilter == null) {
+            remove("cqlFilter");
+        } else {
+            set("cqlFilter", cqlFilter);
+        }
+    }
 }

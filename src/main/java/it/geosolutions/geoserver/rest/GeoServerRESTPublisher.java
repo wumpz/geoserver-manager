@@ -502,6 +502,14 @@ public class GeoServerRESTPublisher {
     public boolean publishStyleInWorkspace(String workspace, File sldFile) {
         return styleManager.publishStyleInWorkspace(workspace, sldFile);
     }
+    
+    /**
+     * @since GeoServer 2.2
+     * @see GeoServerRESTStyleManager#publishStyleInWorkspace(java.lang.String, java.io.File)
+     */
+    public boolean publishStyleInWorkspace(String workspace, File sldFile, boolean raw) {
+        return styleManager.publishStyleInWorkspace(workspace, sldFile,null, raw);
+    }
 
     /**
      * @since GeoServer 2.2
@@ -509,6 +517,14 @@ public class GeoServerRESTPublisher {
      */
     public boolean publishStyleInWorkspace(String workspace, File sldFile, String name) {
         return styleManager.publishStyleInWorkspace(workspace, sldFile, name);
+    }
+    
+    /**
+     * @since GeoServer 2.2
+     * @see GeoServerRESTStyleManager#publishStyleInWorkspace(java.lang.String, java.io.File, java.lang.String)
+     */
+    public boolean publishStyleInWorkspace(String workspace, File sldFile, String name, boolean raw) {
+        return styleManager.publishStyleInWorkspace(workspace, sldFile, name, raw);
     }
 
     /**
@@ -1417,7 +1433,7 @@ public class GeoServerRESTPublisher {
      * </ul>
      */
     public enum Format {
-        XML, JSON, HTML, SLD, SLD_1_1_0;
+        XML, JSON, HTML, SLD, SLD_1_1_0, CSS;
 
         /**
          * Gets the mime type from a format.
@@ -1437,6 +1453,8 @@ public class GeoServerRESTPublisher {
                 return "application/vnd.ogc.sld+xml";
             case SLD_1_1_0:
                 return "application/vnd.ogc.se+xml";
+            case CSS:
+                return "application/vnd.geoserver.geocss+css";
             default:
                 return null;
             }

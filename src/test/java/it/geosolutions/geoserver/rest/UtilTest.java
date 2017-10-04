@@ -51,12 +51,16 @@ public class UtilTest extends GeoserverRESTTest {
         deleteAll();
 
         final String WORKSPACE = "testWorkspace";
+        final String WORKSPACE_DUMMY_STD = "stdWorkspace";
         final String STYLENAME = "restteststyle";
 
         File sldFile = new ClassPathResource("testdata/restteststyle.sld").getFile();
 
+        //first workspace if per definition standard. If our test workspace would be standard, geoserver does not differ 
+        //global and workspace styles anymore.
+        publisher.createWorkspace(WORKSPACE_DUMMY_STD);
         publisher.createWorkspace(WORKSPACE);
-
+        
         assertEquals(0, reader.getStyles().size());
         assertEquals(0, reader.getStyles(WORKSPACE).size());
         assertEquals(0, Util.searchStyles(reader, STYLENAME).size());
@@ -66,7 +70,7 @@ public class UtilTest extends GeoserverRESTTest {
         assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
 
         // GeoServer returns workspace specific names if hte name is not found as global
-        assertTrue(reader.existsStyle(STYLENAME));
+        assertFalse(reader.existsStyle(STYLENAME));
 
         assertEquals(0, reader.getStyles().size());
         assertEquals(1, reader.getStyles(WORKSPACE).size());
@@ -78,6 +82,9 @@ public class UtilTest extends GeoserverRESTTest {
         assertTrue(reader.existsStyle(STYLENAME));
         assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
 
+        // GeoServer problem
+        assertEquals(2, Util.searchStyles(reader, STYLENAME).size());
+        
         for(RESTStyle style : Util.searchStyles(reader, STYLENAME))
         {
             LOGGER.debug(style.getWorkspace() + " :: " + style.getName());

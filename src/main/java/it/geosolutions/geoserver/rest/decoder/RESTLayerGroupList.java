@@ -58,11 +58,13 @@ public class RESTLayerGroupList extends RESTAbstractList<NameLinkElem> {
 
     public static RESTLayerGroupList build(String response) {
         Element elem = JDOMBuilder.buildElement(response);
-        return elem == null? null : new RESTLayerGroupList(elem);
+        return elem == null? new RESTLayerGroupList() : new RESTLayerGroupList(elem);
 	}
 
     protected RESTLayerGroupList(Element list) {
         super(list);
     }
+    
+    protected RESTLayerGroupList() {}
     
 }
