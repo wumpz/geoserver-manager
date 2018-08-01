@@ -24,6 +24,7 @@
 package it.geosolutions.geoserver.rest.manager;
 
 import it.geosolutions.geoserver.rest.HTTPUtils;
+import java.io.File;
 import java.net.URL;
 
 /**
@@ -55,6 +56,10 @@ public class GeoServerRESTFileSystemResourceManager extends GeoServerRESTAbstrac
     
     public String upload(String path, String content) {
         return upload(path, content, "text/plain");
+    }
+    
+    public String upload(String path, File content, String mimeType) {
+        return HTTPUtils.put(buildUrl(path), content, mimeType, gsuser, gspass);
     }
 
     public boolean delete(String path) {
