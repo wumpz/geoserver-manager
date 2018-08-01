@@ -77,7 +77,7 @@ public class GeoserverRESTPublishShpCollectionTest extends GeoserverRESTTest {
         
         // Test published layer names
         List<String> layers = reader.getLayers().getNames();
-        assertTrue(layers.contains("cities"));
-        assertTrue(layers.contains("boundaries"));
+        assertTrue(layers.contains(DEFAULT_WS + ":cities"));
+        assertTrue(layers.contains(DEFAULT_WS + ":boundaries"));
     }
 }

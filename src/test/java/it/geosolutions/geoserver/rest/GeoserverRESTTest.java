@@ -37,6 +37,7 @@ import it.geosolutions.geoserver.rest.decoder.utils.NameLinkElem;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -180,7 +181,8 @@ public abstract class GeoserverRESTTest {
         // assertTrue("Some workspaces were not removed", reader.getWorkspaces().isEmpty());
 
         deleteAllStyles();
-        assertTrue("Some styles were not removed", reader.getStyles().isEmpty());
+        //Standard styles are since geoserver 2.12 not deletable anymore. (point, line, polygon, generic, raster)
+        assertTrue("Some styles were not removed", reader.getStyles().size()<=5);
 
         LOGGER.info("ENDING DELETEALL procedure");
     }
@@ -272,6 +274,8 @@ public abstract class GeoserverRESTTest {
 
         }
     }
+    
+    protected static final List<String> UNDELETABLE_STYLES = Arrays.asList("generic","line","point","polygon","raster");
 
     protected void deleteAllStyles() {
         List<String> styles = reader.getStyles().getNames();
@@ -279,7 +283,9 @@ public abstract class GeoserverRESTTest {
             for (String style : styles) {
                 LOGGER.warn("Deleting Style " + style);
                 boolean removed = publisher.removeStyle(style, true);
-                assertTrue("Style not removed " + style, removed);
+                if (!UNDELETABLE_STYLES.contains(style)) {
+                    assertTrue("Style not removed " + style, removed);
+                }
             }
         }
     }
