@@ -469,6 +469,13 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
         return result != null;
 
     }
+    
+    public boolean updateStyle(final RESTStyle style, final String workspace, final String name)
+            throws IllegalArgumentException {
+        final String sUrl = buildXmlUrl(workspace, name);
+        final String result = HTTPUtils.put(sUrl, style.toString(), "application/xml", gsuser, gspass);
+        return result != null;
+    }
 
     /**
      * Remove a Style.

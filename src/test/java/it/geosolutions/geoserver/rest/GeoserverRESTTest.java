@@ -30,7 +30,6 @@ import it.geosolutions.geoserver.rest.decoder.RESTDataStore;
 import it.geosolutions.geoserver.rest.decoder.RESTFeatureType;
 import it.geosolutions.geoserver.rest.decoder.RESTLayer;
 import it.geosolutions.geoserver.rest.decoder.RESTLayerGroup;
-import it.geosolutions.geoserver.rest.decoder.RESTLayerGroupList;
 import it.geosolutions.geoserver.rest.decoder.about.GSVersionDecoder;
 import it.geosolutions.geoserver.rest.decoder.about.GSVersionDecoder.VERSION;
 import it.geosolutions.geoserver.rest.decoder.utils.NameLinkElem;

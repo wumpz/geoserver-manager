@@ -27,6 +27,8 @@ package it.geosolutions.geoserver.rest.decoder;
 import it.geosolutions.geoserver.rest.GeoServerRESTPublisher;
 import it.geosolutions.geoserver.rest.decoder.utils.JDOMBuilder;
 import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
 /**
  *
@@ -75,5 +77,59 @@ public class RESTStyle {
         } else {
             return null;
         }
+    }
+
+    public boolean hasLegend() {
+        return elem.getChild("legend") != null;
+    }
+
+    public String getLegendWidth() {
+        if (hasLegend()) {
+            return elem.getChild("legend").getChildText("width");
+        }
+        return null;
+    }
+
+    public String getLegendHeight() {
+        if (hasLegend()) {
+            return elem.getChild("legend").getChildText("height");
+        }
+        return null;
+    }
+
+    public String getLegendOnlineResource() {
+        if (hasLegend()) {
+            return elem.getChild("legend").getChildText("onlineResource");
+        }
+        return null;
+    }
+
+    public String getLegendFormat() {
+        if (hasLegend()) {
+            return elem.getChild("legend").getChildText("format");
+        }
+        return null;
+    }
+
+    public void removeLegend() {
+        elem.removeChild("legend");
+    }
+
+    public void addLegend(int width, int height, String format, String onlineResource) {
+        removeLegend();
+        
+        Element legend = new Element("legend");
+        elem.addContent(legend);
+        legend.addContent(new Element("width").setText(String.valueOf(width)));
+        legend.addContent(new Element("height").setText(String.valueOf(height)));
+        legend.addContent(new Element("format").setText(format));
+        legend.addContent(new Element("onlineResource").setText(onlineResource));
+    }
+    
+    private final static XMLOutputter OUTPUTTER = new XMLOutputter(Format.getCompactFormat());
+
+    @Override
+    public String toString() {
+        return OUTPUTTER.outputString(elem);
     }
 }
