@@ -114,6 +114,10 @@ public class RESTStyle {
     public void removeLegend() {
         elem.removeChild("legend");
     }
+    
+    public void removeFileName() {
+        elem.removeChild("filename");
+    }
 
     public void addLegend(int width, int height, String format, String onlineResource) {
         removeLegend();
