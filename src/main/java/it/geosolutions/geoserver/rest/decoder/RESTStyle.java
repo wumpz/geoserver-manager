@@ -126,6 +126,15 @@ public class RESTStyle {
         legend.addContent(new Element("onlineResource").setText(onlineResource));
     }
     
+    public void addLegend(String format, String onlineResource) {
+        removeLegend();
+        
+        Element legend = new Element("legend");
+        elem.addContent(legend);
+        legend.addContent(new Element("format").setText(format));
+        legend.addContent(new Element("onlineResource").setText(onlineResource));
+    }
+    
     private final static XMLOutputter OUTPUTTER = new XMLOutputter(Format.getCompactFormat());
 
     @Override

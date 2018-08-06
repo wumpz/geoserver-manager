@@ -628,4 +628,36 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
         assertEquals("image/png", result.getLegendFormat());
         assertEquals("http://legendserver.com/legend1", result.getLegendOnlineResource());
     }
+    
+    @Test
+    public void testStylesWithLegend2() throws IOException {
+        if (!enabled()) {
+            return;
+        }
+        deleteAll();
+
+        final String WORKSPACE = "testWorkspace";
+        final String STYLENAME = "restteststyle";
+        File sldFile = new ClassPathResource("testdata/restteststyle.sld").getFile();
+
+        publisher.createWorkspace(WORKSPACE);
+
+        assertTrue("Error inserting style", publisher.publishStyleInWorkspace(WORKSPACE, sldFile));
+        assertTrue("Style does not exist in workspace", reader.existsStyle(WORKSPACE, STYLENAME));
+
+        RESTStyle style = reader.getStyle(WORKSPACE, STYLENAME);
+        assertEquals(STYLENAME, style.getName());
+        assertEquals(WORKSPACE, style.getWorkspace());
+        assertFalse(style.hasLegend());
+
+        style.addLegend("image/png", "http://legendserver.com/legend1");
+        
+        publisher.updateStyle(style, WORKSPACE, STYLENAME);
+        
+        RESTStyle result = reader.getStyle(WORKSPACE, STYLENAME);
+        assertEquals("image/png", result.getLegendFormat());
+        assertEquals("http://legendserver.com/legend1", result.getLegendOnlineResource());
+        assertEquals("0", result.getLegendWidth());
+        assertEquals("0", result.getLegendHeight());
+    }
 }
