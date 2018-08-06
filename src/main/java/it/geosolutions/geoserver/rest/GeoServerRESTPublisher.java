@@ -27,6 +27,7 @@ package it.geosolutions.geoserver.rest;
 import it.geosolutions.geoserver.rest.decoder.RESTCoverage;
 import it.geosolutions.geoserver.rest.decoder.RESTCoverageStore;
 import it.geosolutions.geoserver.rest.decoder.RESTStructuredCoverageGranulesList;
+import it.geosolutions.geoserver.rest.decoder.RESTStyle;
 import it.geosolutions.geoserver.rest.decoder.RESTStyleList;
 import it.geosolutions.geoserver.rest.decoder.utils.NameLinkElem;
 import it.geosolutions.geoserver.rest.encoder.GSBackupEncoder;
@@ -447,6 +448,10 @@ public class GeoServerRESTPublisher {
             throws IllegalArgumentException {
 
         return styleManager.updateStyle(sldFile, name);
+    }
+
+    public boolean updateStyle(RESTStyle style, String workspace, String name) throws IllegalArgumentException {
+        return styleManager.updateStyle(style, workspace, name);
     }
 
     /**
