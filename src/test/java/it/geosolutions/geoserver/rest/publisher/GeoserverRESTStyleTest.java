@@ -29,7 +29,6 @@ import it.geosolutions.geoserver.rest.decoder.RESTLayer;
 import it.geosolutions.geoserver.rest.decoder.RESTStyle;
 import it.geosolutions.geoserver.rest.decoder.utils.JDOMBuilder;
 import it.geosolutions.geoserver.rest.encoder.GSLayerEncoder;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -37,14 +36,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
 import org.apache.commons.io.IOUtils;
 import org.jdom.Element;
 import org.jdom.Namespace;
-import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -667,5 +665,42 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
         assertEquals("http://legendserver.com/legend1", result.getLegendOnlineResource());
         assertEquals("0", result.getLegendWidth());
         assertEquals("0", result.getLegendHeight());
+    }
+    
+    @Test
+    public void testYsldStylesInWorkspaceRaw() throws IOException {
+        if (!enabled()) {
+            return;
+        }
+        deleteAll();
+
+        final String WORKSPACE = "testWorkspace";
+        final String STYLENAME = "restteststyle";
+        File sldFile = new ClassPathResource("testdata/restteststyle.ysld").getFile();
+
+        publisher.createWorkspace(WORKSPACE);
+
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
+        assertEquals(0, reader.getStyles(WORKSPACE).size());
+
+        // insert style
+        assertTrue(publisher.publishStyleInWorkspace(WORKSPACE, sldFile, STYLENAME, true));
+        assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
+        assertFalse(reader.existsStyle(STYLENAME));
+
+        // insert style again
+        assertFalse(publisher.publishStyleInWorkspace(WORKSPACE, sldFile, STYLENAME, true));
+        assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
+        assertFalse(reader.existsStyle(STYLENAME));
+
+        String sld = reader.getSLD(WORKSPACE, STYLENAME);
+        assertNotNull(sld);
+
+        RESTStyle style = reader.getStyle(WORKSPACE, STYLENAME);
+        assertEquals(STYLENAME, style.getName());
+        assertEquals(WORKSPACE, style.getWorkspace());
+
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
+        assertEquals(1, reader.getStyles(WORKSPACE).size());
     }
 }
