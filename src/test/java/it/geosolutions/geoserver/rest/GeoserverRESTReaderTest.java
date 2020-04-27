@@ -229,5 +229,4 @@ public class GeoserverRESTReaderTest extends GeoserverRESTTest {
 		}
 		LOGGER.debug("");
 	}
-
 }

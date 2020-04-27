@@ -30,6 +30,7 @@ import it.geosolutions.geoserver.rest.GeoserverRESTTest;
 import net.sf.json.JSONObject;
 
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +53,7 @@ public class GeoserverRESTImporterTest extends GeoserverRESTTest {
     }
     
     @Test
+    @Ignore
     public void testShapeFileImport() throws Exception {
         if (!enabled())
             return;

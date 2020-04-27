@@ -73,7 +73,7 @@ public class GeoserverRESTWorldImageTest extends GeoserverRESTTest {
 		
         // create default style
         File sldFile = new ClassPathResource("testdata/restteststyle.sld").getFile();
-        assertTrue(publisher.publishStyle(sldFile,"raster"));
+        assertTrue(publisher.publishStyle(sldFile,"raster_1"));
 		
 		wp = publisher.publishWorldImage(DEFAULT_WS, storeName,
 				worldImageFile, ParameterConfigure.FIRST, new NameValuePair("coverageName", "worldImage_test"));

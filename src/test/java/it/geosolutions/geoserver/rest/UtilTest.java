@@ -61,7 +61,7 @@ public class UtilTest extends GeoserverRESTTest {
         publisher.createWorkspace(WORKSPACE_DUMMY_STD);
         publisher.createWorkspace(WORKSPACE);
         
-        assertEquals(0, reader.getStyles().size());
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
         assertEquals(0, reader.getStyles(WORKSPACE).size());
         assertEquals(0, Util.searchStyles(reader, STYLENAME).size());
 
@@ -72,7 +72,7 @@ public class UtilTest extends GeoserverRESTTest {
         // GeoServer returns workspace specific names if hte name is not found as global
         assertFalse(reader.existsStyle(STYLENAME));
 
-        assertEquals(0, reader.getStyles().size());
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
         assertEquals(1, reader.getStyles(WORKSPACE).size());
         assertEquals(1, Util.searchStyles(reader, STYLENAME).size());
 

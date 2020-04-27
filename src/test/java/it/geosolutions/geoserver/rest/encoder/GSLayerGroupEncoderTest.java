@@ -30,15 +30,13 @@ import it.geosolutions.geoserver.rest.decoder.RESTLayerList;
 import it.geosolutions.geoserver.rest.decoder.RESTPublished;
 import it.geosolutions.geoserver.rest.decoder.RESTPublishedList;
 import it.geosolutions.geoserver.rest.decoder.utils.NameLinkElem;
-
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -57,12 +55,15 @@ public class GSLayerGroupEncoderTest extends GeoserverRESTTest {
     private void init() throws IOException{
         String ws = "topp";
         String storeName = "testshpcollection";    
-        
+                
         // Delete all resources except styles
         deleteAllWorkspacesRecursively(); 
         
         // Create workspace
         assertTrue(publisher.createWorkspace(ws));
+        
+        // Publish style
+        publisher.publishStyle(new ClassPathResource("testdata/default_line.sld").getFile(), "default_line");
         
         // Publish shp collection
         URI location = new ClassPathResource("testdata/multipleshp.zip").getFile().toURI();
@@ -73,12 +74,8 @@ public class GSLayerGroupEncoderTest extends GeoserverRESTTest {
         
         // Test published layer names
         List<String> layers = reader.getLayers().getNames();
-        assertTrue(layers.contains("cities"));
-        assertTrue(layers.contains("boundaries"));        
-        
-        // Publish style
-        publisher.publishStyle(new ClassPathResource("testdata/default_line.sld").getFile(), "default_line");
-
+        assertTrue(layers.contains("topp:cities"));
+        assertTrue(layers.contains("topp:boundaries"));        
     }
     
     @Test
@@ -106,13 +103,13 @@ public class GSLayerGroupEncoderTest extends GeoserverRESTTest {
                 assertEquals(2, publishedList.size());
                 for (RESTPublished published : publishedList) {
                     assertEquals("layer", published.getType());
-                    assertTrue("boundaries".equals(published.getName()) || "cities".equals(published.getName()));
+                    assertTrue("topp:boundaries".equals(published.getName()) || "topp:cities".equals(published.getName()));
                 }                            
             } else {
                 RESTLayerList layerList = groupReader.getLayerList();
                 assertEquals(2, layerList.size());
                 for (NameLinkElem layer : layerList) {
-                    assertTrue("boundaries".equals(layer.getName()) || "cities".equals(layer.getName()));
+                    assertTrue("topp:boundaries".equals(layer.getName()) || "topp:cities".equals(layer.getName()));
                 }                                            
             }
         } finally {
@@ -147,13 +144,13 @@ public class GSLayerGroupEncoderTest extends GeoserverRESTTest {
                 assertEquals(2, publishedList.size());
                 for (RESTPublished published : publishedList) {
                     assertEquals("layer", published.getType());
-                    assertTrue("boundaries".equals(published.getName()) || "cities".equals(published.getName()));
+                    assertTrue("topp:boundaries".equals(published.getName()) || "topp:cities".equals(published.getName()));
                 }                            
             } else {
                 RESTLayerList layerList = groupReader.getLayerList();
                 assertEquals(2, layerList.size());
                 for (NameLinkElem layer : layerList) {
-                    assertTrue("boundaries".equals(layer.getName()) || "cities".equals(layer.getName()));
+                    assertTrue("topp:boundaries".equals(layer.getName()) || "topp:cities".equals(layer.getName()));
                 }    
             }
         } finally {
@@ -198,13 +195,13 @@ public class GSLayerGroupEncoderTest extends GeoserverRESTTest {
                 assertEquals(1, publishedList.size());
                 for (RESTPublished published : publishedList) {
                     assertEquals("layer", published.getType());
-                    assertTrue("boundaries".equals(published.getName()));
+                    assertTrue("topp:boundaries".equals(published.getName()));
                 }                            
             } else {
                 RESTLayerList layerList = groupReader.getLayerList();
                 assertEquals(1, layerList.size());
                 for (NameLinkElem layer : layerList) {
-                    assertTrue("boundaries".equals(layer.getName()));
+                    assertTrue("topp:boundaries".equals(layer.getName()));
                 }                                            
             }
         } finally {
@@ -236,13 +233,13 @@ public class GSLayerGroupEncoderTest extends GeoserverRESTTest {
                 assertEquals(1, publishedList.size());
                 for (RESTPublished published : publishedList) {
                     assertEquals("layer", published.getType());
-                    assertTrue("boundaries".equals(published.getName()));
+                    assertTrue("topp:boundaries".equals(published.getName()));
                 }                            
             } else {
                 RESTLayerList layerList = groupReader.getLayerList();
                 assertEquals(1, layerList.size());
                 for (NameLinkElem layer : layerList) {
-                    assertTrue("boundaries".equals(layer.getName()));
+                    assertTrue("topp:boundaries".equals(layer.getName()));
                 }                                            
             }
         } finally {
@@ -278,7 +275,7 @@ public class GSLayerGroupEncoderTest extends GeoserverRESTTest {
             assertEquals(1, publishedList.size());
             for (RESTPublished published : publishedList) {
                 assertEquals("layer", published.getType());
-                assertTrue("boundaries".equals(published.getName()));
+                assertTrue("topp:boundaries".equals(published.getName()));
             }                            
         } finally {
             assertTrue(publisher.removeLayerGroup(groupName));

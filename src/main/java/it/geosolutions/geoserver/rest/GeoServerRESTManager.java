@@ -25,6 +25,7 @@
 package it.geosolutions.geoserver.rest;
 
 import it.geosolutions.geoserver.rest.manager.GeoServerRESTAbstractManager;
+import it.geosolutions.geoserver.rest.manager.GeoServerRESTFileSystemResourceManager;
 import it.geosolutions.geoserver.rest.manager.GeoServerRESTStoreManager;
 import it.geosolutions.geoserver.rest.manager.GeoServerRESTStructuredGridCoverageReaderManager;
 import it.geosolutions.geoserver.rest.manager.GeoServerRESTStyleManager;
@@ -52,6 +53,7 @@ public class GeoServerRESTManager extends GeoServerRESTAbstractManager {
 
     private final GeoServerRESTStoreManager storeManager;
     private final GeoServerRESTStyleManager styleManager;
+    private final GeoServerRESTFileSystemResourceManager fsManager;
     
     private final GeoServerRESTStructuredGridCoverageReaderManager structuredGridCoverageReader;
 
@@ -76,6 +78,7 @@ public class GeoServerRESTManager extends GeoServerRESTAbstractManager {
         structuredGridCoverageReader = new GeoServerRESTStructuredGridCoverageReaderManager(restURL, username, password);
         storeManager = new GeoServerRESTStoreManager(restURL, gsuser, gspass);
         styleManager = new GeoServerRESTStyleManager(restURL, gsuser, gspass);
+        fsManager = new GeoServerRESTFileSystemResourceManager(restURL, username, password);
     }
 
     public GeoServerRESTPublisher getPublisher() {
@@ -92,6 +95,10 @@ public class GeoServerRESTManager extends GeoServerRESTAbstractManager {
 
     public GeoServerRESTStyleManager getStyleManager() {
         return styleManager;
+    }
+    
+    public GeoServerRESTFileSystemResourceManager getFileSystemResourceManager() {
+        return fsManager;
     }
 
     public GeoServerRESTStructuredGridCoverageReaderManager getStructuredGridCoverageReader() {

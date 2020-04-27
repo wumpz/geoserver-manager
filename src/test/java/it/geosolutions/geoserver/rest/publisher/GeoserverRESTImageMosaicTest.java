@@ -134,10 +134,10 @@ public class GeoserverRESTImageMosaicTest extends GeoserverRESTTest {
         
         LOGGER.info(coverageEncoder.toString());
         
-        final String styleName = "raster";
+        final String styleName = "raster_1";
         File sldFile;
 		try {
-			sldFile = new ClassPathResource("testdata/raster.sld").getFile();
+			sldFile = new ClassPathResource("testdata/raster_1.sld").getFile();
 	        // insert style
 	        assertTrue(publisher.publishStyle(sldFile));
 		} catch (IOException e1) {
@@ -221,7 +221,7 @@ public class GeoserverRESTImageMosaicTest extends GeoserverRESTTest {
 		// create default style
 		File sldFile = new ClassPathResource("testdata/restteststyle.sld")
 				.getFile();
-		assertTrue(publisher.publishStyle(sldFile, "raster"));
+		assertTrue(publisher.publishStyle(sldFile, "raster_1"));
 
 		wp = publisher.publishImageMosaic(DEFAULT_WS, storeName, imageMosaicFile,
 				ParameterConfigure.FIRST, new NameValuePair("coverageName",

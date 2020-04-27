@@ -27,6 +27,7 @@ package it.geosolutions.geoserver.rest;
 import it.geosolutions.geoserver.rest.decoder.RESTCoverage;
 import it.geosolutions.geoserver.rest.decoder.RESTCoverageStore;
 import it.geosolutions.geoserver.rest.decoder.RESTStructuredCoverageGranulesList;
+import it.geosolutions.geoserver.rest.decoder.RESTStyle;
 import it.geosolutions.geoserver.rest.decoder.RESTStyleList;
 import it.geosolutions.geoserver.rest.decoder.utils.NameLinkElem;
 import it.geosolutions.geoserver.rest.encoder.GSBackupEncoder;
@@ -39,11 +40,10 @@ import it.geosolutions.geoserver.rest.encoder.GSResourceEncoder.ProjectionPolicy
 import it.geosolutions.geoserver.rest.encoder.GSWorkspaceEncoder;
 import it.geosolutions.geoserver.rest.encoder.coverage.GSCoverageEncoder;
 import it.geosolutions.geoserver.rest.encoder.feature.GSFeatureTypeEncoder;
+import it.geosolutions.geoserver.rest.manager.GeoServerRESTImporterManager;
 import it.geosolutions.geoserver.rest.manager.GeoServerRESTStructuredGridCoverageReaderManager;
 import it.geosolutions.geoserver.rest.manager.GeoServerRESTStructuredGridCoverageReaderManager.ConfigureCoveragesOption;
 import it.geosolutions.geoserver.rest.manager.GeoServerRESTStyleManager;
-import it.geosolutions.geoserver.rest.manager.GeoServerRESTImporterManager;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -53,13 +53,11 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.zip.ZipFile;
-
+import net.sf.json.JSONObject;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.sf.json.JSONObject;
 
 /**
  * Connect to a GeoServer instance to publish or modify its contents via REST API.
@@ -447,6 +445,10 @@ public class GeoServerRESTPublisher {
             throws IllegalArgumentException {
 
         return styleManager.updateStyle(sldFile, name);
+    }
+
+    public boolean updateStyle(RESTStyle style, String workspace, String name) throws IllegalArgumentException {
+        return styleManager.updateStyle(style, workspace, name);
     }
 
     /**
@@ -1433,7 +1435,7 @@ public class GeoServerRESTPublisher {
      * </ul>
      */
     public enum Format {
-        XML, JSON, HTML, SLD, SLD_1_1_0, CSS;
+        XML, JSON, HTML, SLD, SLD_1_1_0, CSS, ZIP, YSLD; 
 
         /**
          * Gets the mime type from a format.
@@ -1455,6 +1457,10 @@ public class GeoServerRESTPublisher {
                 return "application/vnd.ogc.se+xml";
             case CSS:
                 return "application/vnd.geoserver.geocss+css";
+            case ZIP:
+                return "application/zip";
+            case YSLD:
+                return "application/vnd.geoserver.ysld+yaml";
             default:
                 return null;
             }

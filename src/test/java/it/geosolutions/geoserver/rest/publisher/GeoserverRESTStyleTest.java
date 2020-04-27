@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.publisher;
 
 import it.geosolutions.geoserver.rest.GeoserverRESTTest;
@@ -30,18 +29,20 @@ import it.geosolutions.geoserver.rest.decoder.RESTLayer;
 import it.geosolutions.geoserver.rest.decoder.RESTStyle;
 import it.geosolutions.geoserver.rest.decoder.utils.JDOMBuilder;
 import it.geosolutions.geoserver.rest.encoder.GSLayerEncoder;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 import org.apache.commons.io.IOUtils;
 import org.jdom.Element;
 import org.jdom.Namespace;
-import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -60,20 +61,19 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
 
     @Before
     public void setup() throws Exception {
-        if (enabled()){
+        if (enabled()) {
             deleteAll();
         }
     }
-    
+
     @Test
-    public void testStyles() throws IOException
-    {
+    public void testStyles() throws IOException {
         if (!enabled()) {
             return;
         }
         deleteAll();
 
-        assertEquals(0, reader.getStyles().size());
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
 
         final String STYLENAME = "restteststyle";
         File sldFile = new ClassPathResource("testdata/restteststyle.sld").getFile();
@@ -111,18 +111,17 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
                     .getChild("Name", SLDNS).getText());
             assertEquals("STYLE FOR TESTING PURPOSES",
                     styleEl.getChild("NamedLayer", SLDNS)
-                    .getChild("UserStyle", SLDNS)
-                    .getChild("Title", SLDNS).getText());
+                            .getChild("UserStyle", SLDNS)
+                            .getChild("Title", SLDNS).getText());
         } catch (NullPointerException npe) {
             fail("Error in SLD");
         }
 
         // assertEquals(1475, sld.length());
-        assertEquals(2, reader.getStyles().size());
+        assertEquals(2 + UNDELETABLE_STYLES.size(), reader.getStyles().size());
     }
 
-    protected void cleanupTestStyle(final String styleName)
-    {
+    protected void cleanupTestStyle(final String styleName) {
         // dry run delete to work in a known state
         if (reader.existsStyle(styleName)) {
             LOGGER.info("Clearing stale test style " + styleName);
@@ -186,9 +185,8 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
     }
 
     @Test
-    public void testPublishDeleteStyleString() 
-            throws FileNotFoundException, IOException
-    {
+    public void testPublishDeleteStyleString()
+            throws FileNotFoundException, IOException {
         if (!enabled()) {
             return;
         }
@@ -234,9 +232,8 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
     }
 
     @Test
-    public void testUpdateDefaultStyle() 
-            throws FileNotFoundException, IOException
-    {
+    public void testUpdateDefaultStyle()
+            throws FileNotFoundException, IOException {
         if (!enabled()) {
             return;
         }
@@ -302,8 +299,7 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
     }
 
     @Test
-    public void testStylesInWorkspace() throws IOException
-    {
+    public void testStylesInWorkspace() throws IOException {
         if (!enabled()) {
             return;
         }
@@ -315,7 +311,7 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
 
         publisher.createWorkspace(WORKSPACE);
 
-        assertEquals(0, reader.getStyles().size());
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
         assertEquals(0, reader.getStyles(WORKSPACE).size());
 
         // insert style
@@ -324,7 +320,6 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
 
         // this assertion is not enforced by geoserver, which is quite lenient in searching names
         //assertFalse("Style should not be global", reader.existsStyle(STYLENAME));
-
         // insert style again
         assertFalse("Dup style not trapped", publisher.publishStyleInWorkspace(WORKSPACE, sldFile));
         assertTrue("Style does not exist in workspace (2)", reader.existsStyle(WORKSPACE, STYLENAME));
@@ -350,20 +345,19 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
             assertEquals(
                     "STYLE FOR TESTING PURPOSES",
                     styleEl.getChild("NamedLayer", SLDNS)
-                    .getChild("UserStyle", SLDNS)
-                    .getChild("Title", SLDNS).getText());
+                            .getChild("UserStyle", SLDNS)
+                            .getChild("Title", SLDNS).getText());
         } catch (NullPointerException npe) {
             fail("Error in SLD");
         }
 
         // assertEquals(1475, sld.length());
-        assertEquals(0, reader.getStyles().size());
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
         assertEquals(1, reader.getStyles(WORKSPACE).size());
     }
 
     @Test
-    public void testRemoveStylesInWorkspace() throws IOException
-    {
+    public void testRemoveStylesInWorkspace() throws IOException {
         if (!enabled()) {
             return;
         }
@@ -401,7 +395,7 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
 
         publisher.createWorkspace(WORKSPACE);
 
-        assertEquals(0, reader.getStyles().size());
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
         assertEquals(0, reader.getStyles(WORKSPACE).size());
 
         // insert style
@@ -441,10 +435,10 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
         }
 
         // assertEquals(1475, sld.length());
-        assertEquals(0, reader.getStyles().size());
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
         assertEquals(1, reader.getStyles(WORKSPACE).size());
     }
-    
+
     @Test
     public void testCssStylesInWorkspaceRaw() throws IOException {
         if (!enabled()) {
@@ -458,7 +452,7 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
 
         publisher.createWorkspace(WORKSPACE);
 
-        assertEquals(0, reader.getStyles().size());
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
         assertEquals(0, reader.getStyles(WORKSPACE).size());
 
         // insert style
@@ -478,7 +472,272 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
         assertEquals(STYLENAME, style.getName());
         assertEquals(WORKSPACE, style.getWorkspace());
 
-        assertEquals(0, reader.getStyles().size());
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
+        assertEquals(1, reader.getStyles(WORKSPACE).size());
+    }
+
+    @Test
+    public void testSldInZipStylesInWorkspaceRaw() throws IOException {
+        if (!enabled()) {
+            return;
+        }
+        deleteAll();
+
+        final String WORKSPACE = "testWorkspace";
+        final String STYLENAME = "restteststyle";
+        buildZipFile("target/restteststyle.zip", "target/test-classes/testdata", 
+                "restteststyle.sld", 
+                "style_image.png");
+        
+        File zipFile = new File("target/restteststyle.zip");
+
+        publisher.createWorkspace(WORKSPACE);
+
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
+        assertEquals(0, reader.getStyles(WORKSPACE).size());
+
+        // insert style
+        assertTrue(publisher.publishStyleInWorkspace(WORKSPACE, zipFile, STYLENAME, true));
+        assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
+        assertFalse(reader.existsStyle(STYLENAME));
+
+        // insert style again
+        assertFalse(publisher.publishStyleInWorkspace(WORKSPACE, zipFile, STYLENAME, true));
+        assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
+        assertFalse(reader.existsStyle(STYLENAME));
+
+        String sld = reader.getSLD(WORKSPACE, STYLENAME);
+        assertNotNull(sld);
+
+        RESTStyle style = reader.getStyle(WORKSPACE, STYLENAME);
+        assertEquals(STYLENAME, style.getName());
+        assertEquals(WORKSPACE, style.getWorkspace());
+
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
+        assertEquals(1, reader.getStyles(WORKSPACE).size());
+    }
+    
+    /**
+     * Unfortunately GeoServer allows ZIP upload only for SLD Styles.
+     * @throws IOException 
+     */
+    @Test
+    @Ignore
+    public void testCssInZipStylesInWorkspaceRaw() throws IOException {
+        if (!enabled()) {
+            return;
+        }
+        deleteAll();
+
+        final String WORKSPACE = "testWorkspace";
+        final String STYLENAME = "restteststyle";
+        buildZipFile("target/restteststyle.zip", "target/test-classes/testdata", 
+                "restteststyle.css", 
+                "style_image.png");
+        
+        File zipFile = new File("target/restteststyle.zip");
+
+        publisher.createWorkspace(WORKSPACE);
+
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
+        assertEquals(0, reader.getStyles(WORKSPACE).size());
+
+        // insert style
+        assertTrue(publisher.publishStyleInWorkspace(WORKSPACE, zipFile, STYLENAME, true));
+        assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
+        assertFalse(reader.existsStyle(STYLENAME));
+
+        // insert style again
+        assertFalse(publisher.publishStyleInWorkspace(WORKSPACE, zipFile, STYLENAME, true));
+        assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
+        assertFalse(reader.existsStyle(STYLENAME));
+
+        String sld = reader.getSLD(WORKSPACE, STYLENAME);
+        assertNotNull(sld);
+
+        RESTStyle style = reader.getStyle(WORKSPACE, STYLENAME);
+        assertEquals(STYLENAME, style.getName());
+        assertEquals(WORKSPACE, style.getWorkspace());
+
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
+        assertEquals(1, reader.getStyles(WORKSPACE).size());
+    }
+
+    private static void buildZipFile(String zipFileName, String baseDir, String ... filesToAdd) {
+        try (FileOutputStream fos = new FileOutputStream(zipFileName);
+             ZipOutputStream zos = new ZipOutputStream(fos);) {			
+
+            for (String file : filesToAdd) {
+                addToZipFile(baseDir, file, zos);
+            }
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    private static void addToZipFile(String baseDir, String fileName, ZipOutputStream zos) throws FileNotFoundException, IOException {
+        File file = new File(baseDir, fileName);
+        try (FileInputStream fis = new FileInputStream(file);) {
+            ZipEntry zipEntry = new ZipEntry(fileName);
+            zos.putNextEntry(zipEntry);
+
+            byte[] bytes = new byte[4096];
+            int length;
+            while ((length = fis.read(bytes)) >= 0) {
+                zos.write(bytes, 0, length);
+            }
+
+            zos.closeEntry();
+        }
+
+    }
+    
+    @Test
+    public void testStylesWithLegend() throws IOException {
+        if (!enabled()) {
+            return;
+        }
+        deleteAll();
+
+        final String WORKSPACE = "testWorkspace";
+        final String STYLENAME = "restteststyle";
+        File sldFile = new ClassPathResource("testdata/restteststyle.sld").getFile();
+
+        publisher.createWorkspace(WORKSPACE);
+
+        assertTrue("Error inserting style", publisher.publishStyleInWorkspace(WORKSPACE, sldFile));
+        assertTrue("Style does not exist in workspace", reader.existsStyle(WORKSPACE, STYLENAME));
+        
+        String sld = reader.getSLD(WORKSPACE, STYLENAME);
+        assertNotNull(sld);
+
+        RESTStyle style = reader.getStyle(WORKSPACE, STYLENAME);
+        assertEquals(STYLENAME, style.getName());
+        assertEquals(WORKSPACE, style.getWorkspace());
+        assertFalse(style.hasLegend());
+        
+        style.removeFileName();
+
+        style.addLegend(20, 20, "image/png", "http://legendserver.com/legend1");
+        
+        publisher.updateStyle(style, WORKSPACE, STYLENAME);
+        
+        RESTStyle result = reader.getStyle(WORKSPACE, STYLENAME);
+        assertEquals("20", result.getLegendWidth());
+        assertEquals("20", result.getLegendHeight());
+        assertEquals("image/png", result.getLegendFormat());
+        assertEquals("http://legendserver.com/legend1", result.getLegendOnlineResource());
+        
+        sld = reader.getSLD(WORKSPACE, STYLENAME);
+        assertNotNull(sld);
+    }
+    
+    @Test
+    public void testStylesWithLegend2() throws IOException {
+        if (!enabled()) {
+            return;
+        }
+        deleteAll();
+
+        final String WORKSPACE = "testWorkspace";
+        final String STYLENAME = "restteststyle";
+        File sldFile = new ClassPathResource("testdata/restteststyle.sld").getFile();
+
+        publisher.createWorkspace(WORKSPACE);
+
+        assertTrue("Error inserting style", publisher.publishStyleInWorkspace(WORKSPACE, sldFile));
+        assertTrue("Style does not exist in workspace", reader.existsStyle(WORKSPACE, STYLENAME));
+
+        RESTStyle style = reader.getStyle(WORKSPACE, STYLENAME);
+        assertEquals(STYLENAME, style.getName());
+        assertEquals(WORKSPACE, style.getWorkspace());
+        assertFalse(style.hasLegend());
+
+        style.addLegend("image/png", "http://legendserver.com/legend1");
+        
+        publisher.updateStyle(style, WORKSPACE, STYLENAME);
+        
+        RESTStyle result = reader.getStyle(WORKSPACE, STYLENAME);
+        assertEquals("image/png", result.getLegendFormat());
+        assertEquals("http://legendserver.com/legend1", result.getLegendOnlineResource());
+        assertEquals("0", result.getLegendWidth());
+        assertEquals("0", result.getLegendHeight());
+    }
+    
+    @Test
+    public void testYsldStylesInWorkspaceRaw() throws IOException {
+        if (!enabled()) {
+            return;
+        }
+        deleteAll();
+
+        final String WORKSPACE = "testWorkspace";
+        final String STYLENAME = "restteststyle";
+        File sldFile = new ClassPathResource("testdata/restteststyle.ysld").getFile();
+
+        publisher.createWorkspace(WORKSPACE);
+
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
+        assertEquals(0, reader.getStyles(WORKSPACE).size());
+
+        // insert style
+        assertTrue(publisher.publishStyleInWorkspace(WORKSPACE, sldFile, STYLENAME, true));
+        assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
+        assertFalse(reader.existsStyle(STYLENAME));
+
+        // insert style again
+        assertFalse(publisher.publishStyleInWorkspace(WORKSPACE, sldFile, STYLENAME, true));
+        assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
+        assertFalse(reader.existsStyle(STYLENAME));
+
+        String sld = reader.getSLD(WORKSPACE, STYLENAME);
+        assertNotNull(sld);
+
+        RESTStyle style = reader.getStyle(WORKSPACE, STYLENAME);
+        assertEquals(STYLENAME, style.getName());
+        assertEquals(WORKSPACE, style.getWorkspace());
+
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
+        assertEquals(1, reader.getStyles(WORKSPACE).size());
+    }
+    
+    @Test
+    public void testYsldStylesInWorkspaceRawWithYamlExtension() throws IOException {
+        if (!enabled()) {
+            return;
+        }
+        deleteAll();
+
+        final String WORKSPACE = "testWorkspace";
+        final String STYLENAME = "restteststyle";
+        File sldFile = new ClassPathResource("testdata/restteststyle.yaml").getFile();
+
+        publisher.createWorkspace(WORKSPACE);
+
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
+        assertEquals(0, reader.getStyles(WORKSPACE).size());
+
+        // insert style
+        assertTrue(publisher.publishStyleInWorkspace(WORKSPACE, sldFile, STYLENAME, true));
+        assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
+        assertFalse(reader.existsStyle(STYLENAME));
+
+        // insert style again
+        assertFalse(publisher.publishStyleInWorkspace(WORKSPACE, sldFile, STYLENAME, true));
+        assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
+        assertFalse(reader.existsStyle(STYLENAME));
+
+        String sld = reader.getSLD(WORKSPACE, STYLENAME);
+        assertNotNull(sld);
+
+        RESTStyle style = reader.getStyle(WORKSPACE, STYLENAME);
+        assertEquals(STYLENAME, style.getName());
+        assertEquals(WORKSPACE, style.getWorkspace());
+
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
         assertEquals(1, reader.getStyles(WORKSPACE).size());
     }
 }

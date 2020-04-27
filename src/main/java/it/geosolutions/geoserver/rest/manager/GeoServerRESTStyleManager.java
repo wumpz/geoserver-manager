@@ -185,6 +185,9 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
             case SLD_1_1_0:
                 url = buildUrl(workspace, styleName, ".sld");
                 break;
+            case YSLD:
+                url = buildUrl(workspace, styleName, ".ysld");
+                break;
             default:
                 url = buildUrl(workspace, styleName, ".sld");
                 return null;
@@ -469,6 +472,13 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
         return result != null;
 
     }
+    
+    public boolean updateStyle(final RESTStyle style, final String workspace, final String name)
+            throws IllegalArgumentException {
+        final String sUrl = buildXmlUrl(workspace, name);
+        final String result = HTTPUtils.put(sUrl, style.toString(), "application/xml", gsuser, gspass);
+        return result != null;
+    }
 
     /**
      * Remove a Style.
@@ -609,6 +619,11 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
         
         if (fileName.endsWith(".css"))
             format = GeoServerRESTPublisher.Format.CSS;       
+        else if (fileName.endsWith(".ysld") || fileName.endsWith(".yaml"))
+            format = GeoServerRESTPublisher.Format.YSLD;       
+        else if (fileName.endsWith(".zip"))
+            format = GeoServerRESTPublisher.Format.ZIP;
+        
         
         String result = HTTPUtils.post(sUrl.toString(), styleFile, format.getContentType(), gsuser, gspass);
         return result != null;
