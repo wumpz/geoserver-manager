@@ -30,15 +30,13 @@ import it.geosolutions.geoserver.rest.decoder.RESTLayerList;
 import it.geosolutions.geoserver.rest.decoder.RESTPublished;
 import it.geosolutions.geoserver.rest.decoder.RESTPublishedList;
 import it.geosolutions.geoserver.rest.decoder.utils.NameLinkElem;
-
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -57,12 +55,15 @@ public class GSLayerGroupEncoderTest extends GeoserverRESTTest {
     private void init() throws IOException{
         String ws = "topp";
         String storeName = "testshpcollection";    
-        
+                
         // Delete all resources except styles
         deleteAllWorkspacesRecursively(); 
         
         // Create workspace
         assertTrue(publisher.createWorkspace(ws));
+        
+        // Publish style
+        publisher.publishStyle(new ClassPathResource("testdata/default_line.sld").getFile(), "default_line");
         
         // Publish shp collection
         URI location = new ClassPathResource("testdata/multipleshp.zip").getFile().toURI();
@@ -75,10 +76,6 @@ public class GSLayerGroupEncoderTest extends GeoserverRESTTest {
         List<String> layers = reader.getLayers().getNames();
         assertTrue(layers.contains("topp:cities"));
         assertTrue(layers.contains("topp:boundaries"));        
-        
-        // Publish style
-        publisher.publishStyle(new ClassPathResource("testdata/default_line.sld").getFile(), "default_line");
-
     }
     
     @Test

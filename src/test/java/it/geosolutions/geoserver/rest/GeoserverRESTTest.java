@@ -1,6 +1,6 @@
 /*
  *  GeoServer-Manager - Simple Manager Library for GeoServer
- *  
+ *
  *  Copyright (C) 2007 - 2016 GeoSolutions S.A.S.
  *  http://www.geo-solutions.it
  *
@@ -10,10 +10,10 @@
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -33,19 +33,15 @@ import it.geosolutions.geoserver.rest.decoder.RESTLayerGroup;
 import it.geosolutions.geoserver.rest.decoder.about.GSVersionDecoder;
 import it.geosolutions.geoserver.rest.decoder.about.GSVersionDecoder.VERSION;
 import it.geosolutions.geoserver.rest.decoder.utils.NameLinkElem;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
-
 import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -131,10 +127,10 @@ public abstract class GeoserverRESTTest {
                 existgs = reader.existGeoserver();
                 if (!existgs) {
                     LOGGER.error("TESTS WILL FAIL BECAUSE NO GEOSERVER WAS FOUND AT " + RESTURL
-                            + " (" + RESTUSER + ":" + RESTPW + ")");
+                                 + " (" + RESTUSER + ":" + RESTPW + ")");
                 } else {
                     LOGGER.info("Using geoserver instance " + RESTUSER + ":" + RESTPW + " @ "
-                            + RESTURL);
+                                + RESTURL);
                 }
             } else if (existgs == false) {
                 LOGGER.debug("Failing tests  : geoserver not found");
@@ -181,7 +177,7 @@ public abstract class GeoserverRESTTest {
 
         deleteAllStyles();
         //Standard styles are since geoserver 2.12 not deletable anymore. (point, line, polygon, generic, raster)
-        assertTrue("Some styles were not removed", reader.getStyles().size()<=5);
+        assertTrue("Some styles were not removed", reader.getStyles().size() <= 5);
 
         LOGGER.info("ENDING DELETEALL procedure");
     }
@@ -209,12 +205,16 @@ public abstract class GeoserverRESTTest {
         if (layers != null) {
             for (String layerName : layers) {
                 RESTLayer layer = reader.getLayer(layerName);
-                if (layer.getType() == RESTLayer.Type.VECTOR) {
-                    deleteFeatureType(layer);
-                } else if (layer.getType() == RESTLayer.Type.RASTER) {
-                    deleteCoverage(layer);
+                if (layer != null) {
+                    if (layer.getType() == RESTLayer.Type.VECTOR) {
+                        deleteFeatureType(layer);
+                    } else if (layer.getType() == RESTLayer.Type.RASTER) {
+                        deleteCoverage(layer);
+                    } else {
+                        LOGGER.error("Unknown layer type " + layer.getType());
+                    }
                 } else {
-                    LOGGER.error("Unknown layer type " + layer.getType());
+                    LOGGER.warn("layer not found");
                 }
             }
         }
@@ -273,8 +273,8 @@ public abstract class GeoserverRESTTest {
 
         }
     }
-    
-    protected static final List<String> UNDELETABLE_STYLES = Arrays.asList("generic","line","point","polygon","raster");
+
+    protected static final List<String> UNDELETABLE_STYLES = Arrays.asList("generic", "line", "point", "polygon", "raster");
 
     protected void deleteAllStyles() {
         List<String> styles = reader.getStyles().getNames();
@@ -294,10 +294,10 @@ public abstract class GeoserverRESTTest {
         RESTDataStore datastore = reader.getDatastore(featureType);
 
         LOGGER.warn("Deleting FeatureType " + datastore.getWorkspaceName() + " : "
-                + datastore.getName() + " / " + featureType.getName());
+                    + datastore.getName() + " / " + featureType.getName());
 
         boolean removed = publisher.unpublishFeatureType(datastore.getWorkspaceName(),
-                datastore.getName(), layer.getName());
+                                                         datastore.getName(), layer.getName());
         assertTrue(
                 "FeatureType not removed:" + datastore.getWorkspaceName() + " : "
                 + datastore.getName() + " / " + featureType.getName(), removed);
@@ -309,12 +309,12 @@ public abstract class GeoserverRESTTest {
         RESTCoverageStore coverageStore = reader.getCoverageStore(coverage);
 
         LOGGER.warn("Deleting Coverage " + coverageStore.getWorkspaceName() + " : "
-                + coverageStore.getName() + " / " + coverage.getName());
+                    + coverageStore.getName() + " / " + coverage.getName());
 
         boolean removed = publisher.unpublishCoverage(coverageStore.getWorkspaceName(),
-                coverageStore.getName(), coverage.getName());
+                                                      coverageStore.getName(), coverage.getName());
         assertTrue("Coverage not deleted " + coverageStore.getWorkspaceName() + " : "
-                + coverageStore.getName() + " / " + coverage.getName(), removed);
+                   + coverageStore.getName() + " / " + coverage.getName(), removed);
     }
 
     protected boolean existsLayer(String layername) {

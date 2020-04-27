@@ -1,0 +1,5 @@
+title: teal line
+symbolizers:
+- line:
+    stroke-width: 1.0
+    stroke-color: '#00cc33'

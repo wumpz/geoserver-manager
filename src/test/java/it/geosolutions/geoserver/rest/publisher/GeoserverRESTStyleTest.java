@@ -423,7 +423,7 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
 
         try {
 
-            assertEquals("restteststyle", styleEl.getChild("NamedLayer", SLDNS)
+            assertEquals("country", styleEl.getChild("NamedLayer", SLDNS)
                     .getChild("Name", SLDNS).getText());
             assertEquals(
                     "STYLE FOR TESTING PURPOSES",
@@ -677,6 +677,43 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
         final String WORKSPACE = "testWorkspace";
         final String STYLENAME = "restteststyle";
         File sldFile = new ClassPathResource("testdata/restteststyle.ysld").getFile();
+
+        publisher.createWorkspace(WORKSPACE);
+
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
+        assertEquals(0, reader.getStyles(WORKSPACE).size());
+
+        // insert style
+        assertTrue(publisher.publishStyleInWorkspace(WORKSPACE, sldFile, STYLENAME, true));
+        assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
+        assertFalse(reader.existsStyle(STYLENAME));
+
+        // insert style again
+        assertFalse(publisher.publishStyleInWorkspace(WORKSPACE, sldFile, STYLENAME, true));
+        assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
+        assertFalse(reader.existsStyle(STYLENAME));
+
+        String sld = reader.getSLD(WORKSPACE, STYLENAME);
+        assertNotNull(sld);
+
+        RESTStyle style = reader.getStyle(WORKSPACE, STYLENAME);
+        assertEquals(STYLENAME, style.getName());
+        assertEquals(WORKSPACE, style.getWorkspace());
+
+        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
+        assertEquals(1, reader.getStyles(WORKSPACE).size());
+    }
+    
+    @Test
+    public void testYsldStylesInWorkspaceRawWithYamlExtension() throws IOException {
+        if (!enabled()) {
+            return;
+        }
+        deleteAll();
+
+        final String WORKSPACE = "testWorkspace";
+        final String STYLENAME = "restteststyle";
+        File sldFile = new ClassPathResource("testdata/restteststyle.yaml").getFile();
 
         publisher.createWorkspace(WORKSPACE);
 
