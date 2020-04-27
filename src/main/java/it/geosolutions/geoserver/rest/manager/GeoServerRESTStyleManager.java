@@ -619,7 +619,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
         
         if (fileName.endsWith(".css"))
             format = GeoServerRESTPublisher.Format.CSS;       
-        else if (fileName.endsWith(".ysld"))
+        else if (fileName.endsWith(".ysld") || fileName.endsWith(".yaml"))
             format = GeoServerRESTPublisher.Format.YSLD;       
         else if (fileName.endsWith(".zip"))
             format = GeoServerRESTPublisher.Format.ZIP;
