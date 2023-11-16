@@ -273,6 +273,15 @@ public class GeoServerRESTPublisher {
         final String result = HTTPUtils.postXml(sUrl, nsxml, gsuser, gspass);
         return result != null;
     }
+    
+    /**
+     * This needs to be called once to activate a created workspace.
+     */
+    public boolean activateWorkspace(String workspace, boolean localWorkspaceIncludesPrefix) {
+      final String nsjson = "{\"settings\":{\"charset\":\"UTF-8\",\"numDecimals\":8,\"verbose\":false,\"verboseExceptions\":false,\"localWorkspaceIncludesPrefix\":" + localWorkspaceIncludesPrefix + ",\"showCreatedTimeColumnsInAdminList\":false,\"showModifiedTimeColumnsInAdminList\":false}}";
+      
+      return HTTPUtils.postJson(restURL + "/rest/workspaces/" + workspace + "/settings", nsjson, gsuser, gspass) != null;
+    }
 
     /**
      * Update a Namespace URI.
