@@ -90,4 +90,16 @@ public class GeoserverRESTWorkspaceTest extends GeoserverRESTTest {
         // Test not exists
         assertFalse(reader.existsWorkspace(DEFAULT_WS));
     }
+    
+    @Test
+    public void testWorkspaceSettings() {
+        if (!enabled()) return;
+        deleteAll();
+
+        assertEquals(0, reader.getWorkspaces().size());
+
+        assertTrue(publisher.createWorkspace("WS1"));
+        assertTrue(publisher.activateWorkspace("WS1", true));
+        assertEquals(1, reader.getWorkspaces().size());        
+    }
 }
