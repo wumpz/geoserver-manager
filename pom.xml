@@ -182,11 +182,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.5.0</version>
+        <version>3.6.3</version>
         <configuration>
-          <detectLinks />
-          <!-- <links> <link>http://commons.apache.org/dbcp/apidocs/</link> <link>http://commons.apache.org/fileupload/apidocs/</link>
-          <link>http://download.oracle.com/javase/6/docs/api</link> </links> -->
+            <failOnError>false</failOnError>
+            <doclint>none</doclint>
         </configuration>
       </plugin>
 
@@ -204,7 +203,7 @@
           <execution>
             <id>attach-sources</id>
             <goals>
-              <goal>jar</goal>
+              <goal>jar-no-fork</goal>
             </goals>
           </execution>
         </executions>
