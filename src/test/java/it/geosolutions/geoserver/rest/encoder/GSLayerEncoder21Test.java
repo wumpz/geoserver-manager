@@ -33,103 +33,100 @@ import org.junit.Test;
 
 /**
  * GSLayerEncoder21Test
- * 
- * @author Emmanuel Blondel - emmanuel.blondel1@gmail.com |
- *         emmanuel.blondel@fao.org
+ *
+ * @author Emmanuel Blondel - emmanuel.blondel1@gmail.com | emmanuel.blondel@fao.org
  */
 public class GSLayerEncoder21Test {
 
-	GSLayerEncoder21 layerEncoder;
+  GSLayerEncoder21 layerEncoder;
 
-	@Before
-	public void setup() {
-		layerEncoder = new GSLayerEncoder21();
-		layerEncoder.setAdvertised(true);
-		layerEncoder.addAuthorityURL(
-                        new GSAuthorityURLInfoEncoder(
-				"authority1", "http://www.authority1.org"));
-		layerEncoder.addIdentifier(
-                        new GSIdentifierInfoEncoder(
-                                "authority1", "identifier1"));
-		layerEncoder.addAuthorityURL(
-                        new GSAuthorityURLInfoEncoder(
-				"authority2", "http://www.authority2.org"));
-		layerEncoder.addIdentifier(
-                        new GSIdentifierInfoEncoder(
-                                "authority2", "identifier2"));
-		layerEncoder.addIdentifier(
-                        new GSIdentifierInfoEncoder(
-                                "authority2", "additionalId"));
-	}
+  @Before
+  public void setup() {
+    layerEncoder = new GSLayerEncoder21();
+    layerEncoder.setAdvertised(true);
+    layerEncoder.addAuthorityURL(
+            new GSAuthorityURLInfoEncoder(
+                    "authority1", "http://www.authority1.org"));
+    layerEncoder.addIdentifier(
+            new GSIdentifierInfoEncoder(
+                    "authority1", "identifier1"));
+    layerEncoder.addAuthorityURL(
+            new GSAuthorityURLInfoEncoder(
+                    "authority2", "http://www.authority2.org"));
+    layerEncoder.addIdentifier(
+            new GSIdentifierInfoEncoder(
+                    "authority2", "identifier2"));
+    layerEncoder.addIdentifier(
+            new GSIdentifierInfoEncoder(
+                    "authority2", "additionalId"));
+  }
 
-	
-	@Test
-	public void testMetadata(){
-		List<Element> metaElements = layerEncoder.getRoot().getChild("metadata").getChildren();
-		for(Element el : metaElements){
-			String key = el.getAttributeValue("key");
-			
-			if(key.matches("advertised")){
-				Assert.assertEquals(true,
-						Boolean.parseBoolean(el.getValue()));
-				
-			}else if(key.matches("authorityURLs")){
-				String jsonStr = el.getValue();
-				jsonStr = jsonStr.substring(2);
-				jsonStr = jsonStr.substring(0,
-						jsonStr.length() - 3);
+  @Test
+  public void testMetadata() {
+    List<Element> metaElements = layerEncoder.getRoot().getChild("metadata").getChildren();
+    for (Element el : metaElements) {
+      String key = el.getAttributeValue("key");
 
-				String[] items = jsonStr.split("\\}(,)\\{");
+      if (key.matches("advertised")) {
+        Assert.assertEquals(true,
+                Boolean.parseBoolean(el.getValue()));
 
-				String[] props1 = items[0].split(",");
-				String[] kvp1_1 = props1[0].split("\":");
-				String[] kvp1_2 = props1[1].split("\":");
-				Assert.assertEquals(AuthorityURLInfo.name.name(), kvp1_1[0].replace("\"", ""));
-				Assert.assertEquals("authority1", kvp1_1[1].replace("\"", ""));
-				Assert.assertEquals(AuthorityURLInfo.href.name(), kvp1_2[0].replace("\"", ""));
-				Assert.assertEquals("http://www.authority1.org", kvp1_2[1].replace("\"", ""));
-				
-				String[] props2 = items[1].split(",");
-				String[] kvp2_1 = props2[0].split("\":");
-				String[] kvp2_2 = props2[1].split("\":");
-				Assert.assertEquals(AuthorityURLInfo.name.name(), kvp2_1[0].replace("\"", ""));
-				Assert.assertEquals("authority2", kvp2_1[1].replace("\"", ""));
-				Assert.assertEquals(AuthorityURLInfo.href.name(), kvp2_2[0].replace("\"", ""));
-				Assert.assertEquals("http://www.authority2.org", kvp2_2[1].replace("\"", ""));
+      } else if (key.matches("authorityURLs")) {
+        String jsonStr = el.getValue();
+        jsonStr = jsonStr.substring(2);
+        jsonStr = jsonStr.substring(0,
+                jsonStr.length() - 3);
 
-				
-			}else if(key.matches("identifiers")){
-				String jsonStr = el.getValue();
-				jsonStr = jsonStr.substring(2);
-				jsonStr = jsonStr.substring(0, jsonStr.length() - 3);
+        String[] items = jsonStr.split("\\}(,)\\{");
 
-				String[] items = jsonStr.split("\\}(,)\\{");
+        String[] props1 = items[0].split(",");
+        String[] kvp1_1 = props1[0].split("\":");
+        String[] kvp1_2 = props1[1].split("\":");
+        Assert.assertEquals(AuthorityURLInfo.name.name(), kvp1_1[0].replace("\"", ""));
+        Assert.assertEquals("authority1", kvp1_1[1].replace("\"", ""));
+        Assert.assertEquals(AuthorityURLInfo.href.name(), kvp1_2[0].replace("\"", ""));
+        Assert.assertEquals("http://www.authority1.org", kvp1_2[1].replace("\"", ""));
 
-				String[] props1 = items[0].split(",");
-				String[] kvp1_1 = props1[0].split("\":");
-				String[] kvp1_2 = props1[1].split("\":");
-				Assert.assertEquals("idx0", IdentifierInfo.authority.name(), kvp1_1[0].replace("\"", ""));
-				Assert.assertEquals("idx0", "authority1", kvp1_1[1].replace("\"", ""));
-				Assert.assertEquals("idx0", IdentifierInfo.identifier.name(), kvp1_2[0].replace("\"", ""));
-				Assert.assertEquals("idx0", "identifier1", kvp1_2[1].replace("\"", ""));
-				
-				String[] props2 = items[1].split(",");
-				String[] kvp2_1 = props2[0].split("\":");
-				String[] kvp2_2 = props2[1].split("\":");
-				Assert.assertEquals("idx1", IdentifierInfo.authority.name(), kvp2_1[0].replace("\"", ""));
-				Assert.assertEquals("idx1", "authority2", kvp2_1[1].replace("\"", ""));
-				Assert.assertEquals("idx1", IdentifierInfo.identifier.name(), kvp2_2[0].replace("\"", ""));
-				Assert.assertEquals("idx1", "identifier2", kvp2_2[1].replace("\"", ""));
-				
-				String[] props3 = items[2].split(",");
-				String[] kvp3_1 = props3[0].split("\":");
-				String[] kvp3_2 = props3[1].split("\":");
-				Assert.assertEquals("idx2", IdentifierInfo.authority.name(), kvp3_1[0].replace("\"", ""));
-				Assert.assertEquals("idx2", "authority2", kvp3_1[1].replace("\"", ""));
-				Assert.assertEquals("idx2", IdentifierInfo.identifier.name(), kvp3_2[0].replace("\"", ""));
-				Assert.assertEquals("idx2", "additionalId", kvp3_2[1].replace("\"", ""));
+        String[] props2 = items[1].split(",");
+        String[] kvp2_1 = props2[0].split("\":");
+        String[] kvp2_2 = props2[1].split("\":");
+        Assert.assertEquals(AuthorityURLInfo.name.name(), kvp2_1[0].replace("\"", ""));
+        Assert.assertEquals("authority2", kvp2_1[1].replace("\"", ""));
+        Assert.assertEquals(AuthorityURLInfo.href.name(), kvp2_2[0].replace("\"", ""));
+        Assert.assertEquals("http://www.authority2.org", kvp2_2[1].replace("\"", ""));
 
-			}
-		}
-	}
+      } else if (key.matches("identifiers")) {
+        String jsonStr = el.getValue();
+        jsonStr = jsonStr.substring(2);
+        jsonStr = jsonStr.substring(0, jsonStr.length() - 3);
+
+        String[] items = jsonStr.split("\\}(,)\\{");
+
+        String[] props1 = items[0].split(",");
+        String[] kvp1_1 = props1[0].split("\":");
+        String[] kvp1_2 = props1[1].split("\":");
+        Assert.assertEquals("idx0", IdentifierInfo.authority.name(), kvp1_1[0].replace("\"", ""));
+        Assert.assertEquals("idx0", "authority1", kvp1_1[1].replace("\"", ""));
+        Assert.assertEquals("idx0", IdentifierInfo.identifier.name(), kvp1_2[0].replace("\"", ""));
+        Assert.assertEquals("idx0", "identifier1", kvp1_2[1].replace("\"", ""));
+
+        String[] props2 = items[1].split(",");
+        String[] kvp2_1 = props2[0].split("\":");
+        String[] kvp2_2 = props2[1].split("\":");
+        Assert.assertEquals("idx1", IdentifierInfo.authority.name(), kvp2_1[0].replace("\"", ""));
+        Assert.assertEquals("idx1", "authority2", kvp2_1[1].replace("\"", ""));
+        Assert.assertEquals("idx1", IdentifierInfo.identifier.name(), kvp2_2[0].replace("\"", ""));
+        Assert.assertEquals("idx1", "identifier2", kvp2_2[1].replace("\"", ""));
+
+        String[] props3 = items[2].split(",");
+        String[] kvp3_1 = props3[0].split("\":");
+        String[] kvp3_2 = props3[1].split("\":");
+        Assert.assertEquals("idx2", IdentifierInfo.authority.name(), kvp3_1[0].replace("\"", ""));
+        Assert.assertEquals("idx2", "authority2", kvp3_1[1].replace("\"", ""));
+        Assert.assertEquals("idx2", IdentifierInfo.identifier.name(), kvp3_2[0].replace("\"", ""));
+        Assert.assertEquals("idx2", "additionalId", kvp3_2[1].replace("\"", ""));
+
+      }
+    }
+  }
 }

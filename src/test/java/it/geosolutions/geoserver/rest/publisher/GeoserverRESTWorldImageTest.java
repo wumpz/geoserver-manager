@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.publisher;
 
 import it.geosolutions.geoserver.rest.GeoServerRESTPublisher.ParameterConfigure;
@@ -38,55 +37,53 @@ import static org.junit.Assert.*;
 import org.springframework.core.io.ClassPathResource;
 
 /**
- * Testcase for publishing layers on geoserver.
- * We need a running GeoServer to properly run the tests. 
- * If such geoserver instance cannot be contacted, tests will be skipped.
+ * Testcase for publishing layers on geoserver. We need a running GeoServer to properly run the tests. If such geoserver
+ * instance cannot be contacted, tests will be skipped.
  *
  * @author Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
  */
 public class GeoserverRESTWorldImageTest extends GeoserverRESTTest {
 
-    @Test
-    public void testPublishWorldImage() throws IOException {
+  @Test
+  public void testPublishWorldImage() throws IOException {
 
-		if (!enabled()) {
-			return;
-		}
-		deleteAll();
-		String storeName = "testWorldimage";
+    if (!enabled()) {
+      return;
+    }
+    deleteAll();
+    String storeName = "testWorldimage";
 
-		assertTrue(reader.getWorkspaces().isEmpty());
+    assertTrue(reader.getWorkspaces().isEmpty());
 
-		assertTrue(publisher.createWorkspace(DEFAULT_WS));
+    assertTrue(publisher.createWorkspace(DEFAULT_WS));
 
-		File worldImageFile = new ClassPathResource(
-				"testdata/sw.zip").getFile();
+    File worldImageFile = new ClassPathResource(
+            "testdata/sw.zip").getFile();
 
-		// test publish
+    // test publish
+    boolean wp = publisher.publishWorldImage(DEFAULT_WS, storeName,
+            worldImageFile, ParameterConfigure.NONE, null);
 
-		boolean wp = publisher.publishWorldImage(DEFAULT_WS, storeName,
-				worldImageFile, ParameterConfigure.NONE, null);
+    assertTrue("Publish worldfile with no layer configured, failed.", wp);
 
-		assertTrue("Publish worldfile with no layer configured, failed.", wp);
-		
-		assertTrue("Unpublish() failed", publisher.removeCoverageStore(DEFAULT_WS, storeName, true));
-		
-        // create default style
-        File sldFile = new ClassPathResource("testdata/restteststyle.sld").getFile();
-        assertTrue(publisher.publishStyle(sldFile,"raster_1"));
-		
-		wp = publisher.publishWorldImage(DEFAULT_WS, storeName,
-				worldImageFile, ParameterConfigure.FIRST, new NameValuePair("coverageName", "worldImage_test"));
-		
-		assertTrue("Publish worldfile configuring layer name, failed.", wp);
-		
-		assertTrue("Unpublish() failed", publisher.removeCoverageStore(DEFAULT_WS, storeName, true));
-		
-		wp = publisher.publishWorldImage(DEFAULT_WS, storeName,
-				worldImageFile, ParameterConfigure.ALL,null);
-		
-		assertTrue("Publish worldfile configuring all available layers, failed.", wp);
-		
-		assertTrue("Unpublish() failed", publisher.removeCoverageStore(DEFAULT_WS, storeName, true));
-	}
+    assertTrue("Unpublish() failed", publisher.removeCoverageStore(DEFAULT_WS, storeName, true));
+
+    // create default style
+    File sldFile = new ClassPathResource("testdata/restteststyle.sld").getFile();
+    assertTrue(publisher.publishStyle(sldFile, "raster_1"));
+
+    wp = publisher.publishWorldImage(DEFAULT_WS, storeName,
+            worldImageFile, ParameterConfigure.FIRST, new NameValuePair("coverageName", "worldImage_test"));
+
+    assertTrue("Publish worldfile configuring layer name, failed.", wp);
+
+    assertTrue("Unpublish() failed", publisher.removeCoverageStore(DEFAULT_WS, storeName, true));
+
+    wp = publisher.publishWorldImage(DEFAULT_WS, storeName,
+            worldImageFile, ParameterConfigure.ALL, null);
+
+    assertTrue("Publish worldfile configuring all available layers, failed.", wp);
+
+    assertTrue("Unpublish() failed", publisher.removeCoverageStore(DEFAULT_WS, storeName, true));
+  }
 }

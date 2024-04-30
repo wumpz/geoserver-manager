@@ -39,32 +39,30 @@ import org.springframework.core.io.ClassPathResource;
  */
 public class MetadataDecoderTest {
 
-    
-    @Test
-    public void testMetadataDimensionInfo() throws IOException {
-        
-        File coverageFile = new ClassPathResource("testdata/coverageExample.xml").getFile();
-        String coverageString = FileUtils.readFileToString(coverageFile);
-        RESTCoverage coverage = RESTCoverage.build(coverageString);
-        List<RESTDimensionInfo> list = coverage.getDimensionInfo();
-        
-        Assert.assertEquals(list.size(),2);
-        
-        
-        for (RESTDimensionInfo el : list){
-            if(el.getKey().equals("time")){
-                Assert.assertEquals(el.getResolution(),null);
-                Assert.assertEquals(el.getPresentation(),"LIST");
-                Assert.assertEquals(el.getKey(),"time");
-                Assert.assertEquals(el.isEnabled(),true);
-            }
-            if(el.getKey().equals("elevation")){
-                Assert.assertEquals(el.getResolution(),"2");
-                Assert.assertEquals(el.getPresentation(),"DISCRETE_INTERVAL");
-                Assert.assertEquals(el.getKey(),"elevation");
-                Assert.assertEquals(el.isEnabled(),true);
-            }
-        } 
+  @Test
+  public void testMetadataDimensionInfo() throws IOException {
+
+    File coverageFile = new ClassPathResource("testdata/coverageExample.xml").getFile();
+    String coverageString = FileUtils.readFileToString(coverageFile);
+    RESTCoverage coverage = RESTCoverage.build(coverageString);
+    List<RESTDimensionInfo> list = coverage.getDimensionInfo();
+
+    Assert.assertEquals(list.size(), 2);
+
+    for (RESTDimensionInfo el : list) {
+      if (el.getKey().equals("time")) {
+        Assert.assertEquals(el.getResolution(), null);
+        Assert.assertEquals(el.getPresentation(), "LIST");
+        Assert.assertEquals(el.getKey(), "time");
+        Assert.assertEquals(el.isEnabled(), true);
+      }
+      if (el.getKey().equals("elevation")) {
+        Assert.assertEquals(el.getResolution(), "2");
+        Assert.assertEquals(el.getPresentation(), "DISCRETE_INTERVAL");
+        Assert.assertEquals(el.getKey(), "elevation");
+        Assert.assertEquals(el.isEnabled(), true);
+      }
     }
-    
+  }
+
 }

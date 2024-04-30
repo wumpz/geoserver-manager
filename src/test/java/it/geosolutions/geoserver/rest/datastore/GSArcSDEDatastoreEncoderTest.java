@@ -34,10 +34,11 @@ import java.net.MalformedURLException;
  * Testcase for creating arcsde-based resources on geoserver.
  * <P>
  * Since these tests require a running arcsde instance, this is more like integration tests.<br/>
- * You may skip them by defining<tt> <pre>
- *        -DpgIgnore=true </pre></tt> When <tt>pgIgnore</tt> is defined that way, failing tests will not break the build: they will be logged as
- * errors instead.
- * 
+ * You may skip them by defining<tt>
+ * <pre>
+ *        -DpgIgnore=true </pre></tt> When <tt>pgIgnore</tt> is defined that way, failing tests will not break the build: they
+ * will be logged as errors instead.
+ *
  * <P>
  * The target arcsde instance can be customized by defining the following env vars:
  * <ul>
@@ -48,30 +49,30 @@ import java.net.MalformedURLException;
  * <LI><TT>pgUser</TT> (default: <TT>utest</TT>)</LI>
  * <LI><TT>pgPassword</TT> (default: <TT>ptest</TT>)</LI>
  * </ul>
- * 
+ *
  * @author etj
  * @author Eric Grosso
  * @author Gianni Barrotta
  * @author carlo cancellieri - GeoSolutions
- * 
+ *
  * @see GeoserverRESTTest
  */
 public class GSArcSDEDatastoreEncoderTest extends StoreIntegrationTest {
 
-    public GSArcSDEDatastoreEncoderTest() throws IllegalArgumentException, MalformedURLException {
+  public GSArcSDEDatastoreEncoderTest() throws IllegalArgumentException, MalformedURLException {
 
-        super(System.getProperty("Ignore", "true").equalsIgnoreCase("true"));
-    }
+    super(System.getProperty("Ignore", "true").equalsIgnoreCase("true"));
+  }
 
-    @Override
-    public GSAbstractStoreEncoder getStoreEncoderTest() {
-        GSArcSDEDatastoreEncoder datastoreEncoder = new GSArcSDEDatastoreEncoder(
-                System.getProperty("arcsdeHost", "localhost"),
-                System.getProperty("arcsdeSchema", "public"), System.getProperty("arcsdePassword", "ptest"));
-        datastoreEncoder.setNamespace(DEFAULT_WS);
-        datastoreEncoder.setPort(Integer.parseInt(System.getProperty("arcsdePort", "5432")));
+  @Override
+  public GSAbstractStoreEncoder getStoreEncoderTest() {
+    GSArcSDEDatastoreEncoder datastoreEncoder = new GSArcSDEDatastoreEncoder(
+            System.getProperty("arcsdeHost", "localhost"),
+            System.getProperty("arcsdeSchema", "public"), System.getProperty("arcsdePassword", "ptest"));
+    datastoreEncoder.setNamespace(DEFAULT_WS);
+    datastoreEncoder.setPort(Integer.parseInt(System.getProperty("arcsdePort", "5432")));
 
-        return datastoreEncoder;
-    }
+    return datastoreEncoder;
+  }
 
 }

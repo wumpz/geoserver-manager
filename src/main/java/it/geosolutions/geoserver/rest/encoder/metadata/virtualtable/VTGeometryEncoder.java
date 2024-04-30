@@ -31,9 +31,8 @@ import org.jdom.Element;
 import org.jdom.filter.Filter;
 
 /**
- * VTGeometryEncoder - Encodes a metadata VirtualTable geometry for a
- * GeoServer featureType, as follows:
- * 
+ * VTGeometryEncoder - Encodes a metadata VirtualTable geometry for a GeoServer featureType, as follows:
+ *
  * <pre>
  * {
  * 	@code
@@ -43,9 +42,9 @@ import org.jdom.filter.Filter;
  * 	vtGeom.setSrid("4326");
  * }
  * </pre>
- * 
+ *
  * For this example, the XML output is:
- * 
+ *
  * <pre>
  * {@code
  * <geometry>
@@ -55,193 +54,193 @@ import org.jdom.filter.Filter;
  * </geometry>
  * }
  * </pre>
- * 
- * @author Emmanuel Blondel - emmanuel.blondel1@gmail.com |
- *         emmanuel.blondel@fao.org
- * 
+ *
+ * @author Emmanuel Blondel - emmanuel.blondel1@gmail.com | emmanuel.blondel@fao.org
+ *
  */
 public class VTGeometryEncoder extends XmlElement {
 
-	/** 
-	 * A class to filter the VirtualTable geometries by name
-	 *
-	 */
-	private static class filterByName implements Filter {
+  /**
+   * A class to filter the VirtualTable geometries by name
+   *
+   */
+  private static class filterByName implements Filter {
 
-		final private String key;
+    final private String key;
 
-		public filterByName(String name) {
-			this.key = name;
-		}
+    public filterByName(String name) {
+      this.key = name;
+    }
 
-		private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-		public boolean matches(Object obj) {
-			Element el = ((Element) obj)
-					.getChild(VTGeometry.name.toString());
-			if (el != null && el.getTextTrim().equals(key)) {
-				return true;
-			}
-			return false;
-		}
-	}
+    public boolean matches(Object obj) {
+      Element el = ((Element) obj)
+              .getChild(VTGeometry.name.toString());
+      if (el != null && el.getTextTrim().equals(key)) {
+        return true;
+      }
+      return false;
+    }
+  }
 
-	/** 
-	 * Get a Filter using the VTGeometry name
-	 * 
-	 * @param name
-	 * @return the filter
-	 */
-	public static Filter getFilterByName(String name) {
-		return new filterByName(name);
-	}
-	
-	/**
-	 * Constructs a GSVirtualTableGeomEncoder
-	 * 
-	 */
-	public VTGeometryEncoder() {
-		super("geometry");
-	}
+  /**
+   * Get a Filter using the VTGeometry name
+   *
+   * @param name
+   * @return the filter
+   */
+  public static Filter getFilterByName(String name) {
+    return new filterByName(name);
+  }
 
-	/**
-	 * Constructs quickly a VTGeometryEncoder
-	 * 
-	 * @param name (required)
-	 * @param geometryType (required)
-	 * @param srid (required)
-	 */
-	public VTGeometryEncoder(String name, String geometryType, String srid) {
-		super("geometry");
-		this.setup(name, geometryType, srid);
-	}
-	
-	/**
-	 * Set-up quickly a GSVirtualTableGeomEncoder
-	 * 
-	 * @param name
-	 * @param geometryType
-	 * @param srid
-	 */
-	protected void setup(String name, String geometryType, String srid) {
-		setName(name);
-		setType(geometryType);
-		setSrid(srid);
-	}
+  /**
+   * Constructs a GSVirtualTableGeomEncoder
+   *
+   */
+  public VTGeometryEncoder() {
+    super("geometry");
+  }
 
-	/**
-	 * Set a VirtualTable Geometry member
-	 * 
-	 * @param type
-	 * @param value
-	 */
-	protected void setMember(VTGeometry type,
-			String value) {
-		set(type.toString(), value);
-	}
+  /**
+   * Constructs quickly a VTGeometryEncoder
+   *
+   * @param name (required)
+   * @param geometryType (required)
+   * @param srid (required)
+   */
+  public VTGeometryEncoder(String name, String geometryType, String srid) {
+    super("geometry");
+    this.setup(name, geometryType, srid);
+  }
 
-	/**
-	 * Set a geometry name
-	 * 
-	 * @param name
-	 */
-	public void setName(String name){
-		this.setMember(VTGeometry.name, name);
-	}
-	
-	/**
-	 * Set a geometry type
-	 * 
-	 * @param type
-	 */
-	public void setType(String type){
-		this.setMember(VTGeometry.type, type);
-	}
-	
-	/**
-	 * Set a geometry srid
-	 * 
-	 * @param srid
-	 */
-	public void setSrid(String srid){
-		this.setMember(VTGeometry.srid, srid);
-	}
-	
-	/**
-	 * Deletes a VirtualTableGeometry member
-	 * 
-	 * @param type
-	 * @return true if removed, false otherwise
-	 */
-	protected boolean delMember(VTGeometry type) {
-		return ElementUtils.remove(this.getRoot(), this.getRoot().getChild(type.toString()));
-	}
-	
-	/**
-	 * Deletes the name
-	 * 
-	 * @return true if removed, false otherwise
-	 */
-	public boolean delName(){
-		return this.delMember(VTGeometry.name);
-	}
-	
-	/**
-	 * Deletes the type
-	 * 
-	 * @return true if removed, false otherwise
-	 */
-	public boolean delType(){
-		return this.delMember(VTGeometry.type);
-	}
+  /**
+   * Set-up quickly a GSVirtualTableGeomEncoder
+   *
+   * @param name
+   * @param geometryType
+   * @param srid
+   */
+  protected void setup(String name, String geometryType, String srid) {
+    setName(name);
+    setType(geometryType);
+    setSrid(srid);
+  }
 
-	/**
-	 * Deletes the srid
-	 * 
-	 * @return true if removed, false otherwise
-	 */
-	public boolean delSrid(){
-		return this.delMember(VTGeometry.srid);
-	}
-	
-	/**
-	 * Get the VirtualTableGeometry member value
-	 * 
-	 * @param type
-	 * @return
-	 */
-	protected String getMember(VTGeometry type) {
-		Element el = this.getRoot().getChild(type.toString());
-		if (el != null)
-			return el.getTextTrim();
-		else
-			return null;
-	}
-	
-	/**
-	 * Get the geometry column name
-	 * 
-	 * @return
-	 */
-	public String getName(){
-		return this.getMember(VTGeometry.name);
-	}
-	
-	/**
-	 * Get the geometry column type
-	 * 
-	 * @return
-	 */
-	public String getType(){
-		return this.getMember(VTGeometry.type);
-	}
-	
-	/**
-	 * Get the geometry column srid
-	 * 
-	 * @return
-	 */
-	public String getSrid(){
-		return this.getMember(VTGeometry.srid);
-	}
+  /**
+   * Set a VirtualTable Geometry member
+   *
+   * @param type
+   * @param value
+   */
+  protected void setMember(VTGeometry type,
+          String value) {
+    set(type.toString(), value);
+  }
+
+  /**
+   * Set a geometry name
+   *
+   * @param name
+   */
+  public void setName(String name) {
+    this.setMember(VTGeometry.name, name);
+  }
+
+  /**
+   * Set a geometry type
+   *
+   * @param type
+   */
+  public void setType(String type) {
+    this.setMember(VTGeometry.type, type);
+  }
+
+  /**
+   * Set a geometry srid
+   *
+   * @param srid
+   */
+  public void setSrid(String srid) {
+    this.setMember(VTGeometry.srid, srid);
+  }
+
+  /**
+   * Deletes a VirtualTableGeometry member
+   *
+   * @param type
+   * @return true if removed, false otherwise
+   */
+  protected boolean delMember(VTGeometry type) {
+    return ElementUtils.remove(this.getRoot(), this.getRoot().getChild(type.toString()));
+  }
+
+  /**
+   * Deletes the name
+   *
+   * @return true if removed, false otherwise
+   */
+  public boolean delName() {
+    return this.delMember(VTGeometry.name);
+  }
+
+  /**
+   * Deletes the type
+   *
+   * @return true if removed, false otherwise
+   */
+  public boolean delType() {
+    return this.delMember(VTGeometry.type);
+  }
+
+  /**
+   * Deletes the srid
+   *
+   * @return true if removed, false otherwise
+   */
+  public boolean delSrid() {
+    return this.delMember(VTGeometry.srid);
+  }
+
+  /**
+   * Get the VirtualTableGeometry member value
+   *
+   * @param type
+   * @return
+   */
+  protected String getMember(VTGeometry type) {
+    Element el = this.getRoot().getChild(type.toString());
+    if (el != null) {
+      return el.getTextTrim();
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Get the geometry column name
+   *
+   * @return
+   */
+  public String getName() {
+    return this.getMember(VTGeometry.name);
+  }
+
+  /**
+   * Get the geometry column type
+   *
+   * @return
+   */
+  public String getType() {
+    return this.getMember(VTGeometry.type);
+  }
+
+  /**
+   * Get the geometry column srid
+   *
+   * @return
+   */
+  public String getSrid() {
+    return this.getMember(VTGeometry.srid);
+  }
 }

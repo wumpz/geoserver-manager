@@ -22,38 +22,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.decoder;
 
 import it.geosolutions.geoserver.rest.decoder.utils.NameLinkElem;
 
 import org.jdom.Element;
 
-
 /**
  * Parse a <TT>published</TT> returned as XML REST objects.
- * 
+ *
  * This is the XML REST representation:
  * <pre>{@code
-    <published type="layer">
-      <name>sfdem</name>
-      <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/layers/sfdem.xml" type="application/xml"/>
-    </published>
+ * <published type="layer">
+ * <name>sfdem</name>
+ * <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/layers/sfdem.xml" type="application/xml"/>
+ * </published>
  * }</pre>
- * 
+ *
  * @author Davide Savazzi (geo-solutions.it)
  */
 public class RESTPublished extends NameLinkElem {
 
-    private final String type;
-    
-    public RESTPublished(Element elem) {
-        super(elem);
-        
-        type = elem.getAttributeValue("type");
-    }
+  private final String type;
 
-    public String getType() {
-        return type;
-    }
+  public RESTPublished(Element elem) {
+    super(elem);
+
+    type = elem.getAttributeValue("type");
+  }
+
+  public String getType() {
+    return type;
+  }
 }

@@ -26,12 +26,11 @@ package it.geosolutions.geoserver.rest.encoder.metadatalink;
 
 /**
  * Enumeration of featureType metadataLink member
- * 
- * @author Emmanuel Blondel - emmanuel.blondel1@gmail.com |
- *         emmanuel.blondel@fao.org
- * 
+ *
+ * @author Emmanuel Blondel - emmanuel.blondel1@gmail.com | emmanuel.blondel@fao.org
+ *
  */
 public enum ResourceMetadataLinkInfo {
-	type, metadataType, content
+  type, metadataType, content
 
 }

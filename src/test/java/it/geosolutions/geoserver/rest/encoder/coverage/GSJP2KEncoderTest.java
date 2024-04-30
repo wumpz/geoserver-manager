@@ -19,11 +19,11 @@
  */
 package it.geosolutions.geoserver.rest.encoder.coverage;
 
+import java.util.logging.Logger;
 import junit.framework.TestCase;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.util.Assert;
 
 /**
@@ -32,36 +32,33 @@ import org.springframework.util.Assert;
  */
 public class GSJP2KEncoderTest extends TestCase {
 
-    public GSJP2KEncoderTest() {
-    }
+  public GSJP2KEncoderTest() {
+  }
 
-    /**
-     * Default logger
-     */
-    protected final static Logger LOGGER = LoggerFactory.getLogger(GSJP2KEncoderTest.class);
-    
-    /**
-     * TODO implement this test
-     */
-    @Test
-    public void testAll() {
-    	final GSJP2KEncoder encoder=new GSJP2KEncoder();
-    
-    	Assert.isNull(encoder.getUseJaiImageRead());
-    	
-    	encoder.setUseMultithreading(true);
-    	LOGGER.info(encoder.toString());
-    	Assert.isTrue(encoder.getUseMultithreading());
-    	
-    	encoder.setUseMultithreading(false);
-    	
-    	Assert.isTrue(!encoder.getUseMultithreading());
-    	
-    	encoder.setSuggestedTileSize("512,512");
-    	
-    	Assert.isTrue(encoder.getSuggestedTileSize().equalsIgnoreCase("512,512"));
-    	
-    	LOGGER.info(encoder.toString());
-    	
-    }
+  private static final Logger LOG = Logger.getLogger(GSJP2KEncoderTest.class.getName());
+
+  /**
+   * TODO implement this test
+   */
+  @Test
+  public void testAll() {
+    final GSJP2KEncoder encoder = new GSJP2KEncoder();
+
+    Assert.isNull(encoder.getUseJaiImageRead());
+
+    encoder.setUseMultithreading(true);
+    LOG.info(encoder.toString());
+    Assert.isTrue(encoder.getUseMultithreading());
+
+    encoder.setUseMultithreading(false);
+
+    Assert.isTrue(!encoder.getUseMultithreading());
+
+    encoder.setSuggestedTileSize("512,512");
+
+    Assert.isTrue(encoder.getSuggestedTileSize().equalsIgnoreCase("512,512"));
+
+    LOG.info(encoder.toString());
+
+  }
 }

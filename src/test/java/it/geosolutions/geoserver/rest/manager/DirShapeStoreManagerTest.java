@@ -41,16 +41,16 @@ import org.junit.Ignore;
 
 /**
  * Test datastore handling (create, read and update):
- * 
+ *
  * <ul>
  * <li>Tests all the constructors and setters from {@link GSDirectoryOfShapefilesDatastoreEncoder} and parent classes (
  * {@link GSShapefileDatastoreEncoder}, {@link GSAbstractDatastoreEncoder}).
- * 
+ *
  * <li>Tests constructors and getters from {@link RESTDataStore} (reader).
- * 
+ *
  * <li>Tests {@link GeoServerRESTDatastoreManager} create and update methods.
  * </ul>
- * 
+ *
  * <p>
  * The sequence is:
  * <ol>
@@ -71,80 +71,80 @@ import org.junit.Ignore;
 @Ignore
 public class DirShapeStoreManagerTest extends StoreIntegrationTest {
 
-    private static final String WS_NAME = DEFAULT_WS;
+  private static final String WS_NAME = DEFAULT_WS;
 
-    private static final String DS_NAME = "testCreateDatastore";
+  private static final String DS_NAME = "testCreateDatastore";
 
-    private static final String DS_DESCRIPTION = "A description";
+  private static final String DS_DESCRIPTION = "A description";
 
-    private static URL LOCATION_1;
+  private static URL LOCATION_1;
 
-    private static URL LOCATION_2;
+  private static URL LOCATION_2;
 
-    public DirShapeStoreManagerTest() throws Exception {
-        super(false);
-        LOCATION_1 = new URL("file:data/shapefiles/");
-        LOCATION_2 = new URL("file:data/2");
+  public DirShapeStoreManagerTest() throws Exception {
+    super(false);
+    LOCATION_1 = new URL("file:data/shapefiles/");
+    LOCATION_2 = new URL("file:data/2");
+  }
+
+  @Override
+  public GSAbstractStoreEncoder getStoreEncoderTest() {
+    return new GSDirectoryOfShapefilesDatastoreEncoder(DS_NAME, LOCATION_1);
+  }
+
+  @Test
+  public void test() throws Exception {
+    if (!enabled()) {
+      return;
     }
 
-    @Override
-    public GSAbstractStoreEncoder getStoreEncoderTest() {
-        return new GSDirectoryOfShapefilesDatastoreEncoder(DS_NAME, LOCATION_1);
-    }
+    // Delete all resources except styles
+    deleteAllWorkspacesRecursively();
 
-    @Test
-    public void test() throws Exception {
-        if (!enabled()) {
-            return;
-        }
+    // Create workspace
+    assertTrue(publisher.createWorkspace(WS_NAME));
 
-        // Delete all resources except styles
-        deleteAllWorkspacesRecursively();
+    // Create a directory of spatial files with default parameters
+    GSDirectoryOfShapefilesDatastoreEncoder create = new GSDirectoryOfShapefilesDatastoreEncoder(
+            DS_NAME, LOCATION_1);
+    assertTrue("Could not create create store", manager.getStoreManager().create(WS_NAME, create));
 
-        // Create workspace
-        assertTrue(publisher.createWorkspace(WS_NAME));
+    // Read the store from server; check all parameter values
+    RESTDataStore read = reader.getDatastore(WS_NAME, DS_NAME);
+    assertEquals(read.getName(), DS_NAME);
+    assertEquals(read.getWorkspaceName(), WS_NAME);
+    assertEquals(read.isEnabled(), true);
 
-        // Create a directory of spatial files with default parameters
-        GSDirectoryOfShapefilesDatastoreEncoder create = new GSDirectoryOfShapefilesDatastoreEncoder(
-                DS_NAME, LOCATION_1);
-        assertTrue("Could not create create store", manager.getStoreManager().create(WS_NAME, create));
+    Map<String, String> connParams = read.getConnectionParameters();
+    assertEquals(connParams.get("url"), LOCATION_1.toString());
+    assertEquals(connParams.get("charset"), "ISO-8859-1");
+    assertEquals(connParams.get("create spatial index"), "true");
+    assertEquals(connParams.get("memory mapped buffer"), "false");
+    assertEquals(connParams.get("cache and reuse memory maps"), "true");
 
-        // Read the store from server; check all parameter values
-        RESTDataStore read = reader.getDatastore(WS_NAME, DS_NAME);
-        assertEquals(read.getName(), DS_NAME);
-        assertEquals(read.getWorkspaceName(), WS_NAME);
-        assertEquals(read.isEnabled(), true);
+    // Change all parameter to non-default values
+    GSDirectoryOfShapefilesDatastoreEncoder update = new GSDirectoryOfShapefilesDatastoreEncoder(
+            read);
+    update.setDescription(DS_DESCRIPTION);
+    update.setEnabled(false);
+    update.setUrl(LOCATION_2);
+    update.setCharset(Charset.forName("UTF-8"));
+    update.setCreateSpatialIndex(false);
+    update.setMemoryMappedBuffer(true);
+    update.setCacheAndReuseMemoryMaps(false);
 
-        Map<String, String> connParams = read.getConnectionParameters();
-        assertEquals(connParams.get("url"), LOCATION_1.toString());
-        assertEquals(connParams.get("charset"), "ISO-8859-1");
-        assertEquals(connParams.get("create spatial index"), "true");
-        assertEquals(connParams.get("memory mapped buffer"), "false");
-        assertEquals(connParams.get("cache and reuse memory maps"), "true");
+    // update the store
+    assertTrue("Could not update store " + WS_NAME, manager.getStoreManager().update(WS_NAME, update));
 
-        // Change all parameter to non-default values
-        GSDirectoryOfShapefilesDatastoreEncoder update = new GSDirectoryOfShapefilesDatastoreEncoder(
-                read);
-        update.setDescription(DS_DESCRIPTION);
-        update.setEnabled(false);
-        update.setUrl(LOCATION_2);
-        update.setCharset(Charset.forName("UTF-8"));
-        update.setCreateSpatialIndex(false);
-        update.setMemoryMappedBuffer(true);
-        update.setCacheAndReuseMemoryMaps(false);
-
-        // update the store
-        assertTrue("Could not update store " + WS_NAME, manager.getStoreManager().update(WS_NAME, update));
-
-        // Read again, check that all parameters have changed
-        read = reader.getDatastore(WS_NAME, DS_NAME);
-        assertEquals("Bad workspace name", read.getWorkspaceName(), WS_NAME);
-        assertEquals("Datastore should not be enabled", read.isEnabled(), false);
-        connParams = read.getConnectionParameters();
-        assertEquals("Bad URL", connParams.get("url"), LOCATION_2.toString());
-        assertEquals(connParams.get("charset"), "UTF-8");
-        assertEquals(connParams.get("create spatial index"), "false");
-        assertEquals(connParams.get("memory mapped buffer"), "true");
-        assertEquals(connParams.get("cache and reuse memory maps"), "false");
-    }
+    // Read again, check that all parameters have changed
+    read = reader.getDatastore(WS_NAME, DS_NAME);
+    assertEquals("Bad workspace name", read.getWorkspaceName(), WS_NAME);
+    assertEquals("Datastore should not be enabled", read.isEnabled(), false);
+    connParams = read.getConnectionParameters();
+    assertEquals("Bad URL", connParams.get("url"), LOCATION_2.toString());
+    assertEquals(connParams.get("charset"), "UTF-8");
+    assertEquals(connParams.get("create spatial index"), "false");
+    assertEquals(connParams.get("memory mapped buffer"), "true");
+    assertEquals(connParams.get("cache and reuse memory maps"), "false");
+  }
 }

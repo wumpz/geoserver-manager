@@ -26,7 +26,7 @@ package it.geosolutions.geoserver.rest.encoder.datastore;
 
 /**
  * Encoder for a {@value #TYPE} datastore.
- *  
+ *
  * @author Eric Grosso
  * @author ETj
  * @author Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
@@ -34,124 +34,124 @@ package it.geosolutions.geoserver.rest.encoder.datastore;
  */
 public class GSPostGISDatastoreEncoder extends GSAbstractDatastoreEncoder {
 
-	static final String TYPE = "PostGIS";
+  static final String TYPE = "PostGIS";
 
-	static final int DEFAULT_MIN_CONNECTIONS = 1;
-	static final int DEFAULT_MAX_CONNECTIONS = 10;
-	static final int DEFAULT_FETCH_SIZE = 1000;
-	static final int DEFAULT_CONNECTION_TIMEOUT = 20;
-	static final boolean DEFAULT_LOOSE_BBOX = true;
-	static final boolean DEFAULT_PREPARED_STATEMENTS = false;
-	static final int DEFAULT_MAX_OPEN_PREPARED_STATEMENTS = 50;
-	static final boolean DEFAULT_ESTIMATED_EXTENDS = false;
-	
-	/**
-	 * 
-	 * @param name DataStore name
-	 */
-    public GSPostGISDatastoreEncoder(String name) {
-        super(name);
+  static final int DEFAULT_MIN_CONNECTIONS = 1;
+  static final int DEFAULT_MAX_CONNECTIONS = 10;
+  static final int DEFAULT_FETCH_SIZE = 1000;
+  static final int DEFAULT_CONNECTION_TIMEOUT = 20;
+  static final boolean DEFAULT_LOOSE_BBOX = true;
+  static final boolean DEFAULT_PREPARED_STATEMENTS = false;
+  static final int DEFAULT_MAX_OPEN_PREPARED_STATEMENTS = 50;
+  static final boolean DEFAULT_ESTIMATED_EXTENDS = false;
 
-        // Set mandatory parameter
-        setType(TYPE);
-        setDatabaseType("postgis");
-        
-        // Set default values
-        setMinConnections(DEFAULT_MIN_CONNECTIONS);
-        setMaxConnections(DEFAULT_MAX_CONNECTIONS);
-        setFetchSize(DEFAULT_FETCH_SIZE);
-        setConnectionTimeout(DEFAULT_CONNECTION_TIMEOUT);
-        setLooseBBox(DEFAULT_LOOSE_BBOX);
-        setPreparedStatements(DEFAULT_PREPARED_STATEMENTS);
-        setMaxOpenPreparedStatements(DEFAULT_MAX_OPEN_PREPARED_STATEMENTS);
-        setEstimatedExtends(DEFAULT_ESTIMATED_EXTENDS);
-        
-    }
-    
-    public void setNamespace(String namespace) {
-        connectionParameters.set("namespace", namespace);
-    }
-    
-    public void setHost(String host) {
-        connectionParameters.set("host", host);
-    }
-    
-    public void setPort(int port) {
-        connectionParameters.set("port", Integer.toString(port));
-    }
-    
-    public void setDatabase(String database) {
-        connectionParameters.set("database", database);
-    }
+  /**
+   *
+   * @param name DataStore name
+   */
+  public GSPostGISDatastoreEncoder(String name) {
+    super(name);
 
-    public void setSchema(String schema) {
-        connectionParameters.set("schema", schema);
-    }
-    
-    public void setUser(String user) {
-        connectionParameters.set("user", user);
-    }
-    
-    public void setPassword(String password) {
-        connectionParameters.set("passwd", password);
-    }
+    // Set mandatory parameter
+    setType(TYPE);
+    setDatabaseType("postgis");
 
-    public void setDatabaseType(String dbtype) {
-        connectionParameters.set("dbtype", dbtype);
-    }
-    
-    public void setJndiReferenceName(String jndiReferenceName) {
-        connectionParameters.set("jndiReferenceName", jndiReferenceName);
-    }
-    
-    public void setExposePrimaryKeys(boolean exposePrimaryKeys) {
-    	connectionParameters.set("Expose primary keys", Boolean.toString(exposePrimaryKeys));
-    }
-    
-    public void setMaxConnections(int maxConnections) {
-    	connectionParameters.set("max connections", Integer.toString(maxConnections));
-    }
-    
-    public void setMinConnections(int minConnections) {
-    	connectionParameters.set("min connections", Integer.toString(minConnections));
-    }
-    
-    public void setFetchSize(int fetchSize) {
-    	connectionParameters.set("fetch size", Integer.toString(fetchSize));
-    }
-    
-    public void setConnectionTimeout(int seconds) {
-    	connectionParameters.set("Connection timeout", Integer.toString(seconds));
-    }
-    
-    public void setValidateConnections(boolean validateConnections) {
-    	connectionParameters.set("validate connections", Boolean.toString(validateConnections));
-    }
-    
-    public void setPrimaryKeyMetadataTable(String primaryKeyMetadataTable) {
-    	connectionParameters.set("Primary key metadata table", primaryKeyMetadataTable);
-    }
-    
-    public void setLooseBBox(boolean looseBBox) {
-    	connectionParameters.set("Loose bbox", Boolean.toString(looseBBox));
-    }
-    
-    public void setPreparedStatements(boolean preparedStatements) {
-    	connectionParameters.set("preparedStatements", Boolean.toString(preparedStatements));
-    }
-    
-    public void setMaxOpenPreparedStatements(int maxOpenPreparedStatements) {
-    	connectionParameters.set("Max open prepared statements", Integer.toString(maxOpenPreparedStatements));
-    }
-    
-    public void setEstimatedExtends(boolean estimatedExtends){
-    	connectionParameters.set("Estimated extends", Boolean.toString(estimatedExtends));
-    }
-    
-    /**
-     * @return {@value #TYPE}
-     */
-    protected String getValidType() {
-    	return TYPE;
-    }
+    // Set default values
+    setMinConnections(DEFAULT_MIN_CONNECTIONS);
+    setMaxConnections(DEFAULT_MAX_CONNECTIONS);
+    setFetchSize(DEFAULT_FETCH_SIZE);
+    setConnectionTimeout(DEFAULT_CONNECTION_TIMEOUT);
+    setLooseBBox(DEFAULT_LOOSE_BBOX);
+    setPreparedStatements(DEFAULT_PREPARED_STATEMENTS);
+    setMaxOpenPreparedStatements(DEFAULT_MAX_OPEN_PREPARED_STATEMENTS);
+    setEstimatedExtends(DEFAULT_ESTIMATED_EXTENDS);
+
+  }
+
+  public void setNamespace(String namespace) {
+    connectionParameters.set("namespace", namespace);
+  }
+
+  public void setHost(String host) {
+    connectionParameters.set("host", host);
+  }
+
+  public void setPort(int port) {
+    connectionParameters.set("port", Integer.toString(port));
+  }
+
+  public void setDatabase(String database) {
+    connectionParameters.set("database", database);
+  }
+
+  public void setSchema(String schema) {
+    connectionParameters.set("schema", schema);
+  }
+
+  public void setUser(String user) {
+    connectionParameters.set("user", user);
+  }
+
+  public void setPassword(String password) {
+    connectionParameters.set("passwd", password);
+  }
+
+  public void setDatabaseType(String dbtype) {
+    connectionParameters.set("dbtype", dbtype);
+  }
+
+  public void setJndiReferenceName(String jndiReferenceName) {
+    connectionParameters.set("jndiReferenceName", jndiReferenceName);
+  }
+
+  public void setExposePrimaryKeys(boolean exposePrimaryKeys) {
+    connectionParameters.set("Expose primary keys", Boolean.toString(exposePrimaryKeys));
+  }
+
+  public void setMaxConnections(int maxConnections) {
+    connectionParameters.set("max connections", Integer.toString(maxConnections));
+  }
+
+  public void setMinConnections(int minConnections) {
+    connectionParameters.set("min connections", Integer.toString(minConnections));
+  }
+
+  public void setFetchSize(int fetchSize) {
+    connectionParameters.set("fetch size", Integer.toString(fetchSize));
+  }
+
+  public void setConnectionTimeout(int seconds) {
+    connectionParameters.set("Connection timeout", Integer.toString(seconds));
+  }
+
+  public void setValidateConnections(boolean validateConnections) {
+    connectionParameters.set("validate connections", Boolean.toString(validateConnections));
+  }
+
+  public void setPrimaryKeyMetadataTable(String primaryKeyMetadataTable) {
+    connectionParameters.set("Primary key metadata table", primaryKeyMetadataTable);
+  }
+
+  public void setLooseBBox(boolean looseBBox) {
+    connectionParameters.set("Loose bbox", Boolean.toString(looseBBox));
+  }
+
+  public void setPreparedStatements(boolean preparedStatements) {
+    connectionParameters.set("preparedStatements", Boolean.toString(preparedStatements));
+  }
+
+  public void setMaxOpenPreparedStatements(int maxOpenPreparedStatements) {
+    connectionParameters.set("Max open prepared statements", Integer.toString(maxOpenPreparedStatements));
+  }
+
+  public void setEstimatedExtends(boolean estimatedExtends) {
+    connectionParameters.set("Estimated extends", Boolean.toString(estimatedExtends));
+  }
+
+  /**
+   * @return {@value #TYPE}
+   */
+  protected String getValidType() {
+    return TYPE;
+  }
 }

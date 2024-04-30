@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.publisher;
 
 import it.geosolutions.geoserver.rest.GeoserverRESTTest;
@@ -36,70 +35,76 @@ import static org.junit.Assert.*;
 import org.springframework.core.io.ClassPathResource;
 
 /**
- * Testcase for publishing layers on geoserver.
- * We need a running GeoServer to properly run the tests. 
- * If such geoserver instance cannot be contacted, tests will be skipped.
+ * Testcase for publishing layers on geoserver. We need a running GeoServer to properly run the tests. If such geoserver
+ * instance cannot be contacted, tests will be skipped.
  *
  * @author etj
  * @author Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
  */
 public class GeoserverRESTWorkspaceTest extends GeoserverRESTTest {
 
-    @Test
-    public void testWorkspaces() {
-        if (!enabled()) return;
-        deleteAll();
-
-        assertEquals(0, reader.getWorkspaces().size());
-
-        assertTrue(publisher.createWorkspace("WS1"));
-        assertTrue(publisher.createWorkspace("WS2"));
-        assertEquals(2, reader.getWorkspaces().size());
-
-        assertFalse(publisher.createWorkspace("WS2"));
-        assertEquals(2, reader.getWorkspaces().size());
+  @Test
+  public void testWorkspaces() {
+    if (!enabled()) {
+      return;
     }
-    
-    /**
-     * remove workspace and all of its contents
-     * @throws IOException
-     */
-    @Test
-    public void testWorkspaceRemoval() throws IOException {
-        if (!enabled()) return;
-        	deleteAll();
+    deleteAll();
 
-        String storeName = "testRESTStoreGeotiff";
-        String layerName = "resttestdem";
+    assertEquals(0, reader.getWorkspaces().size());
 
-        assertTrue(reader.getWorkspaces().isEmpty());
-        assertTrue(publisher.createWorkspace(DEFAULT_WS));
-        // test exists
-        assertTrue(reader.existsWorkspace(DEFAULT_WS));
+    assertTrue(publisher.createWorkspace("WS1"));
+    assertTrue(publisher.createWorkspace("WS2"));
+    assertEquals(2, reader.getWorkspaces().size());
 
-        File geotiff = new ClassPathResource("testdata/resttestdem.tif").getFile();
+    assertFalse(publisher.createWorkspace("WS2"));
+    assertEquals(2, reader.getWorkspaces().size());
+  }
 
-        // known state?
-        assertFalse("Cleanup failed", existsLayer(layerName));
-
-        // test insert
-        boolean pc = publisher.publishExternalGeoTIFF(DEFAULT_WS, storeName, geotiff, layerName, "EPSG:4326",ProjectionPolicy.REPROJECT_TO_DECLARED,"raster");
-        
-        // remove workspace and all of its contents
-        assertTrue(publisher.removeWorkspace(DEFAULT_WS,true));
-        // Test not exists
-        assertFalse(reader.existsWorkspace(DEFAULT_WS));
+  /**
+   * remove workspace and all of its contents
+   *
+   * @throws IOException
+   */
+  @Test
+  public void testWorkspaceRemoval() throws IOException {
+    if (!enabled()) {
+      return;
     }
-    
-    @Test
-    public void testWorkspaceSettings() {
-        if (!enabled()) return;
-        deleteAll();
+    deleteAll();
 
-        assertEquals(0, reader.getWorkspaces().size());
+    String storeName = "testRESTStoreGeotiff";
+    String layerName = "resttestdem";
 
-        assertTrue(publisher.createWorkspace("WS1"));
-        assertTrue(publisher.activateWorkspace("WS1", true));
-        assertEquals(1, reader.getWorkspaces().size());        
+    assertTrue(reader.getWorkspaces().isEmpty());
+    assertTrue(publisher.createWorkspace(DEFAULT_WS));
+    // test exists
+    assertTrue(reader.existsWorkspace(DEFAULT_WS));
+
+    File geotiff = new ClassPathResource("testdata/resttestdem.tif").getFile();
+
+    // known state?
+    assertFalse("Cleanup failed", existsLayer(layerName));
+
+    // test insert
+    boolean pc = publisher.publishExternalGeoTIFF(DEFAULT_WS, storeName, geotiff, layerName, "EPSG:4326", ProjectionPolicy.REPROJECT_TO_DECLARED, "raster");
+
+    // remove workspace and all of its contents
+    assertTrue(publisher.removeWorkspace(DEFAULT_WS, true));
+    // Test not exists
+    assertFalse(reader.existsWorkspace(DEFAULT_WS));
+  }
+
+  @Test
+  public void testWorkspaceSettings() {
+    if (!enabled()) {
+      return;
     }
+    deleteAll();
+
+    assertEquals(0, reader.getWorkspaces().size());
+
+    assertTrue(publisher.createWorkspace("WS1"));
+    assertTrue(publisher.activateWorkspace("WS1", true));
+    assertEquals(1, reader.getWorkspaces().size());
+  }
 }

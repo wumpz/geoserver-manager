@@ -37,77 +37,76 @@ import static org.junit.Assert.*;
  */
 public class RESTStyleTest {
 
-    public RESTStyleTest() {
-    }
+  public RESTStyleTest() {
+  }
 
-    @BeforeClass
-    public static void setUpClass() {
-    }
+  @BeforeClass
+  public static void setUpClass() {
+  }
 
-    @AfterClass
-    public static void tearDownClass() {
-    }
+  @AfterClass
+  public static void tearDownClass() {
+  }
 
-    @Before
-    public void setUp() {
-    }
+  @Before
+  public void setUp() {
+  }
 
-    @After
-    public void tearDown() {
-    }
+  @After
+  public void tearDown() {
+  }
 
-    private String TEST_XML_WITH_LEGEND = "<style>"
-            + "<name>test_sld_style</name>"
-            + "<format>sld</format>"
-            + "<languageVersion>"
-            + "<version>1.0.0</version>"
-            + "</languageVersion>"
-            + "<filename>test_sld_style.sld</filename>"
-            + "<legend>"
-            + "<width>500</width>"
-            + "<height>600</height>"
-            + "<format>image/jpeg;charset=UTF-8</format>"
-            + "<onlineResource>legende_test_sld_style.PNG</onlineResource>"
-            + "</legend>"
-            + "</style>";
+  private String TEST_XML_WITH_LEGEND = "<style>"
+          + "<name>test_sld_style</name>"
+          + "<format>sld</format>"
+          + "<languageVersion>"
+          + "<version>1.0.0</version>"
+          + "</languageVersion>"
+          + "<filename>test_sld_style.sld</filename>"
+          + "<legend>"
+          + "<width>500</width>"
+          + "<height>600</height>"
+          + "<format>image/jpeg;charset=UTF-8</format>"
+          + "<onlineResource>legende_test_sld_style.PNG</onlineResource>"
+          + "</legend>"
+          + "</style>";
 
-    
-    @Test
-    public void testReadLegendData() {
-        RESTStyle style = RESTStyle.build(TEST_XML_WITH_LEGEND);
-        
-        assertEquals("test_sld_style", style.getName());
-        
-        assertEquals("500", style.getLegendWidth());
-        assertEquals("600", style.getLegendHeight());
-        assertEquals("image/jpeg;charset=UTF-8", style.getLegendFormat());
-        assertEquals("legende_test_sld_style.PNG", style.getLegendOnlineResource());
-    }
-    
-    @Test
-    public void testReadLegendData2() {
-        RESTStyle style = RESTStyle.build(TEST_XML_WITH_LEGEND);
-        
-        assertTrue(style.hasLegend());
-        
-        style.removeLegend();
-        
-        System.out.println(style);
-        
-        assertFalse(style.hasLegend());
-        
-    }
-    
-    @Test
-    public void testBuildLegendData() {
-        RESTStyle style = RESTStyle.build(TEST_XML_WITH_LEGEND);
-        style.removeLegend();
-        
-        style.addLegend(200, 300, "image/png;charset=UTF-8", "test.png");
-        
-        assertEquals("200", style.getLegendWidth());
-        assertEquals("300", style.getLegendHeight());
-        assertEquals("image/png;charset=UTF-8", style.getLegendFormat());
-        assertEquals("test.png", style.getLegendOnlineResource());
-    }
+  @Test
+  public void testReadLegendData() {
+    RESTStyle style = RESTStyle.build(TEST_XML_WITH_LEGEND);
+
+    assertEquals("test_sld_style", style.getName());
+
+    assertEquals("500", style.getLegendWidth());
+    assertEquals("600", style.getLegendHeight());
+    assertEquals("image/jpeg;charset=UTF-8", style.getLegendFormat());
+    assertEquals("legende_test_sld_style.PNG", style.getLegendOnlineResource());
+  }
+
+  @Test
+  public void testReadLegendData2() {
+    RESTStyle style = RESTStyle.build(TEST_XML_WITH_LEGEND);
+
+    assertTrue(style.hasLegend());
+
+    style.removeLegend();
+
+    System.out.println(style);
+
+    assertFalse(style.hasLegend());
+
+  }
+
+  @Test
+  public void testBuildLegendData() {
+    RESTStyle style = RESTStyle.build(TEST_XML_WITH_LEGEND);
+    style.removeLegend();
+
+    style.addLegend(200, 300, "image/png;charset=UTF-8", "test.png");
+
+    assertEquals("200", style.getLegendWidth());
+    assertEquals("300", style.getLegendHeight());
+    assertEquals("image/png;charset=UTF-8", style.getLegendFormat());
+    assertEquals("test.png", style.getLegendOnlineResource());
+  }
 }

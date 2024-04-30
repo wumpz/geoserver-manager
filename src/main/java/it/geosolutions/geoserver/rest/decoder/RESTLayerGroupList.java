@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.decoder;
 
 import it.geosolutions.geoserver.rest.decoder.utils.JDOMBuilder;
@@ -33,38 +32,40 @@ import org.jdom.Element;
 /**
  * Parses list of summary data about LayerGroups.
  *
- * <P>This is the XML REST representation:
+ * <P>
+ * This is the XML REST representation:
  * <PRE>
-  {@code
-<layerGroups>
-      <layerGroup>
-        <name>tiger-ny</name>
-        <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/layergroups/tiger-ny.xml" type="application/xml"/>
-      </layerGroup>
-      <layerGroup>
-        <name>spearfish</name>
-        <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/layergroups/spearfish.xml" type="application/xml"/>
-      </layerGroup>
-      <layerGroup>
-        <name>tasmania</name>
-        <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/layergroups/tasmania.xml" type="application/xml"/>
-      </layerGroup>
-</layerGroups>
-}</PRE>
+ * {@code
+ * <layerGroups>
+ * <layerGroup>
+ * <name>tiger-ny</name>
+ * <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/layergroups/tiger-ny.xml" type="application/xml"/>
+ * </layerGroup>
+ * <layerGroup>
+ * <name>spearfish</name>
+ * <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/layergroups/spearfish.xml" type="application/xml"/>
+ * </layerGroup>
+ * <layerGroup>
+ * <name>tasmania</name>
+ * <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/layergroups/tasmania.xml" type="application/xml"/>
+ * </layerGroup>
+ * </layerGroups>
+ * }</PRE>
  *
  * @author ETj (etj at geo-solutions.it)
  */
 public class RESTLayerGroupList extends RESTAbstractList<NameLinkElem> {
 
-    public static RESTLayerGroupList build(String response) {
-        Element elem = JDOMBuilder.buildElement(response);
-        return elem == null? new RESTLayerGroupList() : new RESTLayerGroupList(elem);
-	}
+  public static RESTLayerGroupList build(String response) {
+    Element elem = JDOMBuilder.buildElement(response);
+    return elem == null ? new RESTLayerGroupList() : new RESTLayerGroupList(elem);
+  }
 
-    protected RESTLayerGroupList(Element list) {
-        super(list);
-    }
-    
-    protected RESTLayerGroupList() {}
-    
+  protected RESTLayerGroupList(Element list) {
+    super(list);
+  }
+
+  protected RESTLayerGroupList() {
+  }
+
 }

@@ -24,50 +24,50 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 /**
- * 
+ *
  * @author Henry Rotzoll (henry.rotzoll@dlr.de)
- * 
+ *
  */
 public class GSCoverageDimensionEncoderTest {
 
-    @Test
-    public void coverageDimensionTest() {
-        GSCoverageDimensionEncoder encoder = new GSCoverageDimensionEncoder("GRAY_INDEX",
-                "GridSampleDimension[-Infinity,Infinity]", "-inf", "inf", "dobson units",
-                "REAL_32BITS");
+  @Test
+  public void coverageDimensionTest() {
+    GSCoverageDimensionEncoder encoder = new GSCoverageDimensionEncoder("GRAY_INDEX",
+            "GridSampleDimension[-Infinity,Infinity]", "-inf", "inf", "dobson units",
+            "REAL_32BITS");
 
-        Assert.assertEquals("GRAY_INDEX", encoder.getName());
-        Assert.assertEquals("GridSampleDimension[-Infinity,Infinity]", encoder.getDescription());
-        Assert.assertEquals("-inf", encoder.getRangeMin());
-        Assert.assertEquals("inf", encoder.getRangeMax());
-        Assert.assertEquals("dobson units", encoder.getUnit());
-        Assert.assertEquals("REAL_32BITS", encoder.getDimensionTypeName());
+    Assert.assertEquals("GRAY_INDEX", encoder.getName());
+    Assert.assertEquals("GridSampleDimension[-Infinity,Infinity]", encoder.getDescription());
+    Assert.assertEquals("-inf", encoder.getRangeMin());
+    Assert.assertEquals("inf", encoder.getRangeMax());
+    Assert.assertEquals("dobson units", encoder.getUnit());
+    Assert.assertEquals("REAL_32BITS", encoder.getDimensionTypeName());
 
-        Assert.assertTrue(encoder.delName());
-        Assert.assertTrue(encoder.delDescription());
-        Assert.assertTrue(encoder.delRange());
-        Assert.assertTrue(encoder.delUnit());
-        Assert.assertTrue(encoder.delDimensionType());
+    Assert.assertTrue(encoder.delName());
+    Assert.assertTrue(encoder.delDescription());
+    Assert.assertTrue(encoder.delRange());
+    Assert.assertTrue(encoder.delUnit());
+    Assert.assertTrue(encoder.delDimensionType());
 
-        Assert.assertNull(encoder.getName());
-        Assert.assertNull(encoder.getDescription());
-        Assert.assertNull(encoder.getRangeMin());
-        Assert.assertNull(encoder.getRangeMax());
-        Assert.assertNull(encoder.getUnit());
-        Assert.assertNull(encoder.getDimensionTypeName());
+    Assert.assertNull(encoder.getName());
+    Assert.assertNull(encoder.getDescription());
+    Assert.assertNull(encoder.getRangeMin());
+    Assert.assertNull(encoder.getRangeMax());
+    Assert.assertNull(encoder.getUnit());
+    Assert.assertNull(encoder.getDimensionTypeName());
 
-        encoder.setName("GRAY_INDEX");
-        encoder.setDescription("GridSampleDimension[-Infinity,Infinity]");
-        encoder.setRange("-inf", "inf");
-        encoder.setUnit("dobson units");
-        encoder.setDimensionType("REAL_32BITS");
+    encoder.setName("GRAY_INDEX");
+    encoder.setDescription("GridSampleDimension[-Infinity,Infinity]");
+    encoder.setRange("-inf", "inf");
+    encoder.setUnit("dobson units");
+    encoder.setDimensionType("REAL_32BITS");
 
-        Assert.assertEquals("GRAY_INDEX", encoder.getName());
-        Assert.assertEquals("GridSampleDimension[-Infinity,Infinity]", encoder.getDescription());
-        Assert.assertEquals("-inf", encoder.getRangeMin());
-        Assert.assertEquals("inf", encoder.getRangeMax());
-        Assert.assertEquals("dobson units", encoder.getUnit());
-        Assert.assertEquals("REAL_32BITS", encoder.getDimensionTypeName());
-    }
-    
+    Assert.assertEquals("GRAY_INDEX", encoder.getName());
+    Assert.assertEquals("GridSampleDimension[-Infinity,Infinity]", encoder.getDescription());
+    Assert.assertEquals("-inf", encoder.getRangeMin());
+    Assert.assertEquals("inf", encoder.getRangeMax());
+    Assert.assertEquals("dobson units", encoder.getUnit());
+    Assert.assertEquals("REAL_32BITS", encoder.getDimensionTypeName());
+  }
+
 }
