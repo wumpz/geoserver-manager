@@ -38,46 +38,46 @@ import org.springframework.core.io.ClassPathResource;
  */
 public class GeoserverRESTPublishShpCollectionTest extends GeoserverRESTTest {
 
-    final String workspace = DEFAULT_WS;
-    final String storeName = "testshpcollection";
-    
-    @Test
-    public void testLocalZip() throws Exception {
-        if (!enabled()) {
-            return;
-        }
-    	
-        URI location = new ClassPathResource("testdata/multipleshp.zip").getFile().toURI();
-        test(location);
+  final String workspace = DEFAULT_WS;
+  final String storeName = "testshpcollection";
+
+  @Test
+  public void testLocalZip() throws Exception {
+    if (!enabled()) {
+      return;
     }
-    
-    @Test
-    public void testExternalDir() throws Exception {
-        if (!enabled()) {
-            return;
-        }
-    	
-        URI location = new ClassPathResource("testdata/multipleshapefiles").getFile().toURI();
-        test(location);
+
+    URI location = new ClassPathResource("testdata/multipleshp.zip").getFile().toURI();
+    test(location);
+  }
+
+  @Test
+  public void testExternalDir() throws Exception {
+    if (!enabled()) {
+      return;
     }
-    
-    void test(URI location) throws Exception {
-    	
-    	// Delete all resources except styles
-    	deleteAllWorkspacesRecursively(); 
-        
-        // Create workspace
-        assertTrue(publisher.createWorkspace(workspace));
-        
-        // Publish shp collection
-        assertTrue(publisher.publishShpCollection(workspace, storeName, location));
-        
-        String storeType = reader.getDatastore(workspace, storeName).getStoreType();
-        assertEquals(storeType, "Shapefile");
-        
-        // Test published layer names
-        List<String> layers = reader.getLayers().getNames();
-        assertTrue(layers.contains(DEFAULT_WS + ":cities"));
-        assertTrue(layers.contains(DEFAULT_WS + ":boundaries"));
-    }
+
+    URI location = new ClassPathResource("testdata/multipleshapefiles").getFile().toURI();
+    test(location);
+  }
+
+  void test(URI location) throws Exception {
+
+    // Delete all resources except styles
+    deleteAllWorkspacesRecursively();
+
+    // Create workspace
+    assertTrue(publisher.createWorkspace(workspace));
+
+    // Publish shp collection
+    assertTrue(publisher.publishShpCollection(workspace, storeName, location));
+
+    String storeType = reader.getDatastore(workspace, storeName).getStoreType();
+    assertEquals(storeType, "Shapefile");
+
+    // Test published layer names
+    List<String> layers = reader.getLayers().getNames();
+    assertTrue(layers.contains(DEFAULT_WS + ":cities"));
+    assertTrue(layers.contains(DEFAULT_WS + ":boundaries"));
+  }
 }

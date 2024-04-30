@@ -34,73 +34,77 @@ import static org.junit.Assert.*;
 
 /**
  * Testcase for namespace management.
- * 
- * We need a running GeoServer to properly run the tests. 
- * If such geoserver instance cannot be contacted, tests will be skipped.
+ *
+ * We need a running GeoServer to properly run the tests. If such geoserver instance cannot be contacted, tests will be
+ * skipped.
  *
  * @author Oscar Fonts
  */
 public class GeoserverRESTNamespaceTest extends GeoserverRESTTest {
-	
-	/**
-	 * Test Namespace create
-	 */
-	@Test
-	public void testCreate() {
-        if (!enabled()) return;
 
-        deleteAll();
-        assertEquals(0, reader.getNamespaces().size());
-        assertEquals(0, reader.getWorkspaces().size());	
-        
-        // Test Namespace Creation
-        assertTrue(publisher.createNamespace("NS1", URI.create("http://a.example.com")));
-        assertTrue(publisher.createNamespace("NS2", URI.create("http://b.example.com")));
-        assertEquals(2, reader.getNamespaces().size());
-        
-        // Test Namespace exists
-        assertTrue(reader.existsNamespace("NS1"));
-        assertTrue(reader.existsNamespace("NS2"));
-        
-        // When creating a namespace, its associated workspace will be automatically created:
-        assertEquals(2, reader.getWorkspaces().size());
+  /**
+   * Test Namespace create
+   */
+  @Test
+  public void testCreate() {
+    if (!enabled()) {
+      return;
+    }
 
-        // Existing prefix / existing URI
-        assertFalse(publisher.createNamespace("NS1", URI.create("http://c.example.com")));
-        assertFalse(publisher.createNamespace("NS3", URI.create("http://a.example.com")));
-        assertEquals(2, reader.getWorkspaces().size());
-	}
-	
-	/**
-	 * Test Namespace read, update and delete
-	 */
-	@Test
-	public void testReadUpdateDelete() {
-        if (!enabled()) return;
+    deleteAll();
+    assertEquals(0, reader.getNamespaces().size());
+    assertEquals(0, reader.getWorkspaces().size());
 
-        deleteAll();
-        assertTrue(publisher.createNamespace("NS1", URI.create("http://a.example.com")));
-        
-        // Test read namespace list
-		String nsName = reader.getNamespaceNames().get(0);
-		assertEquals(nsName, "NS1");
-		
-		// Read a namespace
-		RESTNamespace ns = reader.getNamespace(nsName);
-		assertEquals(ns.getPrefix(), "NS1");
-		assertEquals(ns.getURI(), URI.create("http://a.example.com"));
-		
-		// Update namespaces (change URI)
-		assertTrue(publisher.updateNamespace("NS1", URI.create("http://b.example.com")));
-		assertFalse(publisher.updateNamespace("NS2", URI.create("http://a.example.com"))); // Nonexistent
-		
-		// Delete namespaces
-		assertTrue(publisher.removeNamespace("NS1", true));
-		assertFalse(publisher.removeNamespace("NS3", true)); // Nonexistent
-	
-		assertEquals(0, reader.getNamespaces().size());
-		assertEquals(0, reader.getWorkspaces().size());
-		// Test non existens
-		assertFalse(reader.existsNamespace("NS1"));
-	}
+    // Test Namespace Creation
+    assertTrue(publisher.createNamespace("NS1", URI.create("http://a.example.com")));
+    assertTrue(publisher.createNamespace("NS2", URI.create("http://b.example.com")));
+    assertEquals(2, reader.getNamespaces().size());
+
+    // Test Namespace exists
+    assertTrue(reader.existsNamespace("NS1"));
+    assertTrue(reader.existsNamespace("NS2"));
+
+    // When creating a namespace, its associated workspace will be automatically created:
+    assertEquals(2, reader.getWorkspaces().size());
+
+    // Existing prefix / existing URI
+    assertFalse(publisher.createNamespace("NS1", URI.create("http://c.example.com")));
+    assertFalse(publisher.createNamespace("NS3", URI.create("http://a.example.com")));
+    assertEquals(2, reader.getWorkspaces().size());
+  }
+
+  /**
+   * Test Namespace read, update and delete
+   */
+  @Test
+  public void testReadUpdateDelete() {
+    if (!enabled()) {
+      return;
+    }
+
+    deleteAll();
+    assertTrue(publisher.createNamespace("NS1", URI.create("http://a.example.com")));
+
+    // Test read namespace list
+    String nsName = reader.getNamespaceNames().get(0);
+    assertEquals(nsName, "NS1");
+
+    // Read a namespace
+    RESTNamespace ns = reader.getNamespace(nsName);
+    assertEquals(ns.getPrefix(), "NS1");
+    assertEquals(ns.getURI(), URI.create("http://a.example.com"));
+
+    // Update namespaces (change URI)
+    assertTrue(publisher.updateNamespace("NS1", URI.create("http://b.example.com")));
+    assertFalse(publisher.updateNamespace("NS2", URI.create("http://a.example.com"))); // Nonexistent
+
+    // Delete namespaces
+    assertTrue(publisher.removeNamespace("NS1", true));
+    assertFalse(publisher.removeNamespace("NS3", true)); // Nonexistent
+
+    assertEquals(0, reader.getNamespaces().size());
+    assertEquals(0, reader.getWorkspaces().size());
+    // Test non existens
+    assertFalse(reader.existsNamespace("NS1"));
+  }
 }

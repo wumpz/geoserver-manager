@@ -21,17 +21,16 @@
 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
-*/
+ */
 package it.geosolutions.geoserver.rest.encoder.authorityurl;
 
 /**
  * Enumeration of layer authorityURL members
- * 
- * @author Emmanuel Blondel - emmanuel.blondel1@gmail.com |
- *         emmanuel.blondel@fao.org
- * 
+ *
+ * @author Emmanuel Blondel - emmanuel.blondel1@gmail.com | emmanuel.blondel@fao.org
+ *
  */
 public enum AuthorityURLInfo {
 
-	name, href;
+  name, href;
 }

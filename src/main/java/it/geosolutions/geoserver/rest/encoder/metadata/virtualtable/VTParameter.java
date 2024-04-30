@@ -26,12 +26,11 @@ package it.geosolutions.geoserver.rest.encoder.metadata.virtualtable;
 
 /**
  * Enumeration of SQL View featureType virtual table parameter members
- * 
- * @author Emmanuel Blondel - emmanuel.blondel1@gmail.com |
- *         emmanuel.blondel@fao.org
- * 
+ *
+ * @author Emmanuel Blondel - emmanuel.blondel1@gmail.com | emmanuel.blondel@fao.org
+ *
  */
 public enum VTParameter {
-	name, defaultValue, regexpValidator
+  name, defaultValue, regexpValidator
 
 }

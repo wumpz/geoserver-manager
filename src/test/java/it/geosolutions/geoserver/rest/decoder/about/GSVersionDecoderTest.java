@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.decoder.about;
 
 import org.junit.Test;
@@ -34,25 +33,25 @@ import static org.junit.Assert.*;
  */
 public class GSVersionDecoderTest {
 
-    @Test
-    public void testGetGeoServer() {
+  @Test
+  public void testGetGeoServer() {
 
-        assertEquals(GSVersionDecoder.VERSION.v22, GSVersionDecoder.VERSION.getVersion("2.2"));
-        assertEquals(GSVersionDecoder.VERSION.v22, GSVersionDecoder.VERSION.getVersion("2.2-SNAPSHOT"));
+    assertEquals(GSVersionDecoder.VERSION.v22, GSVersionDecoder.VERSION.getVersion("2.2"));
+    assertEquals(GSVersionDecoder.VERSION.v22, GSVersionDecoder.VERSION.getVersion("2.2-SNAPSHOT"));
 
-        assertEquals(GSVersionDecoder.VERSION.v26, GSVersionDecoder.VERSION.getVersion("2.6"));
-        assertEquals(GSVersionDecoder.VERSION.v26, GSVersionDecoder.VERSION.getVersion("2.6-SNAPSHOT"));
-        assertEquals(GSVersionDecoder.VERSION.v26, GSVersionDecoder.VERSION.getVersion("2.6-ENTERPRISE"));
-        assertEquals(GSVersionDecoder.VERSION.v26, GSVersionDecoder.VERSION.getVersion("2.6-ENTERPRISE-SNAPSHOT"));
+    assertEquals(GSVersionDecoder.VERSION.v26, GSVersionDecoder.VERSION.getVersion("2.6"));
+    assertEquals(GSVersionDecoder.VERSION.v26, GSVersionDecoder.VERSION.getVersion("2.6-SNAPSHOT"));
+    assertEquals(GSVersionDecoder.VERSION.v26, GSVersionDecoder.VERSION.getVersion("2.6-ENTERPRISE"));
+    assertEquals(GSVersionDecoder.VERSION.v26, GSVersionDecoder.VERSION.getVersion("2.6-ENTERPRISE-SNAPSHOT"));
 
-        assertEquals(GSVersionDecoder.VERSION.ABOVE, GSVersionDecoder.VERSION.getVersion("2.21"));
-        assertEquals(GSVersionDecoder.VERSION.ABOVE, GSVersionDecoder.VERSION.getVersion("2.21-SNAPSHOT"));
-        assertEquals(GSVersionDecoder.VERSION.ABOVE, GSVersionDecoder.VERSION.getVersion("2.42"));
-        assertEquals(GSVersionDecoder.VERSION.ABOVE, GSVersionDecoder.VERSION.getVersion("2.42-SNAPSHOT"));
+    assertEquals(GSVersionDecoder.VERSION.ABOVE, GSVersionDecoder.VERSION.getVersion("2.21"));
+    assertEquals(GSVersionDecoder.VERSION.ABOVE, GSVersionDecoder.VERSION.getVersion("2.21-SNAPSHOT"));
+    assertEquals(GSVersionDecoder.VERSION.ABOVE, GSVersionDecoder.VERSION.getVersion("2.42"));
+    assertEquals(GSVersionDecoder.VERSION.ABOVE, GSVersionDecoder.VERSION.getVersion("2.42-SNAPSHOT"));
 
-        assertEquals(GSVersionDecoder.VERSION.UNRECOGNIZED, GSVersionDecoder.VERSION.getVersion("3.0"));
-        assertEquals(GSVersionDecoder.VERSION.UNRECOGNIZED, GSVersionDecoder.VERSION.getVersion("anystring"));
-        assertEquals(GSVersionDecoder.VERSION.UNRECOGNIZED, GSVersionDecoder.VERSION.getVersion(null));
-    }
+    assertEquals(GSVersionDecoder.VERSION.UNRECOGNIZED, GSVersionDecoder.VERSION.getVersion("3.0"));
+    assertEquals(GSVersionDecoder.VERSION.UNRECOGNIZED, GSVersionDecoder.VERSION.getVersion("anystring"));
+    assertEquals(GSVersionDecoder.VERSION.UNRECOGNIZED, GSVersionDecoder.VERSION.getVersion(null));
+  }
 
 }

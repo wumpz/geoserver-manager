@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.decoder;
 
 import java.util.ArrayList;
@@ -42,148 +41,155 @@ import org.jdom.Namespace;
 /**
  * Parse <TT>Layer</TT>s returned as XML REST objects.
  *
- * <P>This is the XML REST representation:
+ * <P>
+ * This is the XML REST representation:
  * <PRE>
  * {@code
-<layer>
-    <name>tasmania_cities</name>
-    <path>/</path>
-    <type>VECTOR</type>
-    <defaultStyle>
-        <name>capitals</name>
-        <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/styles/capitals.xml" type="application/xml"/>
-    </defaultStyle>
-    <styles class="linked-hash-set">
-    	<style>
-      		<name>green</name>
-      		<atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/styles/green.xml" type="application/xml"/>
-    	</style>
-  	</styles>
-    <resource class="featureType">
-        <name>tasmania_cities</name>
-        <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/workspaces/topp/datastores/taz_shapes/featuretypes/tasmania_cities.xml" type="application/xml"/>
-    </resource>
-    <enabled>true</enabled>
-    <queryable>true</queryable>
-    <advertised>true</advertised>
-    <attribution>
-        <logoWidth>0</logoWidth>
-        <logoHeight>0</logoHeight>
-    </attribution>
-    <authorityURLs>
-		<AuthorityURL>
-			<name>authority1</name>
-			<href>http://www.authority1.org</href>
-		</AuthorityURL>
-	</authorityURLs>
-	<identifiers>
-		<Identifier>
-			<authority>authority1</authority>
-			<identifier>identifier1</identifier>
-		</Identifier>
-	</identifiers>
-</layer>
+ * <layer>
+ * <name>tasmania_cities</name>
+ * <path>/</path>
+ * <type>VECTOR</type>
+ * <defaultStyle>
+ * <name>capitals</name>
+ * <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/styles/capitals.xml" type="application/xml"/>
+ * </defaultStyle>
+ * <styles class="linked-hash-set">
+ * <style>
+ * <name>green</name>
+ * <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/styles/green.xml" type="application/xml"/>
+ * </style>
+ * </styles>
+ * <resource class="featureType">
+ * <name>tasmania_cities</name>
+ * <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/workspaces/topp/datastores/taz_shapes/featuretypes/tasmania_cities.xml" type="application/xml"/>
+ * </resource>
+ * <enabled>true</enabled>
+ * <queryable>true</queryable>
+ * <advertised>true</advertised>
+ * <attribution>
+ * <logoWidth>0</logoWidth>
+ * <logoHeight>0</logoHeight>
+ * </attribution>
+ * <authorityURLs>
+ * <AuthorityURL>
+ * <name>authority1</name>
+ * <href>http://www.authority1.org</href>
+ * </AuthorityURL>
+ * </authorityURLs>
+ * <identifiers>
+ * <Identifier>
+ * <authority>authority1</authority>
+ * <identifier>identifier1</identifier>
+ * </Identifier>
+ * </identifiers>
+ * </layer>
  * }</PRE>
+ *
  * @author etj
  * @author eblondel
  */
 public class RESTLayer {
-	protected final Element layerElem;
 
-	public enum Type {
-		VECTOR("VECTOR"),
-		RASTER("RASTER"),
-		UNKNOWN(null);
+  protected final Element layerElem;
 
-		private final String restName;
+  public enum Type {
+    VECTOR("VECTOR"),
+    RASTER("RASTER"),
+    UNKNOWN(null);
 
-		private Type(String restName) {
-			this.restName = restName;
-		}
+    private final String restName;
 
-		public static Type get(String restName) {
-			for (Type type : values()) {
-				if(type == UNKNOWN)
-					continue;
-				if(type.restName.equals(restName))
-					return type;
-			}
-			return UNKNOWN;
-		}
-	};
+    private Type(String restName) {
+      this.restName = restName;
+    }
 
-    public static RESTLayer build(String response) {
-        if(response == null)
-            return null;
-        
-        Element pb = JDOMBuilder.buildElement(response);
-        if(pb != null)
-            return new RESTLayer(pb);
-        else
-            return null;
-	}
+    public static Type get(String restName) {
+      for (Type type : values()) {
+        if (type == UNKNOWN) {
+          continue;
+        }
+        if (type.restName.equals(restName)) {
+          return type;
+        }
+      }
+      return UNKNOWN;
+    }
+  };
 
-	public RESTLayer(Element layerElem) {
-		this.layerElem = layerElem;
-	}
+  public static RESTLayer build(String response) {
+    if (response == null) {
+      return null;
+    }
 
-	public boolean getEnabled(){
-		return Boolean.parseBoolean(layerElem.getChildText("enabled"));
-	}
-	
-	public boolean getQueryable(){
-		return Boolean.parseBoolean(layerElem.getChildText("queryable"));
-	}
-	
-	public boolean getAdvertised(){
-		return Boolean.parseBoolean(layerElem.getChildText("advertised"));
-	}
-	
-	public String getName() {
-		return layerElem.getChildText("name");
-	}
+    Element pb = JDOMBuilder.buildElement(response);
+    if (pb != null) {
+      return new RESTLayer(pb);
+    } else {
+      return null;
+    }
+  }
 
-	public String getTypeString() {
-		return layerElem.getChildText("type");
-	}
+  public RESTLayer(Element layerElem) {
+    this.layerElem = layerElem;
+  }
 
-	public Type getType() {
-		return Type.get(getTypeString());
-	}
+  public boolean getEnabled() {
+    return Boolean.parseBoolean(layerElem.getChildText("enabled"));
+  }
 
-	public String getDefaultStyle() {
-		Element defaultStyle = layerElem.getChild("defaultStyle");
-		return defaultStyle == null? null : defaultStyle.getChildText("name");
-  	}
-	
-	public RESTStyleList getStyles() {
-		RESTStyleList styleList = null;
-		final Element stylesRoot = layerElem.getChild("styles");
-		if (stylesRoot != null) {
-			styleList = new RESTStyleList(stylesRoot);
-		}
-		return styleList;
-	}
+  public boolean getQueryable() {
+    return Boolean.parseBoolean(layerElem.getChildText("queryable"));
+  }
 
-	public String getDefaultStyleWorkspace() {
-		Element defaultStyle = layerElem.getChild("defaultStyle");
-		return defaultStyle == null? null : defaultStyle.getChildText("workspace");
-  	}
+  public boolean getAdvertised() {
+    return Boolean.parseBoolean(layerElem.getChildText("advertised"));
+  }
 
-	public String getTitle() {
-		Element resource = layerElem.getChild("resource");
-		return resource.getChildText("title");
-	}
+  public String getName() {
+    return layerElem.getChildText("name");
+  }
 
-	public String getAbstract() {
-		Element resource = layerElem.getChild("resource");
-		return resource.getChildText("abstract");
-	}
+  public String getTypeString() {
+    return layerElem.getChildText("type");
+  }
 
-	public String getNameSpace() {
-		Element resource = layerElem.getChild("resource");
-		return resource.getChild("namespace").getChildText("name");
-	}
+  public Type getType() {
+    return Type.get(getTypeString());
+  }
+
+  public String getDefaultStyle() {
+    Element defaultStyle = layerElem.getChild("defaultStyle");
+    return defaultStyle == null ? null : defaultStyle.getChildText("name");
+  }
+
+  public RESTStyleList getStyles() {
+    RESTStyleList styleList = null;
+    final Element stylesRoot = layerElem.getChild("styles");
+    if (stylesRoot != null) {
+      styleList = new RESTStyleList(stylesRoot);
+    }
+    return styleList;
+  }
+
+  public String getDefaultStyleWorkspace() {
+    Element defaultStyle = layerElem.getChild("defaultStyle");
+    return defaultStyle == null ? null : defaultStyle.getChildText("workspace");
+  }
+
+  public String getTitle() {
+    Element resource = layerElem.getChild("resource");
+    return resource.getChildText("title");
+  }
+
+  public String getAbstract() {
+    Element resource = layerElem.getChild("resource");
+    return resource.getChildText("abstract");
+  }
+
+  public String getNameSpace() {
+    Element resource = layerElem.getChild("resource");
+    return resource.getChild("namespace").getChildText("name");
+  }
 
 //	public String getStoreName() {
 //		Element resource = layerElem.getChild("resource");
@@ -194,83 +200,79 @@ public class RESTLayer {
 //		Element resource = layerElem.getChild("resource");
 //		return resource.getChild("store").getAttributeValue("class");
 //	}
-
 //	public String getCRS() {
 //		Element resource = layerElem.getChild("resource");
 //		Element elBBox = resource.getChild("latLonBoundingBox");
 //		return elBBox.getChildText("crs");
 //	}
+  /**
+   * Get the URL to retrieve the featuretype.
+   * <PRE>{@code
+   * <resource class="featureType">
+   * <name>tasmania_cities</name>
+   * <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/workspaces/topp/datastores/taz_shapes/featuretypes/tasmania_cities.xml" type="application/xml"/>
+   * </resource>
+   * }</CODE>
+   */
+  public String getResourceUrl() {
+    Element resource = layerElem.getChild("resource");
+    Element atom = resource.getChild("link", Namespace.getNamespace("atom", "http://www.w3.org/2005/Atom"));
+    return atom.getAttributeValue("href");
+  }
 
-    /**
-     * Get the URL to retrieve the featuretype.
-     * <PRE>{@code
-        <resource class="featureType">
-        <name>tasmania_cities</name>
-        <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/workspaces/topp/datastores/taz_shapes/featuretypes/tasmania_cities.xml" type="application/xml"/>
-    </resource>
-     * }</CODE>
-     */
-    public String getResourceUrl() {
-	Element resource = layerElem.getChild("resource");
-        Element atom = resource.getChild("link", Namespace.getNamespace("atom", "http://www.w3.org/2005/Atom"));
-        return atom.getAttributeValue("href");
+  /**
+   * Decodes the list of AuthorityURLInfo from the GeoServer Layer
+   *
+   * @return the list of GSAuthorityURLInfoEncoder
+   */
+  public List<GSAuthorityURLInfoEncoder> getEncodedAuthorityURLInfoList() {
+    List<GSAuthorityURLInfoEncoder> authorityURLList = null;
+
+    final Element authorityURLsRoot = layerElem.getChild("authorityURLs");
+    if (authorityURLsRoot != null) {
+      final List<Element> authorityURLs = authorityURLsRoot.getChildren();
+      if (authorityURLs != null) {
+        authorityURLList = new ArrayList<>(
+                authorityURLs.size());
+        for (Element authorityURL : authorityURLs) {
+          final GSAuthorityURLInfoEncoder authEnc = new GSAuthorityURLInfoEncoder();
+          authEnc.setName(authorityURL
+                  .getChildText(AuthorityURLInfo.name.name()));
+          authEnc.setHref(authorityURL
+                  .getChildText(AuthorityURLInfo.href.name()));
+          authorityURLList.add(authEnc);
+        }
+      }
     }
-    
-    
-	/**
-	 * Decodes the list of AuthorityURLInfo from the GeoServer Layer
-	 * 
-	 * @return the list of GSAuthorityURLInfoEncoder
-	 */
-	public List<GSAuthorityURLInfoEncoder> getEncodedAuthorityURLInfoList() {
-		List<GSAuthorityURLInfoEncoder> authorityURLList = null;
+    return authorityURLList;
+  }
 
-		final Element authorityURLsRoot = layerElem.getChild("authorityURLs");
-		if (authorityURLsRoot != null) {
-			final List<Element> authorityURLs = authorityURLsRoot.getChildren();
-			if (authorityURLs != null) {
-				authorityURLList = new ArrayList<GSAuthorityURLInfoEncoder>(
-						authorityURLs.size());
-				for (Element authorityURL : authorityURLs) {
-					final GSAuthorityURLInfoEncoder authEnc = new GSAuthorityURLInfoEncoder();
-					authEnc.setName(authorityURL
-							.getChildText(AuthorityURLInfo.name.name()));
-					authEnc.setHref(authorityURL
-							.getChildText(AuthorityURLInfo.href.name()));
-					authorityURLList.add(authEnc);
-				}
-			}
-		}
-		return authorityURLList;
-	}
+  /**
+   * Decodes the list of IdentifierInfo from the GeoServer Layer
+   *
+   * @return the list of IdentifierInfoEncoder
+   */
+  public List<GSIdentifierInfoEncoder> getEncodedIdentifierInfoList() {
+    List<GSIdentifierInfoEncoder> idList = null;
 
-	/**
-	 * Decodes the list of IdentifierInfo from the GeoServer Layer
-	 * 
-	 * @return the list of IdentifierInfoEncoder
-	 */
-	public List<GSIdentifierInfoEncoder> getEncodedIdentifierInfoList() {
-		List<GSIdentifierInfoEncoder> idList = null;
-
-		final Element idRoot = layerElem.getChild("identifiers");
-		if (idRoot != null) {
-			final List<Element> identifiers = idRoot.getChildren();
-			if (identifiers != null) {
-				idList = new ArrayList<GSIdentifierInfoEncoder>(
-						identifiers.size());
-				for (Element identifier : identifiers) {
-					final GSIdentifierInfoEncoder idEnc = new GSIdentifierInfoEncoder();
-					idEnc.setAuthority(identifier
-							.getChildText(IdentifierInfo.authority.name()));
-					idEnc.setIdentifier(identifier
-							.getChildText(IdentifierInfo.identifier.name()));
-					idList.add(idEnc);
-				}
-			}
-		}
-		return idList;
-	}
-    
+    final Element idRoot = layerElem.getChild("identifiers");
+    if (idRoot != null) {
+      final List<Element> identifiers = idRoot.getChildren();
+      if (identifiers != null) {
+        idList = new ArrayList<>(
+                identifiers.size());
+        for (Element identifier : identifiers) {
+          final GSIdentifierInfoEncoder idEnc = new GSIdentifierInfoEncoder();
+          idEnc.setAuthority(identifier
+                  .getChildText(IdentifierInfo.authority.name()));
+          idEnc.setIdentifier(identifier
+                  .getChildText(IdentifierInfo.identifier.name()));
+          idList.add(idEnc);
+        }
+      }
+    }
+    return idList;
+  }
 
 //	protected double getLatLonEdge(String edge) {
 //		Element resource = layerElem.getChild("resource");

@@ -30,41 +30,41 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Abstract manager, common functionality and interface for all
- * GeoServerREST<i>Foo</i>Manager classes.
- * 
+ * Abstract manager, common functionality and interface for all GeoServerREST<i>Foo</i>Manager classes.
+ *
  * @author Oscar Fonts
  * @author Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
  */
 public abstract class GeoServerRESTAbstractManager {
 
-    protected final URL gsBaseUrl;
-    protected final String gsuser;
-    protected final String gspass;
+  protected final URL gsBaseUrl;
+  protected final String gsuser;
+  protected final String gspass;
 
-    /**
-     * Default constructor.
-     * 
-     * Indicates connection parameters to remote GeoServer instance.
-     * 
-     * @param restURL GeoServer REST API endpoint
-     * @param username GeoServer REST API authorized username
-     * @param password GeoServer REST API password for the former username
-     */
-    public GeoServerRESTAbstractManager(URL restURL, String username, String password)
-        throws IllegalArgumentException {
-        try {
-            if (restURL == null || username == null || password == null)
-                throw new IllegalArgumentException("Unable to create the manager using a null argument");
+  /**
+   * Default constructor.
+   *
+   * Indicates connection parameters to remote GeoServer instance.
+   *
+   * @param restURL GeoServer REST API endpoint
+   * @param username GeoServer REST API authorized username
+   * @param password GeoServer REST API password for the former username
+   */
+  public GeoServerRESTAbstractManager(URL restURL, String username, String password)
+          throws IllegalArgumentException {
+    try {
+      if (restURL == null || username == null || password == null) {
+        throw new IllegalArgumentException("Unable to create the manager using a null argument");
+      }
 
-            this.gsBaseUrl = new URL(restURL.getProtocol(), restURL.getHost(), restURL.getPort(),
-                                   HTTPUtils.decurtSlash(restURL.getPath()), null);
+      this.gsBaseUrl = new URL(restURL.getProtocol(), restURL.getHost(), restURL.getPort(),
+              HTTPUtils.decurtSlash(restURL.getPath()), null);
 
-            this.gsuser = username;
-            this.gspass = password;
+      this.gsuser = username;
+      this.gspass = password;
 
-        } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("URL can't be parsed properly", ex);
-        }
+    } catch (MalformedURLException ex) {
+      throw new IllegalArgumentException("URL can't be parsed properly", ex);
     }
+  }
 }

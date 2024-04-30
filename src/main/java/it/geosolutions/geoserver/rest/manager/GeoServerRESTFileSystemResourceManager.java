@@ -33,36 +33,36 @@ import java.net.URL;
  */
 public class GeoServerRESTFileSystemResourceManager extends GeoServerRESTAbstractManager {
 
-    public GeoServerRESTFileSystemResourceManager(URL restURL, String username, String password)
-            throws IllegalArgumentException {
-        super(restURL, username, password);
-    }
+  public GeoServerRESTFileSystemResourceManager(URL restURL, String username, String password)
+          throws IllegalArgumentException {
+    super(restURL, username, password);
+  }
 
-    public boolean exists(String path) {
-        return HTTPUtils.exists(buildUrl(path), gsuser, gspass);
-    }
+  public boolean exists(String path) {
+    return HTTPUtils.exists(buildUrl(path), gsuser, gspass);
+  }
 
-    protected String buildUrl(final String path) {
-        return gsBaseUrl.toString() + "/rest/resource/" + path;
-    }
+  protected String buildUrl(final String path) {
+    return gsBaseUrl.toString() + "/rest/resource/" + path;
+  }
 
-    public String download(String path) {
-        return HTTPUtils.get(buildUrl(path), gsuser, gspass);
-    }
+  public String download(String path) {
+    return HTTPUtils.get(buildUrl(path), gsuser, gspass);
+  }
 
-    public String upload(String path, String content, String mimeType) {
-        return HTTPUtils.put(buildUrl(path), content, mimeType, gsuser, gspass);
-    }
-    
-    public String upload(String path, String content) {
-        return upload(path, content, "text/plain");
-    }
-    
-    public String upload(String path, File content, String mimeType) {
-        return HTTPUtils.put(buildUrl(path), content, mimeType, gsuser, gspass);
-    }
+  public String upload(String path, String content, String mimeType) {
+    return HTTPUtils.put(buildUrl(path), content, mimeType, gsuser, gspass);
+  }
 
-    public boolean delete(String path) {
-        return HTTPUtils.delete(buildUrl(path), gsuser, gspass);
-    }
+  public String upload(String path, String content) {
+    return upload(path, content, "text/plain");
+  }
+
+  public String upload(String path, File content, String mimeType) {
+    return HTTPUtils.put(buildUrl(path), content, mimeType, gsuser, gspass);
+  }
+
+  public boolean delete(String path) {
+    return HTTPUtils.delete(buildUrl(path), gsuser, gspass);
+  }
 }

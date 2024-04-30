@@ -21,7 +21,7 @@
 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
-*/
+ */
 package it.geosolutions.geoserver.rest.encoder.authorityurl;
 
 import it.geosolutions.geoserver.rest.encoder.utils.ElementUtils;
@@ -31,185 +31,181 @@ import org.jdom.Element;
 import org.jdom.filter.Filter;
 
 /**
-* GSAuthorityURLInfoEncoder - encodes an authorityURL for a given GeoServer
-* layer as follows:
-* <pre>
-* {@code
-* final GSAuthorityURLInfoEncoder ae = new GSAuthorityURLInfoEncoder();
-* ae.setName("an authority");
-* ae.setHref("http://www.organization.org");
-* }
-* </pre>
-* For this example, the XML output is:
-* <pre>
-* {@code
-* <AuthorityURL>
-*   <name>an authority</name>
-*   <href>http://www.organization.org</href>
-* </AuthorityURL>
-* }
-* </pre>
-*
-* @author Emmanuel Blondel - emmanuel.blondel1@gmail.com |
-* emmanuel.blondel@fao.org
-*
-*/
+ * GSAuthorityURLInfoEncoder - encodes an authorityURL for a given GeoServer layer as follows:
+ * <pre>
+ * {@code
+ * final GSAuthorityURLInfoEncoder ae = new GSAuthorityURLInfoEncoder();
+ * ae.setName("an authority");
+ * ae.setHref("http://www.organization.org");
+ * }
+ * </pre> For this example, the XML output is:
+ * <pre>
+ * {@code
+ * <AuthorityURL>
+ *   <name>an authority</name>
+ *   <href>http://www.organization.org</href>
+ * </AuthorityURL>
+ * }
+ * </pre>
+ *
+ * @author Emmanuel Blondel - emmanuel.blondel1@gmail.com | emmanuel.blondel@fao.org
+ *
+ */
 public class GSAuthorityURLInfoEncoder extends XmlElement {
 
-	/**
-	 * A class to filter the AuthorityURL by href
-	 * 
-	 * 
-	 */
-	private static class filterByHref implements Filter {
+  /**
+   * A class to filter the AuthorityURL by href
+   *
+   *
+   */
+  private static class filterByHref implements Filter {
 
-		final private String key;
+    final private String key;
 
-		public filterByHref(String href) {
-			this.key = href;
-		}
+    public filterByHref(String href) {
+      this.key = href;
+    }
 
-		private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-		public boolean matches(Object obj) {
-			Element el = ((Element) obj).getChild(AuthorityURLInfo.href
-					.toString());
-			if (el != null && el.getTextTrim().equals(key)) {
-				return true;
-			}
-			return false;
-		}
-	}
+    public boolean matches(Object obj) {
+      Element el = ((Element) obj).getChild(AuthorityURLInfo.href
+              .toString());
+      if (el != null && el.getTextTrim().equals(key)) {
+        return true;
+      }
+      return false;
+    }
+  }
 
-	/**
-	 * Get a Filter using the AuthorityURLInfo href (authorityURL)
-	 * 
-	 * @param href
-	 * @return the filter
-	 */
-	public static Filter getFilterByHref(String href) {
-		return new filterByHref(href);
-	}
+  /**
+   * Get a Filter using the AuthorityURLInfo href (authorityURL)
+   *
+   * @param href
+   * @return the filter
+   */
+  public static Filter getFilterByHref(String href) {
+    return new filterByHref(href);
+  }
 
-	/**
-	 * Constructs a new GSAuthorityURLInfoEncoder
-	 * 
-	 */
-	public GSAuthorityURLInfoEncoder() {
-		super("AuthorityURL");
-	}
+  /**
+   * Constructs a new GSAuthorityURLInfoEncoder
+   *
+   */
+  public GSAuthorityURLInfoEncoder() {
+    super("AuthorityURL");
+  }
 
-	/**
-	 * Constructs quickly an AuthorityURL info
-	 * 
-	 * @param name
-	 *            (required)
-	 * @param href
-	 *            (required)
-	 */
-	public GSAuthorityURLInfoEncoder(String name, String href) {
-		super("AuthorityURL");
-		this.setup(name, href);
-	}
+  /**
+   * Constructs quickly an AuthorityURL info
+   *
+   * @param name (required)
+   * @param href (required)
+   */
+  public GSAuthorityURLInfoEncoder(String name, String href) {
+    super("AuthorityURL");
+    this.setup(name, href);
+  }
 
-	/**
-	 * Set-up quickly an AuthorityURL info
-	 * 
-	 * @param name
-	 * @param href
-	 */
-	protected void setup(String name, String href) {
-		set(AuthorityURLInfo.name.name(), name);
-		set(AuthorityURLInfo.href.name(), href);
-	}
+  /**
+   * Set-up quickly an AuthorityURL info
+   *
+   * @param name
+   * @param href
+   */
+  protected void setup(String name, String href) {
+    set(AuthorityURLInfo.name.name(), name);
+    set(AuthorityURLInfo.href.name(), href);
+  }
 
-	/**
-	 * Set an AuthorityURLInfo member (name, href)
-	 * 
-	 * @param type
-	 * @param value
-	 */
-	protected void setMember(AuthorityURLInfo type, String value) {
-		set(type.toString(), value);
-	}
+  /**
+   * Set an AuthorityURLInfo member (name, href)
+   *
+   * @param type
+   * @param value
+   */
+  protected void setMember(AuthorityURLInfo type, String value) {
+    set(type.toString(), value);
+  }
 
-	/**
-	 * Set the name
-	 * 
-	 * @param name
-	 */
-	public void setName(String name) {
-		this.setMember(AuthorityURLInfo.name, name);
-	}
+  /**
+   * Set the name
+   *
+   * @param name
+   */
+  public void setName(String name) {
+    this.setMember(AuthorityURLInfo.name, name);
+  }
 
-	/**
-	 * Set the href
-	 * 
-	 * @param href
-	 */
-	public void setHref(String href) {
-		this.setMember(AuthorityURLInfo.href, href);
-	}
+  /**
+   * Set the href
+   *
+   * @param href
+   */
+  public void setHref(String href) {
+    this.setMember(AuthorityURLInfo.href, href);
+  }
 
-	/**
-	 * Deletes an AuthorityURLInfo member
-	 * 
-	 * @param type
-	 * @return true if the AuthorityURLInfo member is removed
-	 */
-	protected boolean delMember(AuthorityURLInfo type) {
-		return ElementUtils.remove(this.getRoot(),
-				this.getRoot().getChild(type.toString()));
-	}
+  /**
+   * Deletes an AuthorityURLInfo member
+   *
+   * @param type
+   * @return true if the AuthorityURLInfo member is removed
+   */
+  protected boolean delMember(AuthorityURLInfo type) {
+    return ElementUtils.remove(this.getRoot(),
+            this.getRoot().getChild(type.toString()));
+  }
 
-	/**
-	 * Deletes the authority name
-	 * 
-	 * @return true if removed
-	 */
-	public boolean delName() {
-		return this.delMember(AuthorityURLInfo.name);
-	}
+  /**
+   * Deletes the authority name
+   *
+   * @return true if removed
+   */
+  public boolean delName() {
+    return this.delMember(AuthorityURLInfo.name);
+  }
 
-	/**
-	 * Deletes the href
-	 * 
-	 * @return true if removed
-	 */
-	public boolean delHref() {
-		return this.delMember(AuthorityURLInfo.href);
-	}
+  /**
+   * Deletes the href
+   *
+   * @return true if removed
+   */
+  public boolean delHref() {
+    return this.delMember(AuthorityURLInfo.href);
+  }
 
-	/**
-	 * Get the value of the AuthorityURLInfo member
-	 * 
-	 * @param type
-	 * @return the value of the AuthorityURLInfo member
-	 */
-	protected String getMember(AuthorityURLInfo type) {
-		Element el = this.getRoot().getChild(type.toString());
-		if (el != null)
-			return el.getTextTrim();
-		else
-			return null;
-	}
+  /**
+   * Get the value of the AuthorityURLInfo member
+   *
+   * @param type
+   * @return the value of the AuthorityURLInfo member
+   */
+  protected String getMember(AuthorityURLInfo type) {
+    Element el = this.getRoot().getChild(type.toString());
+    if (el != null) {
+      return el.getTextTrim();
+    } else {
+      return null;
+    }
+  }
 
-	/**
-	 * Get the name
-	 * 
-	 * @return
-	 */
-	public String getName() {
-		return this.getMember(AuthorityURLInfo.name);
-	}
+  /**
+   * Get the name
+   *
+   * @return
+   */
+  public String getName() {
+    return this.getMember(AuthorityURLInfo.name);
+  }
 
-	/**
-	 * Get the href
-	 * 
-	 * @return
-	 */
-	public String getHref() {
-		return this.getMember(AuthorityURLInfo.href);
-	}
+  /**
+   * Get the href
+   *
+   * @return
+   */
+  public String getHref() {
+    return this.getMember(AuthorityURLInfo.href);
+  }
 
 }

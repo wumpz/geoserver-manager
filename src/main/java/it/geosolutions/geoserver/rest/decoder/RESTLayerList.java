@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.decoder;
 
 import it.geosolutions.geoserver.rest.decoder.utils.JDOMBuilder;
@@ -38,27 +37,27 @@ import org.jdom.Element;
  * <BR>This is an XML fragment:
  * <PRE>
  *{@code
-<layer>
-    <name>states</name>
-    <atom:link
-        xmlns:atom="http://www.w3.org/2005/Atom"
-        rel="alternate"
-        href="http://localhost:8080/geoserver/rest/layers/states.xml"
-        type="application/xml"/>
-</layer>
+ * <layer>
+ * <name>states</name>
+ * <atom:link
+ * xmlns:atom="http://www.w3.org/2005/Atom"
+ * rel="alternate"
+ * href="http://localhost:8080/geoserver/rest/layers/states.xml"
+ * type="application/xml"/>
+ * </layer>
  * }
  * </PRE>
-
+ *
  * @author ETj (etj at geo-solutions.it)
  */
 public class RESTLayerList extends RESTAbstractList<NameLinkElem> {
 
-    public static RESTLayerList build(String response) {
-        Element elem = JDOMBuilder.buildElement(response);
-        return elem == null? null : new RESTLayerList(elem);
-	}
+  public static RESTLayerList build(String response) {
+    Element elem = JDOMBuilder.buildElement(response);
+    return elem == null ? null : new RESTLayerList(elem);
+  }
 
-    protected RESTLayerList(Element list) {
-        super(list);
-    }
+  protected RESTLayerList(Element list) {
+    super(list);
+  }
 }

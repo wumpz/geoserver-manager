@@ -28,9 +28,8 @@ import it.geosolutions.geoserver.rest.decoder.RESTStyle;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.*;
 import org.springframework.core.io.ClassPathResource;
@@ -41,59 +40,57 @@ import org.springframework.core.io.ClassPathResource;
  */
 public class UtilTest extends GeoserverRESTTest {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(UtilTest.class);
+  private static final Logger LOG = Logger.getLogger(UtilTest.class.getName());
 
-    @Test
-    public void testSearchStyle() throws IOException {
-        if (!enabled()) {
-            return;
-        }
-        deleteAll();
+  @Test
+  public void testSearchStyle() throws IOException {
+    if (!enabled()) {
+      return;
+    }
+    deleteAll();
 
-        final String WORKSPACE = "testWorkspace";
-        final String WORKSPACE_DUMMY_STD = "stdWorkspace";
-        final String STYLENAME = "restteststyle";
+    final String WORKSPACE = "testWorkspace";
+    final String WORKSPACE_DUMMY_STD = "stdWorkspace";
+    final String STYLENAME = "restteststyle";
 
-        File sldFile = new ClassPathResource("testdata/restteststyle.sld").getFile();
+    File sldFile = new ClassPathResource("testdata/restteststyle.sld").getFile();
 
-        //first workspace if per definition standard. If our test workspace would be standard, geoserver does not differ 
-        //global and workspace styles anymore.
-        publisher.createWorkspace(WORKSPACE_DUMMY_STD);
-        publisher.createWorkspace(WORKSPACE);
-        
-        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
-        assertEquals(0, reader.getStyles(WORKSPACE).size());
-        assertEquals(0, Util.searchStyles(reader, STYLENAME).size());
+    //first workspace if per definition standard. If our test workspace would be standard, geoserver does not differ 
+    //global and workspace styles anymore.
+    publisher.createWorkspace(WORKSPACE_DUMMY_STD);
+    publisher.createWorkspace(WORKSPACE);
 
-        // insert style in workspace
-        assertTrue(publisher.publishStyleInWorkspace(WORKSPACE, sldFile, STYLENAME));
-        assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
+    assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
+    assertEquals(0, reader.getStyles(WORKSPACE).size());
+    assertEquals(0, Util.searchStyles(reader, STYLENAME).size());
 
-        // GeoServer returns workspace specific names if hte name is not found as global
-        assertFalse(reader.existsStyle(STYLENAME));
+    // insert style in workspace
+    assertTrue(publisher.publishStyleInWorkspace(WORKSPACE, sldFile, STYLENAME));
+    assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
 
-        assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
-        assertEquals(1, reader.getStyles(WORKSPACE).size());
-        assertEquals(1, Util.searchStyles(reader, STYLENAME).size());
+    // GeoServer returns workspace specific names if hte name is not found as global
+    assertFalse(reader.existsStyle(STYLENAME));
 
-        // insert global style
-        assertTrue(publisher.publishStyle(sldFile, STYLENAME));
+    assertEquals(UNDELETABLE_STYLES.size(), reader.getStyles().size());
+    assertEquals(1, reader.getStyles(WORKSPACE).size());
+    assertEquals(1, Util.searchStyles(reader, STYLENAME).size());
 
-        assertTrue(reader.existsStyle(STYLENAME));
-        assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
+    // insert global style
+    assertTrue(publisher.publishStyle(sldFile, STYLENAME));
 
-        // GeoServer problem
-        assertEquals(2, Util.searchStyles(reader, STYLENAME).size());
-        
-        for(RESTStyle style : Util.searchStyles(reader, STYLENAME))
-        {
-            LOGGER.debug(style.getWorkspace() + " :: " + style.getName());
-        }
+    assertTrue(reader.existsStyle(STYLENAME));
+    assertTrue(reader.existsStyle(WORKSPACE, STYLENAME));
 
-        // there's a bug in geoserver here: the global style will include workspace info
-        // https://osgeo-org.atlassian.net/browse/GEOS-7498
-        // Commenting out all the concerned test code
+    // GeoServer problem
+    assertEquals(2, Util.searchStyles(reader, STYLENAME).size());
 
+    for (RESTStyle style : Util.searchStyles(reader, STYLENAME)) {
+      LOG.fine(style.getWorkspace() + " :: " + style.getName());
+    }
+
+    // there's a bug in geoserver here: the global style will include workspace info
+    // https://osgeo-org.atlassian.net/browse/GEOS-7498
+    // Commenting out all the concerned test code
 //         assertEquals(2, Util.searchStyles(reader, STYLENAME).size());
 //
 //        assertEquals(1, reader.getStyles().size());
@@ -108,6 +105,6 @@ public class UtilTest extends GeoserverRESTTest {
 //
 //        assertEquals(STYLENAME, styles.get(1).getName());
 //        assertEquals(WORKSPACE, styles.get(1).getWorkspace());
-    }
+  }
 
 }

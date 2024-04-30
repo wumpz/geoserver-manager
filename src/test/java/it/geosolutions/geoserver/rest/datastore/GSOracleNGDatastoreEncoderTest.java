@@ -34,10 +34,11 @@ import java.net.MalformedURLException;
  * Testcase for creating OracleNG-based resources on geoserver.
  * <P>
  * Since these tests require a running OracleNG instance, this is more like integration tests.<br/>
- * You may skip them by defining<tt> <pre>
+ * You may skip them by defining<tt>
+ * <pre>
  *        -DpgIgnore=true </pre></tt>
- * When <tt>pgIgnore</tt> is defined that way, failing tests will not break
- * the build: they will be logged as errors instead.
+ * When <tt>pgIgnore</tt> is defined that way, failing tests will not break the build: they will be logged as errors
+ * instead.
  *
  * <P>
  * The target OracleNG instance can be customized by defining the following env vars: <ul>
@@ -58,31 +59,30 @@ import java.net.MalformedURLException;
  */
 public class GSOracleNGDatastoreEncoderTest extends StoreIntegrationTest {
 
-//    private final static Logger LOGGER = LoggerFactory.getLogger(GSOracleNGDatastoreEncoderTest.class);
-    
-    public GSOracleNGDatastoreEncoderTest() throws IllegalArgumentException, MalformedURLException {
-        super(System.getProperty("pgIgnore", "true").equalsIgnoreCase("true"));
-         
-    }
+//    private final static Logger LOG = LoggerFactory.getLogger(GSOracleNGDatastoreEncoderTest.class);
+  public GSOracleNGDatastoreEncoderTest() throws IllegalArgumentException, MalformedURLException {
+    super(System.getProperty("pgIgnore", "true").equalsIgnoreCase("true"));
 
-    @Override
-    public GSAbstractStoreEncoder getStoreEncoderTest() {
-        GSOracleNGDatastoreEncoder datastoreEncoder = new GSOracleNGDatastoreEncoder(System.getProperty("oDataStoreName", "test"), System.getProperty("pgDatabase", "test"));
-        datastoreEncoder.setNamespace(DEFAULT_WS);
-        datastoreEncoder.setHost(System.getProperty("pgHost", "localhost"));
-        datastoreEncoder.setPort(Integer.parseInt(System.getProperty("pgPort", "5432")));
-        datastoreEncoder.setSchema(System.getProperty("pgUser", "postgres"));
-        datastoreEncoder.setUser(System.getProperty("pgSchema", "public"));
-        datastoreEncoder.setPassword(System.getProperty("pgPassword", "postgres"));
+  }
 
-        boolean exposePrimaryKeys = true;
-        boolean validateConnections = false;
-        String primaryKeyMetadataTable = "test";
-        datastoreEncoder.setExposePrimaryKeys(exposePrimaryKeys);
-        datastoreEncoder.setValidateConnections(validateConnections);
-        datastoreEncoder.setPrimaryKeyMetadataTable(primaryKeyMetadataTable);
+  @Override
+  public GSAbstractStoreEncoder getStoreEncoderTest() {
+    GSOracleNGDatastoreEncoder datastoreEncoder = new GSOracleNGDatastoreEncoder(System.getProperty("oDataStoreName", "test"), System.getProperty("pgDatabase", "test"));
+    datastoreEncoder.setNamespace(DEFAULT_WS);
+    datastoreEncoder.setHost(System.getProperty("pgHost", "localhost"));
+    datastoreEncoder.setPort(Integer.parseInt(System.getProperty("pgPort", "5432")));
+    datastoreEncoder.setSchema(System.getProperty("pgUser", "postgres"));
+    datastoreEncoder.setUser(System.getProperty("pgSchema", "public"));
+    datastoreEncoder.setPassword(System.getProperty("pgPassword", "postgres"));
 
-        return datastoreEncoder;
-    }
+    boolean exposePrimaryKeys = true;
+    boolean validateConnections = false;
+    String primaryKeyMetadataTable = "test";
+    datastoreEncoder.setExposePrimaryKeys(exposePrimaryKeys);
+    datastoreEncoder.setValidateConnections(validateConnections);
+    datastoreEncoder.setPrimaryKeyMetadataTable(primaryKeyMetadataTable);
+
+    return datastoreEncoder;
+  }
 
 }

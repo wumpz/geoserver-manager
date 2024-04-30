@@ -30,38 +30,39 @@ import java.net.URL;
 
 /**
  * Encoder for a {@value #TYPE} datastore.
- * 
+ *
  * @author Oscar Fonts
  */
 public class GSDirectoryOfShapefilesDatastoreEncoder extends GSShapefileDatastoreEncoder {
 
-    static final String TYPE = "Directory of spatial files (shapefiles)";
+  static final String TYPE = "Directory of spatial files (shapefiles)";
 
-    /**
-     * Create a {@value #TYPE} datastore with default connection parameters, given a store name and a url (the store location).
-     * 
-     * @param name New datastore name
-     * @param url The shapefile location in the server, relative to $GEOSERVER_DATA_DIR.
-     */
-    public GSDirectoryOfShapefilesDatastoreEncoder(String name, URL url) {
-        super(name, url);
-        setType(TYPE);
-    }
+  /**
+   * Create a {@value #TYPE} datastore with default connection parameters, given a store name and a url (the store
+   * location).
+   *
+   * @param name New datastore name
+   * @param url The shapefile location in the server, relative to $GEOSERVER_DATA_DIR.
+   */
+  public GSDirectoryOfShapefilesDatastoreEncoder(String name, URL url) {
+    super(name, url);
+    setType(TYPE);
+  }
 
-    /**
-     * Create a {@value #TYPE} datastore encoder from an existing store read from server.
-     * 
-     * @param store The existing store.
-     * @throws IllegalArgumentException if store type or mandatory parameters are not valid
-     */
-    public GSDirectoryOfShapefilesDatastoreEncoder(RESTDataStore store) {
-        super(store);
-    }
+  /**
+   * Create a {@value #TYPE} datastore encoder from an existing store read from server.
+   *
+   * @param store The existing store.
+   * @throws IllegalArgumentException if store type or mandatory parameters are not valid
+   */
+  public GSDirectoryOfShapefilesDatastoreEncoder(RESTDataStore store) {
+    super(store);
+  }
 
-    /**
-     * @return {@value #TYPE}
-     */
-    protected String getValidType() {
-        return TYPE;
-    }
+  /**
+   * @return {@value #TYPE}
+   */
+  protected String getValidType() {
+    return TYPE;
+  }
 }

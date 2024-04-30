@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.decoder.utils;
 
 import java.util.Iterator;
@@ -36,23 +35,23 @@ import org.jdom.Element;
  */
 public abstract class JDOMListIterator<ELEM> implements Iterator<ELEM> {
 
-    private final Iterator<Element> iter;
+  private final Iterator<Element> iter;
 
-    public JDOMListIterator(List<Element> orig) {
-        iter = orig.iterator();
-    }
+  public JDOMListIterator(List<Element> orig) {
+    iter = orig.iterator();
+  }
 
-    public boolean hasNext() {
-        return iter.hasNext();
-    }
+  public boolean hasNext() {
+    return iter.hasNext();
+  }
 
-    public ELEM next() {
-        return transform(iter.next());
-    }
+  public ELEM next() {
+    return transform(iter.next());
+  }
 
-    public abstract ELEM transform(Element listItem);
+  public abstract ELEM transform(Element listItem);
 
-    public void remove() {
-        throw new UnsupportedOperationException("Not supported.");
-    }
+  public void remove() {
+    throw new UnsupportedOperationException("Not supported.");
+  }
 }

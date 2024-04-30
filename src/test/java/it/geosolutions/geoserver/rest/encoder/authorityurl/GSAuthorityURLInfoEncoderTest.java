@@ -16,7 +16,7 @@
 *
 * You should have received a copy of the GNU General Public License
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package it.geosolutions.geoserver.rest.encoder.authorityurl;
 
 import junit.framework.Assert;
@@ -24,26 +24,26 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 /**
- * 
+ *
  * @author eblondel
- * 
+ *
  */
 public class GSAuthorityURLInfoEncoderTest {
 
-	@Test
-	public void authorityURLInfoTest() {
-		GSAuthorityURLInfoEncoder encoder = new GSAuthorityURLInfoEncoder();
-		encoder.setup("authority1", "http://www.authority1.org");
+  @Test
+  public void authorityURLInfoTest() {
+    GSAuthorityURLInfoEncoder encoder = new GSAuthorityURLInfoEncoder();
+    encoder.setup("authority1", "http://www.authority1.org");
 
-		Assert.assertEquals("authority1", encoder.getName());
-		Assert.assertEquals("http://www.authority1.org", encoder.getHref());
+    Assert.assertEquals("authority1", encoder.getName());
+    Assert.assertEquals("http://www.authority1.org", encoder.getHref());
 
-		Assert.assertTrue(encoder.delHref());
-		Assert.assertNull(encoder.getHref());
+    Assert.assertTrue(encoder.delHref());
+    Assert.assertNull(encoder.getHref());
 
-		encoder.setName("authority2");
-		encoder.setHref("http://www.authority2.org");
-		Assert.assertEquals("authority2", encoder.getName());
-		Assert.assertEquals("http://www.authority2.org", encoder.getHref());
-	}
+    encoder.setName("authority2");
+    encoder.setHref("http://www.authority2.org");
+    Assert.assertEquals("authority2", encoder.getName());
+    Assert.assertEquals("http://www.authority2.org", encoder.getHref());
+  }
 }

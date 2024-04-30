@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.encoder;
 
 import it.geosolutions.geoserver.rest.encoder.utils.ElementUtils;
@@ -30,235 +29,189 @@ import it.geosolutions.geoserver.rest.encoder.utils.PropertyXMLEncoder;
 
 import org.jdom.Element;
 
-
 /**
  *
  * @author Alessio Fabiani (alessio.fabiani at geo-solutions.it)
  */
-public class GSBackupEncoder extends PropertyXMLEncoder
-{
-    public static final String TASK = "task";
-    public static final String PATH = "path";
-    public static final String INCLUDE_DATA = "includedata";
-    public static final String INCLUDE_GWC = "includegwc";
-    public static final String INCLUDE_LOG = "includelog";
+public class GSBackupEncoder extends PropertyXMLEncoder {
 
-    public GSBackupEncoder()
-    {
-        super(TASK);
-    }
+  public static final String TASK = "task";
+  public static final String PATH = "path";
+  public static final String INCLUDE_DATA = "includedata";
+  public static final String INCLUDE_GWC = "includegwc";
+  public static final String INCLUDE_LOG = "includelog";
 
-    /**
-     * @param path the task path
-     */
-    public GSBackupEncoder(String name)
-    {
-        super(TASK);
-        addPath(name);
-    }
+  public GSBackupEncoder() {
+    super(TASK);
+  }
 
-    /**
-     * Add the path to this task
-     * @param path
-     * @throws IllegalStateException if path is already set
-     * @deprecated will be set to protected in the next release
-     */
-    public void addPath(final String path)
-    {
-        final Element el = ElementUtils.contains(getRoot(), PATH);
-        if (el == null)
-        {
-            add(PATH, path);
-        }
-        else
-        {
-            throw new IllegalStateException("Task path is already set: " + el.getText());
-        }
-    }
+  /**
+   * @param path the task path
+   */
+  public GSBackupEncoder(String name) {
+    super(TASK);
+    addPath(name);
+  }
 
-    /**
-     * add or change (if already set) the task path
-     * @param path
-     */
-    public void setPath(final String path)
-    {
-        final Element el = ElementUtils.contains(getRoot(), PATH);
-        if (el == null)
-        {
-            add(PATH, path);
-        }
-        else
-        {
-            el.setText(path);
-        }
+  /**
+   * Add the path to this task
+   *
+   * @param path
+   * @throws IllegalStateException if path is already set
+   * @deprecated will be set to protected in the next release
+   */
+  public void addPath(final String path) {
+    final Element el = ElementUtils.contains(getRoot(), PATH);
+    if (el == null) {
+      add(PATH, path);
+    } else {
+      throw new IllegalStateException("Task path is already set: " + el.getText());
     }
+  }
 
-    public String getPath()
-    {
-        final Element el = ElementUtils.contains(getRoot(), PATH);
-        if (el != null)
-        {
-            return el.getTextTrim();
-        }
-        else
-        {
-            return null;
-        }
+  /**
+   * add or change (if already set) the task path
+   *
+   * @param path
+   */
+  public void setPath(final String path) {
+    final Element el = ElementUtils.contains(getRoot(), PATH);
+    if (el == null) {
+      add(PATH, path);
+    } else {
+      el.setText(path);
     }
+  }
 
-    /**
-     * INCLUDE DATA ELEMENT
-     */
-    
-    /**
-     * Add the includedata to this task
-     * @param includedata
-     * @deprecated will be set to protected in the next release
-     */
-    public void addIncludeData(final Boolean includedata)
-    {
-        final Element el = ElementUtils.contains(getRoot(), INCLUDE_DATA);
-        if (el == null)
-        {
-            add(INCLUDE_DATA, includedata.toString());
-        }
-        else
-        {
-        	el.setText(includedata.toString());
-        }
+  public String getPath() {
+    final Element el = ElementUtils.contains(getRoot(), PATH);
+    if (el != null) {
+      return el.getTextTrim();
+    } else {
+      return null;
     }
+  }
 
-    /**
-     * add or change (if already set) the task includedata
-     * @param includedata
-     */
-    public void setIncludeData(final Boolean includedata)
-    {
-        final Element el = ElementUtils.contains(getRoot(), INCLUDE_DATA);
-        if (el == null)
-        {
-            add(INCLUDE_DATA, includedata.toString());
-        }
-        else
-        {
-            el.setText(includedata.toString());
-        }
+  /**
+   * INCLUDE DATA ELEMENT
+   */
+  /**
+   * Add the includedata to this task
+   *
+   * @param includedata
+   * @deprecated will be set to protected in the next release
+   */
+  public void addIncludeData(final Boolean includedata) {
+    final Element el = ElementUtils.contains(getRoot(), INCLUDE_DATA);
+    if (el == null) {
+      add(INCLUDE_DATA, includedata.toString());
+    } else {
+      el.setText(includedata.toString());
     }
+  }
 
-    public String getIncludeData()
-    {
-        final Element el = ElementUtils.contains(getRoot(), INCLUDE_DATA);
-        if (el != null)
-        {
-            return el.getTextTrim();
-        }
-        else
-        {
-            return null;
-        }
+  /**
+   * add or change (if already set) the task includedata
+   *
+   * @param includedata
+   */
+  public void setIncludeData(final Boolean includedata) {
+    final Element el = ElementUtils.contains(getRoot(), INCLUDE_DATA);
+    if (el == null) {
+      add(INCLUDE_DATA, includedata.toString());
+    } else {
+      el.setText(includedata.toString());
     }
-    
-    /**
-     * INCLUDE GWC ELEMENT
-     */
-    
-    /**
-     * Add the includegwc to this task
-     * @param includegwc
-     * @deprecated will be set to protected in the next release
-     */
-    public void addIncludeGwc(final Boolean includegwc)
-    {
-        final Element el = ElementUtils.contains(getRoot(), INCLUDE_GWC);
-        if (el == null)
-        {
-            add(INCLUDE_GWC, includegwc.toString());
-        }
-        else
-        {
-        	el.setText(includegwc.toString());
-        }
-    }
+  }
 
-    /**
-     * add or change (if already set) the task includegwc
-     * @param includegwc
-     */
-    public void setIncludeGwc(final Boolean includegwc)
-    {
-        final Element el = ElementUtils.contains(getRoot(), INCLUDE_GWC);
-        if (el == null)
-        {
-            add(INCLUDE_GWC, includegwc.toString());
-        }
-        else
-        {
-            el.setText(includegwc.toString());
-        }
+  public String getIncludeData() {
+    final Element el = ElementUtils.contains(getRoot(), INCLUDE_DATA);
+    if (el != null) {
+      return el.getTextTrim();
+    } else {
+      return null;
     }
+  }
 
-    public String getIncludeGwc()
-    {
-        final Element el = ElementUtils.contains(getRoot(), INCLUDE_GWC);
-        if (el != null)
-        {
-            return el.getTextTrim();
-        }
-        else
-        {
-            return null;
-        }
+  /**
+   * INCLUDE GWC ELEMENT
+   */
+  /**
+   * Add the includegwc to this task
+   *
+   * @param includegwc
+   * @deprecated will be set to protected in the next release
+   */
+  public void addIncludeGwc(final Boolean includegwc) {
+    final Element el = ElementUtils.contains(getRoot(), INCLUDE_GWC);
+    if (el == null) {
+      add(INCLUDE_GWC, includegwc.toString());
+    } else {
+      el.setText(includegwc.toString());
     }
-    
-    /**
-     * INCLUDE LOG ELEMENT
-     */
-    
-    /**
-     * Add the includelog to this task
-     * @param includelog
-     * @deprecated will be set to protected in the next release
-     */
-    public void addIncludeLog(final Boolean includelog)
-    {
-        final Element el = ElementUtils.contains(getRoot(), INCLUDE_LOG);
-        if (el == null)
-        {
-            add(INCLUDE_LOG, includelog.toString());
-        }
-        else
-        {
-        	el.setText(includelog.toString());
-        }
-    }
+  }
 
-    /**
-     * add or change (if already set) the task includelog
-     * @param includelog
-     */
-    public void setIncludeLog(final Boolean includelog)
-    {
-        final Element el = ElementUtils.contains(getRoot(), INCLUDE_LOG);
-        if (el == null)
-        {
-            add(INCLUDE_LOG, includelog.toString());
-        }
-        else
-        {
-            el.setText(includelog.toString());
-        }
+  /**
+   * add or change (if already set) the task includegwc
+   *
+   * @param includegwc
+   */
+  public void setIncludeGwc(final Boolean includegwc) {
+    final Element el = ElementUtils.contains(getRoot(), INCLUDE_GWC);
+    if (el == null) {
+      add(INCLUDE_GWC, includegwc.toString());
+    } else {
+      el.setText(includegwc.toString());
     }
+  }
 
-    public String getIncludeLog()
-    {
-        final Element el = ElementUtils.contains(getRoot(), INCLUDE_LOG);
-        if (el != null)
-        {
-            return el.getTextTrim();
-        }
-        else
-        {
-            return null;
-        }
+  public String getIncludeGwc() {
+    final Element el = ElementUtils.contains(getRoot(), INCLUDE_GWC);
+    if (el != null) {
+      return el.getTextTrim();
+    } else {
+      return null;
     }
+  }
+
+  /**
+   * INCLUDE LOG ELEMENT
+   */
+  /**
+   * Add the includelog to this task
+   *
+   * @param includelog
+   * @deprecated will be set to protected in the next release
+   */
+  public void addIncludeLog(final Boolean includelog) {
+    final Element el = ElementUtils.contains(getRoot(), INCLUDE_LOG);
+    if (el == null) {
+      add(INCLUDE_LOG, includelog.toString());
+    } else {
+      el.setText(includelog.toString());
+    }
+  }
+
+  /**
+   * add or change (if already set) the task includelog
+   *
+   * @param includelog
+   */
+  public void setIncludeLog(final Boolean includelog) {
+    final Element el = ElementUtils.contains(getRoot(), INCLUDE_LOG);
+    if (el == null) {
+      add(INCLUDE_LOG, includelog.toString());
+    } else {
+      el.setText(includelog.toString());
+    }
+  }
+
+  public String getIncludeLog() {
+    final Element el = ElementUtils.contains(getRoot(), INCLUDE_LOG);
+    if (el != null) {
+      return el.getTextTrim();
+    } else {
+      return null;
+    }
+  }
 }

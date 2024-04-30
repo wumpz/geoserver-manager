@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.decoder.utils;
 
 import org.jdom.Element;
@@ -32,14 +31,15 @@ import org.jdom.Element;
  * @author ETj (etj at geo-solutions.it)
  */
 public class NameLinkElem {
-        private final Element elem;
 
-        public NameLinkElem(Element elem) {
-            this.elem = elem;
-        }
+  private final Element elem;
 
-        public String getName() {
-            return elem.getChildText("name");
-        }
+  public NameLinkElem(Element elem) {
+    this.elem = elem;
+  }
+
+  public String getName() {
+    return elem.getChildText("name");
+  }
 
 }

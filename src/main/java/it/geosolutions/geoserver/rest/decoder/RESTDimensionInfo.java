@@ -27,69 +27,67 @@ import org.jdom.Element;
  * @author DamianoG
  *
  */
-public class RESTDimensionInfo extends RESTMetadataList.RESTMetadataElement{
-    
-    private boolean enabled;
-    private String presentation;
-    private String resolution;
-    
-    public static final String TIME = "time";
-    public static final String ELEVATION = "elevation";
-    
-    /**
-     * @param elem
-     */
-    public RESTDimensionInfo(Element elem) {
-        super(elem);
-        if(elem.getChild("dimensionInfo")!=null){
-            enabled = Boolean.parseBoolean(elem.getChild("dimensionInfo").getChildText("enabled"));
-            presentation = elem.getChild("dimensionInfo").getChildText("presentation");
-            resolution = elem.getChild("dimensionInfo").getChildText("resolution");
-        }
-    }
+public class RESTDimensionInfo extends RESTMetadataList.RESTMetadataElement {
 
-    /**
-     * @return the enabled
-     */
-    public boolean isEnabled() {
-        return enabled;
-    }
+  private boolean enabled;
+  private String presentation;
+  private String resolution;
 
-    /**
-     * @param enabled the enabled to set
-     */
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
+  public static final String TIME = "time";
+  public static final String ELEVATION = "elevation";
 
-    /**
-     * @return the presentation
-     */
-    public String getPresentation() {
-        return presentation;
+  /**
+   * @param elem
+   */
+  public RESTDimensionInfo(Element elem) {
+    super(elem);
+    if (elem.getChild("dimensionInfo") != null) {
+      enabled = Boolean.parseBoolean(elem.getChild("dimensionInfo").getChildText("enabled"));
+      presentation = elem.getChild("dimensionInfo").getChildText("presentation");
+      resolution = elem.getChild("dimensionInfo").getChildText("resolution");
     }
+  }
 
-    /**
-     * @param presentation the presentation to set
-     */
-    public void setPresentation(String presentation) {
-        this.presentation = presentation;
-    }
+  /**
+   * @return the enabled
+   */
+  public boolean isEnabled() {
+    return enabled;
+  }
 
-    /**
-     * @return the resolution
-     */
-    public String getResolution() {
-        return resolution;
-    }
+  /**
+   * @param enabled the enabled to set
+   */
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
 
-    /**
-     * @param resolution the resolution to set
-     */
-    public void setResolution(String resolution) {
-        this.resolution = resolution;
-    }
-    
-    
+  /**
+   * @return the presentation
+   */
+  public String getPresentation() {
+    return presentation;
+  }
+
+  /**
+   * @param presentation the presentation to set
+   */
+  public void setPresentation(String presentation) {
+    this.presentation = presentation;
+  }
+
+  /**
+   * @return the resolution
+   */
+  public String getResolution() {
+    return resolution;
+  }
+
+  /**
+   * @param resolution the resolution to set
+   */
+  public void setResolution(String resolution) {
+    this.resolution = resolution;
+  }
 
 }
