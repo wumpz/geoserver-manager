@@ -31,7 +31,7 @@ public class GeoServerRESTFileSystemManagerTest extends GeoserverRESTTest {
       return;
     }
 
-    assertTrue(manager.getFileSystemResourceManager().download("global.xml").contains("claudius.ptolomaeus@gmail.com"));
+    assertTrue(manager.getFileSystemResourceManager().download("global.xml").contains("claudius.ptolomaeus@mercury.olympus.gov"));
     assertNull(manager.getFileSystemResourceManager().download("global2.xml"));
   }
 
