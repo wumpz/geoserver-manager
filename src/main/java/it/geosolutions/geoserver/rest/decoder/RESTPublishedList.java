@@ -22,45 +22,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.decoder;
 
 import it.geosolutions.geoserver.rest.decoder.utils.JDOMBuilder;
 
 import org.jdom.Element;
 
-
 /**
  * Parse <TT>published</TT>s returned as XML REST objects.
- * 
+ *
  * This is the XML REST representation:
  * <pre>{@code
-  <publishables>
-    <published type="layer">
-      <name>sfdem</name>
-      <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/layers/sfdem.xml" type="application/xml"/>
-    </published>
-    <published type="layer">
-      <name>bugsites</name>
-      <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/layers/bugsites.xml" type="application/xml"/>
-    </published>
-  </publishables>
+ * <publishables>
+ * <published type="layer">
+ * <name>sfdem</name>
+ * <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/layers/sfdem.xml" type="application/xml"/>
+ * </published>
+ * <published type="layer">
+ * <name>bugsites</name>
+ * <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/layers/bugsites.xml" type="application/xml"/>
+ * </published>
+ * </publishables>
  * }</pre>
- * 
+ *
  * @author Davide Savazzi (geo-solutions.it)
  */
 public class RESTPublishedList extends RESTAbstractList<RESTPublished> {
 
-    public static RESTPublishedList build(String response) {
-        Element elem = JDOMBuilder.buildElement(response);
-        return elem == null ? null : new RESTPublishedList(elem);
-    }
+  public static RESTPublishedList build(String response) {
+    Element elem = JDOMBuilder.buildElement(response);
+    return elem == null ? null : new RESTPublishedList(elem);
+  }
 
-    protected RESTPublishedList(Element list) {
-        super(list);
-    }
-    
-    protected RESTPublished createElement(Element el) {
-        return new RESTPublished(el);
-    }
+  protected RESTPublishedList(Element list) {
+    super(list);
+  }
+
+  protected RESTPublished createElement(Element el) {
+    return new RESTPublished(el);
+  }
 }

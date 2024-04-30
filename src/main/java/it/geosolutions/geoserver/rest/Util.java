@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest;
 
 import it.geosolutions.geoserver.rest.decoder.RESTStyle;
@@ -38,84 +37,86 @@ import java.util.Map;
  */
 public class Util {
 
-public static final String QUIET_ON_NOT_FOUND_PARAM = "quietOnNotFound="; 
-    
-    public static final boolean DEFAULT_QUIET_ON_NOT_FOUND = true; 
+  public static final String QUIET_ON_NOT_FOUND_PARAM = "quietOnNotFound=";
 
-    /**
-     * Search for a stylename in global and in all workspaces.
-     */
-    public static List<RESTStyle> searchStyles(GeoServerRESTReader reader, String stylename) {
+  public static final boolean DEFAULT_QUIET_ON_NOT_FOUND = true;
 
-        List<RESTStyle> styles = new ArrayList<RESTStyle>();
+  /**
+   * Search for a stylename in global and in all workspaces.
+   */
+  public static List<RESTStyle> searchStyles(GeoServerRESTReader reader, String stylename) {
 
-        RESTStyle style = reader.getStyle(stylename);
+    List<RESTStyle> styles = new ArrayList<RESTStyle>();
 
-        // We don't want geoserver to be lenient here: take only the real global style if it exists
-        if(style != null) {
-            if(style.getWorkspace() == null || style.getWorkspace().isEmpty()) {
-                styles.add(style);
-            }
-        }
+    RESTStyle style = reader.getStyle(stylename);
 
-        for (String workspace : reader.getWorkspaceNames()) {
-            style = reader.getStyle(workspace, stylename);
-            if(style != null)
-                styles.add(style);
-        }
-
-        return styles;
-    }
-    
-    /**
-     * Append the quietOnNotFound parameter to the input URL
-     * @param quietOnNotFound parameter
-     * @param url input url
-     * @return a composed url with the parameter appended
-     */
-    public static String appendQuietOnNotFound(boolean quietOnNotFound, String url) {
-        boolean contains = url.contains("?");
-        String composed = url + (contains ? "&":"?") + QUIET_ON_NOT_FOUND_PARAM + quietOnNotFound;
-        return composed;
+    // We don't want geoserver to be lenient here: take only the real global style if it exists
+    if (style != null) {
+      if (style.getWorkspace() == null || style.getWorkspace().isEmpty()) {
+        styles.add(style);
+      }
     }
 
-    public static <T> List<T> safeList(List<T> list) {
-        return list == null ? Collections.EMPTY_LIST : list;
+    for (String workspace : reader.getWorkspaceNames()) {
+      style = reader.getStyle(workspace, stylename);
+      if (style != null) {
+        styles.add(style);
+      }
     }
 
-    public static <T> Collection<T> safeCollection(Collection<T> collection) {
-        return collection == null ? Collections.EMPTY_SET : collection;
-    }
+    return styles;
+  }
 
-    public static <TK, TV> Map<TK, TV> safeMap(Map<TK, TV> map) {
-        return map == null ? Collections.EMPTY_MAP : map;
-    }
+  /**
+   * Append the quietOnNotFound parameter to the input URL
+   *
+   * @param quietOnNotFound parameter
+   * @param url input url
+   * @return a composed url with the parameter appended
+   */
+  public static String appendQuietOnNotFound(boolean quietOnNotFound, String url) {
+    boolean contains = url.contains("?");
+    String composed = url + (contains ? "&" : "?") + QUIET_ON_NOT_FOUND_PARAM + quietOnNotFound;
+    return composed;
+  }
 
-    public static char getParameterSeparator(String url) {
-        char parameterSeparator = '?';
-        if (url.contains("?")) {
-            parameterSeparator = '&';
-        }
-        return parameterSeparator;
-    }
+  public static <T> List<T> safeList(List<T> list) {
+    return list == null ? Collections.EMPTY_LIST : list;
+  }
 
-    public static char getParameterSeparator(StringBuilder url) {
-        char parameterSeparator = '?';
-        if (url.indexOf("?") != -1) {
-            parameterSeparator = '&';
-        }
-        return parameterSeparator;
-    }
+  public static <T> Collection<T> safeCollection(Collection<T> collection) {
+    return collection == null ? Collections.EMPTY_SET : collection;
+  }
 
-    public static boolean appendParameter(StringBuilder url, String parameterName,
-            String parameterValue) {
-        boolean result = false;
-        if (parameterName != null && !parameterName.isEmpty()
-                && parameterValue != null && !parameterValue.isEmpty()) {
-            char parameterSeparator = getParameterSeparator(url);
-            url.append(parameterSeparator).append(parameterName.trim())
-                    .append('=').append(parameterValue.trim());
-        }
-        return result;
+  public static <TK, TV> Map<TK, TV> safeMap(Map<TK, TV> map) {
+    return map == null ? Collections.EMPTY_MAP : map;
+  }
+
+  public static char getParameterSeparator(String url) {
+    char parameterSeparator = '?';
+    if (url.contains("?")) {
+      parameterSeparator = '&';
     }
+    return parameterSeparator;
+  }
+
+  public static char getParameterSeparator(StringBuilder url) {
+    char parameterSeparator = '?';
+    if (url.indexOf("?") != -1) {
+      parameterSeparator = '&';
+    }
+    return parameterSeparator;
+  }
+
+  public static boolean appendParameter(StringBuilder url, String parameterName,
+          String parameterValue) {
+    boolean result = false;
+    if (parameterName != null && !parameterName.isEmpty()
+            && parameterValue != null && !parameterValue.isEmpty()) {
+      char parameterSeparator = getParameterSeparator(url);
+      url.append(parameterSeparator).append(parameterName.trim())
+              .append('=').append(parameterValue.trim());
+    }
+    return result;
+  }
 }

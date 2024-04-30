@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.publisher;
 
 import it.geosolutions.geoserver.rest.GeoServerRESTPublisher.StoreType;
@@ -42,139 +41,144 @@ import java.util.logging.Logger;
 import static org.junit.Assert.*;
 
 /**
- * Testcase for publishing layers on geoserver.
- * We need a running GeoServer to properly run the tests. 
- * If such geoserver instance cannot be contacted, tests will be skipped.
+ * Testcase for publishing layers on geoserver. We need a running GeoServer to properly run the tests. If such geoserver
+ * instance cannot be contacted, tests will be skipped.
  *
- * @author Lennart Karsten - lennart.k@thinking-aloud.eu
- * inspired by: Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
+ * @author Lennart Karsten - lennart.k@thinking-aloud.eu inspired by: Carlo Cancellieri -
+ * carlo.cancellieri@geo-solutions.it
  */
 public class GeoserverRESTArcGridTest extends GeoserverRESTTest {
 
   private static final Logger LOG = Logger.getLogger(GeoserverRESTArcGridTest.class.getName());
 
-    private String storeName = "testRESTStoreArcGrid";
-    private String layerName = "resttestdem";
-    
-    @Test
-    public void testExternalArcGrid() throws FileNotFoundException, IOException {
-        if (!enabled()) return;
-        deleteAll();
+  private String storeName = "testRESTStoreArcGrid";
+  private String layerName = "resttestdem";
 
-        File arcgrid = new ClassPathResource("testdata/resttestdem.asc").getFile();
-
-        assertTrue(reader.getWorkspaces().isEmpty());
-        assertTrue(publisher.createWorkspace(DEFAULT_WS));
-
-
-        // known state?
-        assertFalse("Cleanup failed", existsLayer(layerName));
-        
-        // Test exists
-        assertFalse(reader.existsLayer(DEFAULT_WS, layerName));
-
-        // test insert
-        boolean pc = publisher.publishExternalArcGrid(DEFAULT_WS, storeName, arcgrid, layerName,"EPSG:4326",ProjectionPolicy.FORCE_DECLARED,"raster");
-        assertTrue("publish() failed", pc);
-        assertTrue(existsLayer(layerName));
-        assertTrue(reader.existsLayer(DEFAULT_WS, layerName));
-        LOG.info("Published "+pc);
-        RESTCoverageStore reloadedCS = reader.getCoverageStore(DEFAULT_WS, storeName);
-
-        assertEquals(storeName, reloadedCS.getName());
-        assertEquals(DEFAULT_WS, reloadedCS.getWorkspaceName());
-
-        //test delete
-        assertTrue("Unpublish() failed", publisher.unpublishCoverage(DEFAULT_WS, storeName, layerName));
-        assertTrue("Unpublish() failed", publisher.removeCoverageStore(DEFAULT_WS, storeName));
-        assertFalse("Bad unpublish()",   publisher.unpublishCoverage(DEFAULT_WS, storeName, layerName));
-        assertFalse(existsLayer(layerName));
+  @Test
+  public void testExternalArcGrid() throws FileNotFoundException, IOException {
+    if (!enabled()) {
+      return;
     }
-   
-    @Test
-    public void testArcGrid() throws FileNotFoundException, IOException {
-        if (!enabled()) return;
-        deleteAll();
+    deleteAll();
 
-        File arcgrid = new ClassPathResource("testdata/resttestdem.asc").getFile();
-        
-        assertTrue(reader.getWorkspaces().isEmpty());
-        assertTrue(publisher.createWorkspace(DEFAULT_WS));
+    File arcgrid = new ClassPathResource("testdata/resttestdem.asc").getFile();
 
-        // known state?
-        assertFalse("Cleanup failed", existsLayer(layerName));
+    assertTrue(reader.getWorkspaces().isEmpty());
+    assertTrue(publisher.createWorkspace(DEFAULT_WS));
 
-        // test insert
-        boolean pub = publisher.publishArcGrid(DEFAULT_WS, storeName, arcgrid);
-        
-        assertNotNull("publish() failed", pub);
-        // Test exists
-        assertTrue(reader.existsCoveragestore(DEFAULT_WS, storeName));
-        assertTrue(reader.existsCoverage(DEFAULT_WS, storeName, storeName));
+    // known state?
+    assertFalse("Cleanup failed", existsLayer(layerName));
 
-        pub = publisher.publishArcGrid(DEFAULT_WS, storeName+"another", "layername", arcgrid);
-        
-        assertTrue("publish() failed", pub);
-        
-        double[] bbox = {-103.85, 44.38, -103.62, 44.50};
-        pub = publisher.publishArcGrid(DEFAULT_WS, storeName+"another_complex", storeName+"another_complex", arcgrid, "EPSG:4326", ProjectionPolicy.REPROJECT_TO_DECLARED, "raster", bbox);
-        
-        assertTrue("publish() failed", pub);
+    // Test exists
+    assertFalse(reader.existsLayer(DEFAULT_WS, layerName));
 
-        //delete
-        assertTrue("Unpublish() failed", publisher.removeCoverageStore(DEFAULT_WS, storeName,true));
-        // Test not exists
-        assertFalse(reader.existsCoveragestore(DEFAULT_WS, storeName));
+    // test insert
+    boolean pc = publisher.publishExternalArcGrid(DEFAULT_WS, storeName, arcgrid, layerName, "EPSG:4326", ProjectionPolicy.FORCE_DECLARED, "raster");
+    assertTrue("publish() failed", pc);
+    assertTrue(existsLayer(layerName));
+    assertTrue(reader.existsLayer(DEFAULT_WS, layerName));
+    LOG.info("Published " + pc);
+    RESTCoverageStore reloadedCS = reader.getCoverageStore(DEFAULT_WS, storeName);
+
+    assertEquals(storeName, reloadedCS.getName());
+    assertEquals(DEFAULT_WS, reloadedCS.getWorkspaceName());
+
+    //test delete
+    assertTrue("Unpublish() failed", publisher.unpublishCoverage(DEFAULT_WS, storeName, layerName));
+    assertTrue("Unpublish() failed", publisher.removeCoverageStore(DEFAULT_WS, storeName));
+    assertFalse("Bad unpublish()", publisher.unpublishCoverage(DEFAULT_WS, storeName, layerName));
+    assertFalse(existsLayer(layerName));
+  }
+
+  @Test
+  public void testArcGrid() throws FileNotFoundException, IOException {
+    if (!enabled()) {
+      return;
     }
-    
-    @Test
-    public void testArcGridWithStyleInWorkspace() throws IOException {
-        if (!enabled()) return;
-        deleteAll();
+    deleteAll();
 
-        File arcgrid = new ClassPathResource("testdata/resttestdem.asc").getFile();
-        
-        assertTrue(reader.getWorkspaces().isEmpty());
-        assertTrue(publisher.createWorkspace(DEFAULT_WS));
+    File arcgrid = new ClassPathResource("testdata/resttestdem.asc").getFile();
 
-        File sldFile = new ClassPathResource("testdata/raster.sld").getFile();
+    assertTrue(reader.getWorkspaces().isEmpty());
+    assertTrue(publisher.createWorkspace(DEFAULT_WS));
 
+    // known state?
+    assertFalse("Cleanup failed", existsLayer(layerName));
 
-        // insert style
-        assertTrue(publisher.publishStyleInWorkspace(DEFAULT_WS, sldFile, "mystyle"));
-        assertTrue(reader.existsStyle(DEFAULT_WS, "mystyle"));
-        
-        // known state?
-        assertFalse("Cleanup failed", existsLayer(layerName));
+    // test insert
+    boolean pub = publisher.publishArcGrid(DEFAULT_WS, storeName, arcgrid);
 
-        // test insert
-        boolean pub = publisher.publishArcGrid(DEFAULT_WS, storeName, storeName,
-                arcgrid, "EPSG:4326", ProjectionPolicy.FORCE_DECLARED, DEFAULT_WS + ":" + "mystyle", null);
-        
-        assertNotNull("publish() failed", pub);
-        // Test exists
-        assertTrue(reader.existsCoveragestore(DEFAULT_WS, storeName));
-        assertTrue(reader.existsCoverage(DEFAULT_WS, storeName, storeName));
-        RESTLayer layer = reader.getLayer(DEFAULT_WS, storeName);
-        assertEquals(DEFAULT_WS + ":mystyle", layer.getDefaultStyle());
-        assertEquals(DEFAULT_WS, layer.getDefaultStyleWorkspace());
+    assertNotNull("publish() failed", pub);
+    // Test exists
+    assertTrue(reader.existsCoveragestore(DEFAULT_WS, storeName));
+    assertTrue(reader.existsCoverage(DEFAULT_WS, storeName, storeName));
+
+    pub = publisher.publishArcGrid(DEFAULT_WS, storeName + "another", "layername", arcgrid);
+
+    assertTrue("publish() failed", pub);
+
+    double[] bbox = {-103.85, 44.38, -103.62, 44.50};
+    pub = publisher.publishArcGrid(DEFAULT_WS, storeName + "another_complex", storeName + "another_complex", arcgrid, "EPSG:4326", ProjectionPolicy.REPROJECT_TO_DECLARED, "raster", bbox);
+
+    assertTrue("publish() failed", pub);
+
+    //delete
+    assertTrue("Unpublish() failed", publisher.removeCoverageStore(DEFAULT_WS, storeName, true));
+    // Test not exists
+    assertFalse(reader.existsCoveragestore(DEFAULT_WS, storeName));
+  }
+
+  @Test
+  public void testArcGridWithStyleInWorkspace() throws IOException {
+    if (!enabled()) {
+      return;
     }
+    deleteAll();
 
-    @Test
-    public void testReloadCoverageStore() throws FileNotFoundException, IOException {
-        if (!enabled()) return;
-        deleteAll();
+    File arcgrid = new ClassPathResource("testdata/resttestdem.asc").getFile();
 
-        File arcgrid = new ClassPathResource("testdata/resttestdem.asc").getFile();
-        
-        assertTrue(publisher.createWorkspace(DEFAULT_WS));
-        
-        // test insert
-        boolean pub = publisher.publishArcGrid(DEFAULT_WS, storeName, arcgrid);
-        
-        assertNotNull("publish() failed", pub);
+    assertTrue(reader.getWorkspaces().isEmpty());
+    assertTrue(publisher.createWorkspace(DEFAULT_WS));
 
-        // test reload
-        assertTrue(publisher.reloadStore(DEFAULT_WS, storeName, StoreType.COVERAGESTORES));   
+    File sldFile = new ClassPathResource("testdata/raster.sld").getFile();
+
+    // insert style
+    assertTrue(publisher.publishStyleInWorkspace(DEFAULT_WS, sldFile, "mystyle"));
+    assertTrue(reader.existsStyle(DEFAULT_WS, "mystyle"));
+
+    // known state?
+    assertFalse("Cleanup failed", existsLayer(layerName));
+
+    // test insert
+    boolean pub = publisher.publishArcGrid(DEFAULT_WS, storeName, storeName,
+            arcgrid, "EPSG:4326", ProjectionPolicy.FORCE_DECLARED, DEFAULT_WS + ":" + "mystyle", null);
+
+    assertNotNull("publish() failed", pub);
+    // Test exists
+    assertTrue(reader.existsCoveragestore(DEFAULT_WS, storeName));
+    assertTrue(reader.existsCoverage(DEFAULT_WS, storeName, storeName));
+    RESTLayer layer = reader.getLayer(DEFAULT_WS, storeName);
+    assertEquals(DEFAULT_WS + ":mystyle", layer.getDefaultStyle());
+    assertEquals(DEFAULT_WS, layer.getDefaultStyleWorkspace());
+  }
+
+  @Test
+  public void testReloadCoverageStore() throws FileNotFoundException, IOException {
+    if (!enabled()) {
+      return;
     }
+    deleteAll();
+
+    File arcgrid = new ClassPathResource("testdata/resttestdem.asc").getFile();
+
+    assertTrue(publisher.createWorkspace(DEFAULT_WS));
+
+    // test insert
+    boolean pub = publisher.publishArcGrid(DEFAULT_WS, storeName, arcgrid);
+
+    assertNotNull("publish() failed", pub);
+
+    // test reload
+    assertTrue(publisher.reloadStore(DEFAULT_WS, storeName, StoreType.COVERAGESTORES));
+  }
 }

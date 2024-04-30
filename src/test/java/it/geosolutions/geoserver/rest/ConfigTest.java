@@ -48,75 +48,73 @@ public class ConfigTest extends GeoserverRESTTest {
 
   private static final Logger LOG = Logger.getLogger(ConfigTest.class.getName());
 
-    
+  private static final String DEFAULT_WS = "geosolutions";
 
-    private static final String DEFAULT_WS = "geosolutions";
-
-    @Test
-    public void insertStyles() throws FileNotFoundException, IOException {
-        if (!enabled()) {
-            LOG.info("Skipping test " + "insertStyles" + "for class:" + this.getClass().getSimpleName());
-            return;
-        }
-        deleteAll();
-
-        File sldDir = new ClassPathResource("testdata").getFile();
-        for (File sldFile : sldDir.listFiles((FilenameFilter) new SuffixFileFilter(".sld"))) {
-
-            if ((!sldFile.getName().startsWith("default_") 
-                    || !UNDELETABLE_STYLES.contains(sldFile.getName().substring(8,sldFile.getName().length()-4)))
-                    && !"raster.sld".equals(sldFile.getName())) {
-
-                LOG.info("Existing styles: " + reader.getStyles().getNames());
-                String basename = FilenameUtils.getBaseName(sldFile.toString());
-                LOG.info("Publishing style " + sldFile + " as " + basename);
-                assertTrue("Could not publish " + sldFile, publisher.publishStyle(sldFile, basename));
-            }
-        }
+  @Test
+  public void insertStyles() throws FileNotFoundException, IOException {
+    if (!enabled()) {
+      LOG.info("Skipping test " + "insertStyles" + "for class:" + this.getClass().getSimpleName());
+      return;
     }
+    deleteAll();
 
-    @Test
-    public void insertExternalGeotiff() throws FileNotFoundException, IOException {
-        if (!enabled()) {
-            LOG.info("Skipping test " + "insertExternalGeotiff" + "for class:" + this.getClass().getSimpleName());
-            return;
-        }
-        deleteAll();
+    File sldDir = new ClassPathResource("testdata").getFile();
+    for (File sldFile : sldDir.listFiles((FilenameFilter) new SuffixFileFilter(".sld"))) {
 
-        String storeName = "testRESTStoreGeotiff";
-        String layerName = "resttestdem";
+      if ((!sldFile.getName().startsWith("default_")
+              || !UNDELETABLE_STYLES.contains(sldFile.getName().substring(8, sldFile.getName().length() - 4)))
+              && !"raster.sld".equals(sldFile.getName())) {
 
-        publisher.createWorkspace(DEFAULT_WS);
-        publisher.publishStyle(new File(new ClassPathResource("testdata").getFile(), "raster.sld"));
-
-        File geotiff = new ClassPathResource("testdata/resttestdem.tif").getFile();
-        boolean pc = publisher.publishExternalGeoTIFF(DEFAULT_WS, storeName, geotiff, layerName, "EPSG:4326", ProjectionPolicy.FORCE_DECLARED, "raster");
-
-        assertTrue(pc);
+        LOG.info("Existing styles: " + reader.getStyles().getNames());
+        String basename = FilenameUtils.getBaseName(sldFile.toString());
+        LOG.info("Publishing style " + sldFile + " as " + basename);
+        assertTrue("Could not publish " + sldFile, publisher.publishStyle(sldFile, basename));
+      }
     }
+  }
 
-    @Test
-    public void insertExternalShape() throws FileNotFoundException, IOException {
-        if (!enabled()) {
-            LOG.info("Skipping test " + "insertExternalShape" + "for class:" + this.getClass().getSimpleName());
-            return;
-        }
-        deleteAll();
-
-        publisher.createWorkspace(DEFAULT_WS);
-        publisher.publishStyle(new File(new ClassPathResource("testdata").getFile(), "default_point.sld"));
-
-        File zipFile = new ClassPathResource("testdata/resttestshp.zip").getFile();
-
-        boolean published = publisher.publishShp(DEFAULT_WS, "anyname", "cities", zipFile, "EPSG:41001", "default_point");
-        assertTrue("publish() failed", published);
-
-        //test delete
-        boolean ok = publisher.unpublishFeatureType(DEFAULT_WS, "anyname", "cities");
-        assertTrue("Unpublish() failed", ok);
-        // remove also datastore
-        boolean dsRemoved = publisher.removeDatastore(DEFAULT_WS, "anyname");
-        assertTrue("removeDatastore() failed", dsRemoved);
+  @Test
+  public void insertExternalGeotiff() throws FileNotFoundException, IOException {
+    if (!enabled()) {
+      LOG.info("Skipping test " + "insertExternalGeotiff" + "for class:" + this.getClass().getSimpleName());
+      return;
     }
+    deleteAll();
+
+    String storeName = "testRESTStoreGeotiff";
+    String layerName = "resttestdem";
+
+    publisher.createWorkspace(DEFAULT_WS);
+    publisher.publishStyle(new File(new ClassPathResource("testdata").getFile(), "raster.sld"));
+
+    File geotiff = new ClassPathResource("testdata/resttestdem.tif").getFile();
+    boolean pc = publisher.publishExternalGeoTIFF(DEFAULT_WS, storeName, geotiff, layerName, "EPSG:4326", ProjectionPolicy.FORCE_DECLARED, "raster");
+
+    assertTrue(pc);
+  }
+
+  @Test
+  public void insertExternalShape() throws FileNotFoundException, IOException {
+    if (!enabled()) {
+      LOG.info("Skipping test " + "insertExternalShape" + "for class:" + this.getClass().getSimpleName());
+      return;
+    }
+    deleteAll();
+
+    publisher.createWorkspace(DEFAULT_WS);
+    publisher.publishStyle(new File(new ClassPathResource("testdata").getFile(), "default_point.sld"));
+
+    File zipFile = new ClassPathResource("testdata/resttestshp.zip").getFile();
+
+    boolean published = publisher.publishShp(DEFAULT_WS, "anyname", "cities", zipFile, "EPSG:41001", "default_point");
+    assertTrue("publish() failed", published);
+
+    //test delete
+    boolean ok = publisher.unpublishFeatureType(DEFAULT_WS, "anyname", "cities");
+    assertTrue("Unpublish() failed", ok);
+    // remove also datastore
+    boolean dsRemoved = publisher.removeDatastore(DEFAULT_WS, "anyname");
+    assertTrue("removeDatastore() failed", dsRemoved);
+  }
 
 }

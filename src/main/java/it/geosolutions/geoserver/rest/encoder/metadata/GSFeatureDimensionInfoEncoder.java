@@ -22,37 +22,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.encoder.metadata;
 
-
 public class GSFeatureDimensionInfoEncoder extends GSDimensionInfoEncoder {
-	public final static String ATTRIBUTE="attribute";
-	public final static String END_ATTRIBUTE="endAttribute";
-	
-	/**
-	 * if this dimension is enabled this constructor should be called.
-	 * @param attribute the attribute field name to use as dimension
-	 */
-	public GSFeatureDimensionInfoEncoder(final String attribute){
-		super(true);
-		add(ATTRIBUTE, attribute);
-	}
-	
-	/**
-	 * Change the attribute used as dimension
-	 * @param attribute the attribute to use as dimension
-	 */
-	public void setAttribute(final String attribute){
-		set(ATTRIBUTE, attribute);
-	}
-	
-	/**
-	 * Set the end attribute used in the dimension (optional)
-	 * @param endAttribute the dimension end attribute
-	 */
-	public void setEndAttribute(final String endAttribute){
-		set(END_ATTRIBUTE, endAttribute);
-	}
+
+  public final static String ATTRIBUTE = "attribute";
+  public final static String END_ATTRIBUTE = "endAttribute";
+
+  /**
+   * if this dimension is enabled this constructor should be called.
+   *
+   * @param attribute the attribute field name to use as dimension
+   */
+  public GSFeatureDimensionInfoEncoder(final String attribute) {
+    super(true);
+    add(ATTRIBUTE, attribute);
+  }
+
+  /**
+   * Change the attribute used as dimension
+   *
+   * @param attribute the attribute to use as dimension
+   */
+  public void setAttribute(final String attribute) {
+    set(ATTRIBUTE, attribute);
+  }
+
+  /**
+   * Set the end attribute used in the dimension (optional)
+   *
+   * @param endAttribute the dimension end attribute
+   */
+  public void setEndAttribute(final String endAttribute) {
+    set(END_ATTRIBUTE, endAttribute);
+  }
 
 }

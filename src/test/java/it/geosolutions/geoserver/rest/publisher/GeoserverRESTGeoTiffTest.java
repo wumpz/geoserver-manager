@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.publisher;
 
 import static org.junit.Assert.assertEquals;
@@ -45,9 +44,8 @@ import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
 /**
- * Testcase for publishing layers on geoserver.
- * We need a running GeoServer to properly run the tests. 
- * If such geoserver instance cannot be contacted, tests will be skipped.
+ * Testcase for publishing layers on geoserver. We need a running GeoServer to properly run the tests. If such geoserver
+ * instance cannot be contacted, tests will be skipped.
  *
  * @author Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
  */
@@ -55,129 +53,134 @@ public class GeoserverRESTGeoTiffTest extends GeoserverRESTTest {
 
   private static final Logger LOG = Logger.getLogger(GeoserverRESTGeoTiffTest.class.getName());
 
-    String storeName = "testRESTStoreGeotiff";
-    String layerName = "resttestdem";
-    
-    @Test
-    public void testExternalGeotiff() throws FileNotFoundException, IOException {
-        if (!enabled()) return;
-        deleteAll();
+  String storeName = "testRESTStoreGeotiff";
+  String layerName = "resttestdem";
 
-        File geotiff = new ClassPathResource("testdata/resttestdem.tif").getFile();
-
-        assertTrue(reader.getWorkspaces().isEmpty());
-        assertTrue(publisher.createWorkspace(DEFAULT_WS));
-
-
-        // known state?
-        assertFalse("Cleanup failed", existsLayer(layerName));
-        
-        // Test exists
-        assertFalse(reader.existsLayer(DEFAULT_WS, layerName));
-
-        // test insert
-        boolean pc = publisher.publishExternalGeoTIFF(DEFAULT_WS, storeName, geotiff, layerName,"EPSG:4326",ProjectionPolicy.FORCE_DECLARED,"raster");
-        assertTrue("publish() failed", pc);
-        assertTrue(existsLayer(layerName));
-        assertTrue(reader.existsLayer(DEFAULT_WS, layerName));
-        LOG.info("Published "+pc);
-        RESTCoverageStore reloadedCS = reader.getCoverageStore(DEFAULT_WS, storeName);
-
-        assertEquals(storeName, reloadedCS.getName());
-        assertEquals(DEFAULT_WS, reloadedCS.getWorkspaceName());
-
-        //test delete
-        assertTrue("Unpublish() failed", publisher.unpublishCoverage(DEFAULT_WS, storeName, layerName));
-        assertTrue("Unpublish() failed", publisher.removeCoverageStore(DEFAULT_WS, storeName));
-        assertFalse("Bad unpublish()",   publisher.unpublishCoverage(DEFAULT_WS, storeName, layerName));
-        assertFalse(existsLayer(layerName));
+  @Test
+  public void testExternalGeotiff() throws FileNotFoundException, IOException {
+    if (!enabled()) {
+      return;
     }
-   
-    @Test
-    public void testGeotiff() throws FileNotFoundException, IOException {
-        if (!enabled()) return;
-        deleteAll();
+    deleteAll();
 
-        File geotiff = new ClassPathResource("testdata/resttestdem.tif").getFile();
-        
-        assertTrue(reader.getWorkspaces().isEmpty());
-        assertTrue(publisher.createWorkspace(DEFAULT_WS));
+    File geotiff = new ClassPathResource("testdata/resttestdem.tif").getFile();
 
-        // known state?
-        assertFalse("Cleanup failed", existsLayer(layerName));
+    assertTrue(reader.getWorkspaces().isEmpty());
+    assertTrue(publisher.createWorkspace(DEFAULT_WS));
 
-        // test insert
-        boolean pub = publisher.publishGeoTIFF(DEFAULT_WS, storeName, geotiff);
-        
-        assertNotNull("publish() failed", pub);
-        // Test exists
-        assertTrue(reader.existsCoveragestore(DEFAULT_WS, storeName));
-        assertTrue(reader.existsCoverage(DEFAULT_WS, storeName, storeName));
+    // known state?
+    assertFalse("Cleanup failed", existsLayer(layerName));
 
-        pub = publisher.publishGeoTIFF(DEFAULT_WS, storeName+"another", "layername", geotiff);
-        
-        assertTrue("publish() failed", pub);
-        
-        double[] bbox = {-103.85, 44.38, -103.62, 44.50};
-        pub = publisher.publishGeoTIFF(DEFAULT_WS, storeName+"another_complex", storeName+"another_complex", geotiff, "EPSG:4326", ProjectionPolicy.REPROJECT_TO_DECLARED, "raster", bbox);
-        
-        assertTrue("publish() failed", pub);
+    // Test exists
+    assertFalse(reader.existsLayer(DEFAULT_WS, layerName));
 
-        //delete
-        assertTrue("Unpublish() failed", publisher.removeCoverageStore(DEFAULT_WS, storeName,true));
-        // Test not exists
-        assertFalse(reader.existsCoveragestore(DEFAULT_WS, storeName));
+    // test insert
+    boolean pc = publisher.publishExternalGeoTIFF(DEFAULT_WS, storeName, geotiff, layerName, "EPSG:4326", ProjectionPolicy.FORCE_DECLARED, "raster");
+    assertTrue("publish() failed", pc);
+    assertTrue(existsLayer(layerName));
+    assertTrue(reader.existsLayer(DEFAULT_WS, layerName));
+    LOG.info("Published " + pc);
+    RESTCoverageStore reloadedCS = reader.getCoverageStore(DEFAULT_WS, storeName);
+
+    assertEquals(storeName, reloadedCS.getName());
+    assertEquals(DEFAULT_WS, reloadedCS.getWorkspaceName());
+
+    //test delete
+    assertTrue("Unpublish() failed", publisher.unpublishCoverage(DEFAULT_WS, storeName, layerName));
+    assertTrue("Unpublish() failed", publisher.removeCoverageStore(DEFAULT_WS, storeName));
+    assertFalse("Bad unpublish()", publisher.unpublishCoverage(DEFAULT_WS, storeName, layerName));
+    assertFalse(existsLayer(layerName));
+  }
+
+  @Test
+  public void testGeotiff() throws FileNotFoundException, IOException {
+    if (!enabled()) {
+      return;
     }
-    
-    @Test
-    public void testGeoTiffWithStyleInWorkspace() throws IOException
-    {
-        if (!enabled()) return;
-        deleteAll();
+    deleteAll();
 
-        File geotiff = new ClassPathResource("testdata/resttestdem.tif").getFile();
-        
-        assertTrue(reader.getWorkspaces().isEmpty());
-        assertTrue(publisher.createWorkspace(DEFAULT_WS));
+    File geotiff = new ClassPathResource("testdata/resttestdem.tif").getFile();
 
-        File sldFile = new ClassPathResource("testdata/raster.sld").getFile();
+    assertTrue(reader.getWorkspaces().isEmpty());
+    assertTrue(publisher.createWorkspace(DEFAULT_WS));
 
+    // known state?
+    assertFalse("Cleanup failed", existsLayer(layerName));
 
-        // insert style
-        assertTrue(publisher.publishStyleInWorkspace(DEFAULT_WS, sldFile, "mystyle"));
-        assertTrue(reader.existsStyle(DEFAULT_WS, "mystyle"));
-        
-        // known state?
-        assertFalse("Cleanup failed", existsLayer(layerName));
+    // test insert
+    boolean pub = publisher.publishGeoTIFF(DEFAULT_WS, storeName, geotiff);
 
-        // test insert
-        boolean pub = publisher.publishGeoTIFF(DEFAULT_WS, storeName, storeName,
-                geotiff, "EPSG:4326", ProjectionPolicy.FORCE_DECLARED, DEFAULT_WS + ":" + "mystyle", null);
-        
-        assertNotNull("publish() failed", pub);
-        // Test exists
-        assertTrue("New coverage not found", reader.existsCoveragestore(DEFAULT_WS, storeName));
-        assertTrue("New Store not found", reader.existsCoverage(DEFAULT_WS, storeName, storeName));
-        RESTLayer layer = reader.getLayer(DEFAULT_WS, storeName);
-        assertEquals("Bad default style", DEFAULT_WS + ":mystyle", layer.getDefaultStyle());
-        assertEquals("Bad workspace for style", DEFAULT_WS, layer.getDefaultStyleWorkspace());
+    assertNotNull("publish() failed", pub);
+    // Test exists
+    assertTrue(reader.existsCoveragestore(DEFAULT_WS, storeName));
+    assertTrue(reader.existsCoverage(DEFAULT_WS, storeName, storeName));
+
+    pub = publisher.publishGeoTIFF(DEFAULT_WS, storeName + "another", "layername", geotiff);
+
+    assertTrue("publish() failed", pub);
+
+    double[] bbox = {-103.85, 44.38, -103.62, 44.50};
+    pub = publisher.publishGeoTIFF(DEFAULT_WS, storeName + "another_complex", storeName + "another_complex", geotiff, "EPSG:4326", ProjectionPolicy.REPROJECT_TO_DECLARED, "raster", bbox);
+
+    assertTrue("publish() failed", pub);
+
+    //delete
+    assertTrue("Unpublish() failed", publisher.removeCoverageStore(DEFAULT_WS, storeName, true));
+    // Test not exists
+    assertFalse(reader.existsCoveragestore(DEFAULT_WS, storeName));
+  }
+
+  @Test
+  public void testGeoTiffWithStyleInWorkspace() throws IOException {
+    if (!enabled()) {
+      return;
     }
+    deleteAll();
 
-    @Test
-    public void testReloadCoverageStore() throws FileNotFoundException, IOException {
-        if (!enabled()) return;
-        deleteAll();
+    File geotiff = new ClassPathResource("testdata/resttestdem.tif").getFile();
 
-        File geotiff = new ClassPathResource("testdata/resttestdem.tif").getFile();
-        
-        assertTrue(publisher.createWorkspace(DEFAULT_WS));
-        
-        // test insert
-        boolean pub = publisher.publishGeoTIFF(DEFAULT_WS, storeName, geotiff);
-        
-        assertNotNull("publish() failed", pub);
+    assertTrue(reader.getWorkspaces().isEmpty());
+    assertTrue(publisher.createWorkspace(DEFAULT_WS));
 
-        // test reload
-        assertTrue(publisher.reloadStore(DEFAULT_WS, storeName, StoreType.COVERAGESTORES));   
+    File sldFile = new ClassPathResource("testdata/raster.sld").getFile();
+
+    // insert style
+    assertTrue(publisher.publishStyleInWorkspace(DEFAULT_WS, sldFile, "mystyle"));
+    assertTrue(reader.existsStyle(DEFAULT_WS, "mystyle"));
+
+    // known state?
+    assertFalse("Cleanup failed", existsLayer(layerName));
+
+    // test insert
+    boolean pub = publisher.publishGeoTIFF(DEFAULT_WS, storeName, storeName,
+            geotiff, "EPSG:4326", ProjectionPolicy.FORCE_DECLARED, DEFAULT_WS + ":" + "mystyle", null);
+
+    assertNotNull("publish() failed", pub);
+    // Test exists
+    assertTrue("New coverage not found", reader.existsCoveragestore(DEFAULT_WS, storeName));
+    assertTrue("New Store not found", reader.existsCoverage(DEFAULT_WS, storeName, storeName));
+    RESTLayer layer = reader.getLayer(DEFAULT_WS, storeName);
+    assertEquals("Bad default style", DEFAULT_WS + ":mystyle", layer.getDefaultStyle());
+    assertEquals("Bad workspace for style", DEFAULT_WS, layer.getDefaultStyleWorkspace());
+  }
+
+  @Test
+  public void testReloadCoverageStore() throws FileNotFoundException, IOException {
+    if (!enabled()) {
+      return;
     }
+    deleteAll();
+
+    File geotiff = new ClassPathResource("testdata/resttestdem.tif").getFile();
+
+    assertTrue(publisher.createWorkspace(DEFAULT_WS));
+
+    // test insert
+    boolean pub = publisher.publishGeoTIFF(DEFAULT_WS, storeName, geotiff);
+
+    assertNotNull("publish() failed", pub);
+
+    // test reload
+    assertTrue(publisher.reloadStore(DEFAULT_WS, storeName, StoreType.COVERAGESTORES));
+  }
 }

@@ -24,313 +24,313 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-	<groupId>it.geosolutions</groupId>
-	<artifactId>geoserver-manager</artifactId>
-	<version>1.14</version>
+  <groupId>it.geosolutions</groupId>
+  <artifactId>geoserver-manager</artifactId>
+  <version>1.14</version>
 
-	<packaging>jar</packaging>
+  <packaging>jar</packaging>
 
-	<name>GeoServer Manager - REST based</name>
-	<description>
-		GeoServer Manager is a library to interact with GeoServer 
-		The scope of this library is to have a simple API, and use as few external 
-		libs as possible.
-	</description>
+  <name>GeoServer Manager - REST based</name>
+  <description>
+    GeoServer Manager is a library to interact with GeoServer 
+    The scope of this library is to have a simple API, and use as few external 
+    libs as possible.
+  </description>
 
-	<inceptionYear>2007</inceptionYear>
+  <inceptionYear>2007</inceptionYear>
 
-	<url>https://github.com/geosolutions-it/geoserver-manager</url>
+  <url>https://github.com/geosolutions-it/geoserver-manager</url>
 
-	<organization>
-		<name>GeoSolutions</name>
-		<url>http://www.geo-solutions.it</url>
-	</organization>
+  <organization>
+    <name>GeoSolutions</name>
+    <url>http://www.geo-solutions.it</url>
+  </organization>
 
-	<developers>
-		<developer>
-			<id>etj</id>
-			<name>Emanuele Tajariol</name>
-			<email>etj AT geosolutions.it</email>
-			<organization>GeoSolutions</organization>
-			<organizationUrl>http://www.geo-solutions.it</organizationUrl>
-			<roles>
-				<role>architect</role>
-				<role>developer</role>
-			</roles>
-			<timezone>+1</timezone>
-		</developer>
-		<developer>
-			<id>ccancellieri</id>
-			<name>Carlo Cancellieri</name>
-			<email>carlo.cancellieri AT geosolutions.it</email>
-			<organization>GeoSolutions</organization>
-			<organizationUrl>http://www.geo-solutions.it</organizationUrl>
-			<roles>
-				<role>architect</role>
-				<role>developer</role>
-			</roles>
-			<timezone>+1</timezone>
-		</developer>
-	</developers>
+  <developers>
+    <developer>
+      <id>etj</id>
+      <name>Emanuele Tajariol</name>
+      <email>etj AT geosolutions.it</email>
+      <organization>GeoSolutions</organization>
+      <organizationUrl>http://www.geo-solutions.it</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>ccancellieri</id>
+      <name>Carlo Cancellieri</name>
+      <email>carlo.cancellieri AT geosolutions.it</email>
+      <organization>GeoSolutions</organization>
+      <organizationUrl>http://www.geo-solutions.it</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+  </developers>
 
-	<licenses>
-		<license>
-			<name>MIT License</name>
-			<url>http://opensource.org/licenses/mit-license.php</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>http://opensource.org/licenses/mit-license.php</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
-	<issueManagement>
-		<system>GitHub</system>
-		<url>https://github.com/geosolutions-it/geoserver-manager/issues</url>
-	</issueManagement>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/geosolutions-it/geoserver-manager/issues</url>
+  </issueManagement>
 
-	<mailingLists>
-		<mailingList>
-			<name>GeoServer Manager User List</name>
-			<post>geoserver-manager-users@googlegroups.com </post>
-			<archive>http://groups.google.com/group/geoserver-manager-users/topics</archive>
-		</mailingList>
-	</mailingLists>
+  <mailingLists>
+    <mailingList>
+      <name>GeoServer Manager User List</name>
+      <post>geoserver-manager-users@googlegroups.com </post>
+      <archive>http://groups.google.com/group/geoserver-manager-users/topics</archive>
+    </mailingList>
+  </mailingLists>
 
-	<scm>
-		<connection>scm:git:[fetch=]https://github.com/geosolutions-it/geoserver-manager.git[push=]git@github.com:geosolutions-it/geoserver-manager.git</connection>
-		<url>https://github.com/geosolutions-it/geoserver-manager</url>
-	</scm>
+  <scm>
+    <connection>scm:git:[fetch=]https://github.com/geosolutions-it/geoserver-manager.git[push=]git@github.com:geosolutions-it/geoserver-manager.git</connection>
+    <url>https://github.com/geosolutions-it/geoserver-manager</url>
+  </scm>
 
-	<ciManagement>
-		<system>jenkins</system>
-		<url>http://build.geo-solutions.it/jenkins/view/GeoServer-manager/</url>
-	</ciManagement>
+  <ciManagement>
+    <system>jenkins</system>
+    <url>http://build.geo-solutions.it/jenkins/view/GeoServer-manager/</url>
+  </ciManagement>
 
-	<repositories>
-		<repository>
-			<id>boundless</id>
-			<name>Boundless Maven Repository</name>
-			<url>https://repo.boundlessgeo.com/main/</url>
-			<!-- contains snapshot and release (including third-party-dependences)               -->
-			<!-- Restlet maven Repository (http://maven.restlet.org)                             -->
-			<!-- ucar (https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases) -->
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
+  <repositories>
+    <repository>
+      <id>boundless</id>
+      <name>Boundless Maven Repository</name>
+      <url>https://repo.boundlessgeo.com/main/</url>
+      <!-- contains snapshot and release (including third-party-dependences)               -->
+      <!-- Restlet maven Repository (http://maven.restlet.org)                             -->
+      <!-- ucar (https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases) -->
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
 
-		<repository>
-			<id>osgeo</id>
-			<name>Open Source Geospatial Foundation Repository</name>
-			<url>http://download.osgeo.org/webdav/geotools/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
+    <repository>
+      <id>osgeo</id>
+      <name>Open Source Geospatial Foundation Repository</name>
+      <url>http://download.osgeo.org/webdav/geotools/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
 
-		<repository>
-			<id>maven-restlet</id>
-			<name>Restlet Maven Repository</name>
-			<url>http://maven.restlet.org</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
+    <repository>
+      <id>maven-restlet</id>
+      <name>Restlet Maven Repository</name>
+      <url>http://maven.restlet.org</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
 
-		<repository>
-			<id>geosolutions</id>
-			<name>geosolutions repository</name>
-			<url>http://maven.geo-solutions.it/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-	</repositories>
+    <repository>
+      <id>geosolutions</id>
+      <name>geosolutions repository</name>
+      <url>http://maven.geo-solutions.it/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+  </repositories>
 
-	<distributionManagement>
-		<downloadUrl>http://maven.geo-solutions.it</downloadUrl>
-		<repository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>geosolutions</id>
-			<url>ftp://maven.geo-solutions.it/</url>
-		</repository>
-		<site>
-			<id>demo.geosolutions</id>
-			<url>scp://demo.geo-solutions.it/var/www/share/github/gsman</url>
-		</site>
-	</distributionManagement>
+  <distributionManagement>
+    <downloadUrl>http://maven.geo-solutions.it</downloadUrl>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>geosolutions</id>
+      <url>ftp://maven.geo-solutions.it/</url>
+    </repository>
+    <site>
+      <id>demo.geosolutions</id>
+      <url>scp://demo.geo-solutions.it/var/www/share/github/gsman</url>
+    </site>
+  </distributionManagement>
 
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.11.0</version>
-				<configuration>
-					<source>17</source>
-					<target>17</target>
-				</configuration>
-			</plugin>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <source>17</source>
+          <target>17</target>
+        </configuration>
+      </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.5.0</version>
-				<configuration>
-					<detectLinks />
-					<!-- <links> <link>http://commons.apache.org/dbcp/apidocs/</link> <link>http://commons.apache.org/fileupload/apidocs/</link>
-					<link>http://download.oracle.com/javase/6/docs/api</link> </links> -->
-				</configuration>
-			</plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+          <detectLinks />
+          <!-- <links> <link>http://commons.apache.org/dbcp/apidocs/</link> <link>http://commons.apache.org/fileupload/apidocs/</link>
+          <link>http://download.oracle.com/javase/6/docs/api</link> </links> -->
+        </configuration>
+      </plugin>
 
-			<!-- ======================================================= -->
-			<!-- Source packaging. -->
-			<!-- ======================================================= -->
-			<plugin>
-				<inherited>true</inherited>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<configuration>
-					<attach>true</attach>
-				</configuration>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- versioning -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>3.0.0-M6</version>
-				<configuration> 
-					<tagNameFormat>v@{project.version}</tagNameFormat>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.amashchenko.maven.plugin</groupId>
-				<artifactId>gitflow-maven-plugin</artifactId>
-				<version>1.20.0</version>
-				<configuration>
-					<pushRemote>false</pushRemote>
-					<mvnExecutable>${M2_HOME}/bin/mvn</mvnExecutable>
-					<skipTestProject>true</skipTestProject>
-					<skipFeatureVersion>true</skipFeatureVersion>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.1.2</version>
-			</plugin>
-		</plugins>
+      <!-- ======================================================= -->
+      <!-- Source packaging. -->
+      <!-- ======================================================= -->
+      <plugin>
+        <inherited>true</inherited>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <configuration>
+          <attach>true</attach>
+        </configuration>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- versioning -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>3.0.0-M6</version>
+        <configuration> 
+          <tagNameFormat>v@{project.version}</tagNameFormat>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.amashchenko.maven.plugin</groupId>
+        <artifactId>gitflow-maven-plugin</artifactId>
+        <version>1.20.0</version>
+        <configuration>
+          <pushRemote>false</pushRemote>
+          <mvnExecutable>${M2_HOME}/bin/mvn</mvnExecutable>
+          <skipTestProject>true</skipTestProject>
+          <skipFeatureVersion>true</skipFeatureVersion>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.1.2</version>
+      </plugin>
+    </plugins>
 
-		<!-- ======================================================== -->
-		<!-- Extensions settings for Deployment -->
-		<!-- ======================================================== -->
-		<extensions>
-			<!--............................................. -->
-			<!-- geo-solutions (using wagon ftp) -->
-			<!--............................................. -->
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ftp</artifactId>
-				<version>2.12</version>
-			</extension>
-		</extensions>
-	</build>
+    <!-- ======================================================== -->
+    <!-- Extensions settings for Deployment -->
+    <!-- ======================================================== -->
+    <extensions>
+      <!--............................................. -->
+      <!-- geo-solutions (using wagon ftp) -->
+      <!--............................................. -->
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ftp</artifactId>
+        <version>2.12</version>
+      </extension>
+    </extensions>
+  </build>
 
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<links>
-						<link>http://commons.apache.org/lang/api</link>
-						<link>http://java.sun.com/j2se/1.5.0/docs/api</link>
-						<link>http://www.jdom.org/docs/apidocs</link>
-					</links>
-				</configuration>
-			</plugin>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <links>
+            <link>http://commons.apache.org/lang/api</link>
+            <link>http://java.sun.com/j2se/1.5.0/docs/api</link>
+            <link>http://www.jdom.org/docs/apidocs</link>
+          </links>
+        </configuration>
+      </plugin>
 
-		</plugins>
-	</reporting>
+    </plugins>
+  </reporting>
 
-	<dependencies>
+  <dependencies>
 
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.15.0</version>
-		</dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.15.0</version>
+    </dependency>
 
-		<dependency>
-			<groupId>commons-httpclient</groupId>
-			<artifactId>commons-httpclient</artifactId>
-			<version>3.1</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+    <dependency>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+      <version>3.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
-		<dependency>
-			<groupId>jdom</groupId>
-			<artifactId>jdom</artifactId>
-			<version>1.1</version>
-		</dependency>
+    <dependency>
+      <groupId>jdom</groupId>
+      <artifactId>jdom</artifactId>
+      <version>1.1</version>
+    </dependency>
 
-		<dependency>
-			<groupId>net.sf.json-lib</groupId>
-			<artifactId>json-lib</artifactId>
-			<version>2.4</version>
-			<classifier>jdk15</classifier>
-		</dependency>
+    <dependency>
+      <groupId>net.sf.json-lib</groupId>
+      <artifactId>json-lib</artifactId>
+      <version>2.4</version>
+      <classifier>jdk15</classifier>
+    </dependency>
 
-		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.restlet</artifactId>
-			<version>1.1.10_3</version>
-		</dependency>
+    <dependency>
+      <groupId>org.apache.servicemix.bundles</groupId>
+      <artifactId>org.apache.servicemix.bundles.restlet</artifactId>
+      <version>1.1.10_3</version>
+    </dependency>
         
-		<!--================================================================= -->
-		<!-- TEST -->
-		<!--================================================================= -->
+    <!--================================================================= -->
+    <!-- TEST -->
+    <!--================================================================= -->
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.13.2</version>
-			<scope>test</scope>
-		</dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>2.5.6.SEC02</version>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-	</dependencies>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>2.5.6.SEC02</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+  </dependencies>
 
 </project>
 

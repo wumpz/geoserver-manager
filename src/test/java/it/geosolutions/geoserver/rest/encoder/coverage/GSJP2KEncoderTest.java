@@ -32,34 +32,33 @@ import org.springframework.util.Assert;
  */
 public class GSJP2KEncoderTest extends TestCase {
 
-    public GSJP2KEncoderTest() {
-    }
+  public GSJP2KEncoderTest() {
+  }
 
   private static final Logger LOG = Logger.getLogger(GSJP2KEncoderTest.class.getName());
-    
-    
-    /**
-     * TODO implement this test
-     */
-    @Test
-    public void testAll() {
-    	final GSJP2KEncoder encoder=new GSJP2KEncoder();
-    
-    	Assert.isNull(encoder.getUseJaiImageRead());
-    	
-    	encoder.setUseMultithreading(true);
-    	LOG.info(encoder.toString());
-    	Assert.isTrue(encoder.getUseMultithreading());
-    	
-    	encoder.setUseMultithreading(false);
-    	
-    	Assert.isTrue(!encoder.getUseMultithreading());
-    	
-    	encoder.setSuggestedTileSize("512,512");
-    	
-    	Assert.isTrue(encoder.getSuggestedTileSize().equalsIgnoreCase("512,512"));
-    	
-    	LOG.info(encoder.toString());
-    	
-    }
+
+  /**
+   * TODO implement this test
+   */
+  @Test
+  public void testAll() {
+    final GSJP2KEncoder encoder = new GSJP2KEncoder();
+
+    Assert.isNull(encoder.getUseJaiImageRead());
+
+    encoder.setUseMultithreading(true);
+    LOG.info(encoder.toString());
+    Assert.isTrue(encoder.getUseMultithreading());
+
+    encoder.setUseMultithreading(false);
+
+    Assert.isTrue(!encoder.getUseMultithreading());
+
+    encoder.setSuggestedTileSize("512,512");
+
+    Assert.isTrue(encoder.getSuggestedTileSize().equalsIgnoreCase("512,512"));
+
+    LOG.info(encoder.toString());
+
+  }
 }

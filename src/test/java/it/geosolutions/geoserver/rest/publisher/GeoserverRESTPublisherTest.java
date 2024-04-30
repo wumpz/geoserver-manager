@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.publisher;
 
 import it.geosolutions.geoserver.rest.GeoserverRESTTest;
@@ -35,12 +34,9 @@ import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-
-
 /**
- * Testcase for publishing layers on geoserver.
- * We need a running GeoServer to properly run the tests. 
- * If such geoserver instance cannot be contacted, tests will be skipped.
+ * Testcase for publishing layers on geoserver. We need a running GeoServer to properly run the tests. If such geoserver
+ * instance cannot be contacted, tests will be skipped.
  *
  * @author etj
  * @author Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
@@ -49,70 +45,68 @@ public class GeoserverRESTPublisherTest extends GeoserverRESTTest {
 
   private static final Logger LOG = Logger.getLogger(GeoserverRESTPublisherTest.class.getName());
 
-     
-
-    protected void cleanupTestFT(String layerName, String ns, String storeName) {
-        // dry run delete to work in a known state
-        RESTLayer testLayer = reader.getLayer(layerName);
-        if (testLayer != null) {
-            LOG.info("Clearing stale test layer " + layerName);
-            boolean ok = publisher.unpublishFeatureType(ns, storeName, layerName);
-            if (!ok) {
-                fail("Could not unpublish layer " + layerName);
-            }
-        }
-        if (publisher.removeDatastore(ns, storeName)) {
-            LOG.info("Cleared stale datastore " + storeName);
-        }
-
-        assertFalse("Cleanup failed", existsLayer(layerName));
+  protected void cleanupTestFT(String layerName, String ns, String storeName) {
+    // dry run delete to work in a known state
+    RESTLayer testLayer = reader.getLayer(layerName);
+    if (testLayer != null) {
+      LOG.info("Clearing stale test layer " + layerName);
+      boolean ok = publisher.unpublishFeatureType(ns, storeName, layerName);
+      if (!ok) {
+        fail("Could not unpublish layer " + layerName);
+      }
+    }
+    if (publisher.removeDatastore(ns, storeName)) {
+      LOG.info("Cleared stale datastore " + storeName);
     }
 
-    @Test
-    public void testDeleteUnexistingCoverage() throws FileNotFoundException, IOException {
-        if (!enabled()) {
-            return;
-        }
+    assertFalse("Cleanup failed", existsLayer(layerName));
+  }
+
+  @Test
+  public void testDeleteUnexistingCoverage() throws FileNotFoundException, IOException {
+    if (!enabled()) {
+      return;
+    }
 //        Assume.assumeTrue(enabled);
 
-        String wsName = "this_ws_does_not_exist";
-        String storeName = "this_store_does_not_exist";
-        String layerName = "this_layer_does_not_exist";
+    String wsName = "this_ws_does_not_exist";
+    String storeName = "this_store_does_not_exist";
+    String layerName = "this_layer_does_not_exist";
 
-        boolean ok = publisher.unpublishCoverage(wsName, storeName, layerName);
-        assertFalse("unpublished not existing layer", ok);
+    boolean ok = publisher.unpublishCoverage(wsName, storeName, layerName);
+    assertFalse("unpublished not existing layer", ok);
+  }
+
+  @Test
+  public void testDeleteUnexistingFeatureType() throws FileNotFoundException, IOException {
+    if (!enabled()) {
+      return;
     }
-
-    @Test
-    public void testDeleteUnexistingFeatureType() throws FileNotFoundException, IOException {
-        if (!enabled()) {
-            return;
-        }
 //        Assume.assumeTrue(enabled);
 
-        String wsName = "this_ws_does_not_exist";
-        String storeName = "this_store_does_not_exist";
-        String layerName = "this_layer_does_not_exist";
+    String wsName = "this_ws_does_not_exist";
+    String storeName = "this_store_does_not_exist";
+    String layerName = "this_layer_does_not_exist";
 
-        boolean ok = publisher.unpublishFeatureType(wsName, storeName, layerName);
-        assertFalse("unpublished not existing layer", ok);
+    boolean ok = publisher.unpublishFeatureType(wsName, storeName, layerName);
+    assertFalse("unpublished not existing layer", ok);
+  }
+
+  @Test
+  public void testDeleteUnexistingDatastore() throws FileNotFoundException, IOException {
+    if (!enabled()) {
+      return;
     }
-
-    @Test
-    public void testDeleteUnexistingDatastore() throws FileNotFoundException, IOException {
-        if (!enabled()) {
-            return;
-        }
 //        Assume.assumeTrue(enabled);
 
-        String wsName = "this_ws_does_not_exist";
-        String storeName = "this_store_does_not_exist";
+    String wsName = "this_ws_does_not_exist";
+    String storeName = "this_store_does_not_exist";
 
-        boolean ok = publisher.removeDatastore(wsName, storeName,true);
-        assertFalse("removed not existing datastore", ok);
-    }
+    boolean ok = publisher.removeDatastore(wsName, storeName, true);
+    assertFalse("removed not existing datastore", ok);
+  }
 
-    //	public void testDeleteUnexistingFT() throws FileNotFoundException, IOException {
+  //	public void testDeleteUnexistingFT() throws FileNotFoundException, IOException {
 //		String wsName = "this_ws_does_not_exist";
 //		String storeName = "this_store_does_not_exist";
 //		String layerName = "this_layer_does_not_exist";
@@ -120,5 +114,4 @@ public class GeoserverRESTPublisherTest extends GeoserverRESTTest {
 //		boolean ok = publisher.unpublishFT(wsName, storeName, layerName);
 //		assertFalse("unpublished not existing layer", ok);
 //	}
-    
 }

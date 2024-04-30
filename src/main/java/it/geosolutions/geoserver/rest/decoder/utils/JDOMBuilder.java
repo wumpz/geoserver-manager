@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.decoder.utils;
 
 import java.io.IOException;
@@ -35,30 +34,30 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-
 /**
  *
  * @author ETj (etj at geo-solutions.it)
  */
 public class JDOMBuilder {
 
-  private static final Logger LOG = Logger.getLogger(JDOMBuilder.class.getName());   
+  private static final Logger LOG = Logger.getLogger(JDOMBuilder.class.getName());
 
-    public static Element buildElement(String response) {
-        if(response == null)
-            return null;
-
-        try{
-			SAXBuilder builder = new SAXBuilder();
-			Document doc = builder.build(new StringReader(response));
-			return  doc.getRootElement();
-		} catch (JDOMException ex) {
-			LOG.log(Level.WARNING, "Ex parsing response", ex);
-		} catch (IOException ex) {
-			LOG.log(Level.WARNING, "Ex parsing response", ex);
-		}
-
-		return null;
+  public static Element buildElement(String response) {
+    if (response == null) {
+      return null;
     }
+
+    try {
+      SAXBuilder builder = new SAXBuilder();
+      Document doc = builder.build(new StringReader(response));
+      return doc.getRootElement();
+    } catch (JDOMException ex) {
+      LOG.log(Level.WARNING, "Ex parsing response", ex);
+    } catch (IOException ex) {
+      LOG.log(Level.WARNING, "Ex parsing response", ex);
+    }
+
+    return null;
+  }
 
 }

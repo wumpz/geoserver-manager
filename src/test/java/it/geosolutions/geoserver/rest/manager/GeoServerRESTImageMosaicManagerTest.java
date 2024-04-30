@@ -26,8 +26,8 @@ import org.springframework.core.io.ClassPathResource;
 
 /**
  * Self contained test for working with Structured readers
- * 
- * 
+ *
+ *
  * @author Simone Giannecchini, simone.giannecchini@geo-solutions.it
  * @author Daniele Romagnoli, GeoSolutions SAS
  *
@@ -36,302 +36,297 @@ public class GeoServerRESTImageMosaicManagerTest extends GeoserverRESTTest {
 
   private static final Logger LOG = Logger.getLogger(GeoServerRESTImageMosaicManagerTest.class.getName());
 
-    
-    /**
-     * This test is ignored because it cannot be repeated.
-     * Once the test is run, the index is created for the granules, but it won't be removed,
-     * so next run will still find all the granules in the db.
-     * 
-     * Tried with purge=metadata when removing datastores, but removing indices 
-     * in shapefiles is not supported by geoserver (which throws an UnsupportedOperation)
-     * Adding a datastore.properties for using an h2 DB won't work as well, because 
-     * only postgis is supported at lower levels.
-     * 
-     * @throws Exception 
-     */
-    @Ignore
-    @Test
-    public void createAndDelete() throws Exception{
-        if (!enabled()) {
-            return;
-        }
-        deleteAll();
+  /**
+   * This test is ignored because it cannot be repeated. Once the test is run, the index is created for the granules,
+   * but it won't be removed, so next run will still find all the granules in the db.
+   *
+   * Tried with purge=metadata when removing datastores, but removing indices in shapefiles is not supported by
+   * geoserver (which throws an UnsupportedOperation) Adding a datastore.properties for using an h2 DB won't work as
+   * well, because only postgis is supported at lower levels.
+   *
+   * @throws Exception
+   */
+  @Ignore
+  @Test
+  public void createAndDelete() throws Exception {
+    if (!enabled()) {
+      return;
+    }
+    deleteAll();
 
-        assertFalse("Workspace was not properly removed", reader.existsNamespace(DEFAULT_WS) );
+    assertFalse("Workspace was not properly removed", reader.existsNamespace(DEFAULT_WS));
 
-        publisher.createWorkspace(DEFAULT_WS);
-        
-        // crea the manager
-        GeoServerRESTStructuredGridCoverageReaderManager manager = 
-            new GeoServerRESTStructuredGridCoverageReaderManager(new URL(RESTURL), RESTUSER, RESTPW);
-        
-        // create mosaic
-        final String coverageStoreName = "mosaic";
-        final String coverageName = "mosaic";
-        final String format = "imagemosaic";
+    publisher.createWorkspace(DEFAULT_WS);
 
-        assertFalse("CoverageStore was not properly removed", reader.existsCoveragestore(DEFAULT_WS, coverageStoreName));
+    // crea the manager
+    GeoServerRESTStructuredGridCoverageReaderManager manager
+            = new GeoServerRESTStructuredGridCoverageReaderManager(new URL(RESTURL), RESTUSER, RESTPW);
 
-        // upload the mosaic
-        boolean create=manager.create(DEFAULT_WS, coverageStoreName,new ClassPathResource("testdata/granules/mosaic.zip").getFile().getAbsolutePath());
-        assertTrue(create);
-        
-        // enable dimension
-        fixDimensions(DEFAULT_WS, coverageStoreName, coverageName);
-        
-        // check index format
-        RESTStructuredCoverageIndexSchema indexFormat = manager.getGranuleIndexSchema(DEFAULT_WS, coverageName,coverageName);
-        assertNotNull(indexFormat);
-        assertFalse(indexFormat.isEmpty());
-        assertEquals(5, indexFormat.size());
+    // create mosaic
+    final String coverageStoreName = "mosaic";
+    final String coverageName = "mosaic";
+    final String format = "imagemosaic";
 
-        Set<String> allowedDateFormats = new HashSet<String>(Arrays.asList(
-                "java.util.Date",  // shapefile
-                "java.sql.Timestamp")); // h2
+    assertFalse("CoverageStore was not properly removed", reader.existsCoveragestore(DEFAULT_WS, coverageStoreName));
 
-        for (RESTStructuredCoverageIndexAttribute element : indexFormat) {
+    // upload the mosaic
+    boolean create = manager.create(DEFAULT_WS, coverageStoreName, new ClassPathResource("testdata/granules/mosaic.zip").getFile().getAbsolutePath());
+    assertTrue(create);
 
-            final String elementName = element.getName();
+    // enable dimension
+    fixDimensions(DEFAULT_WS, coverageStoreName, coverageName);
 
-            if (elementName.equals("location")) {
-                assertEquals("0", element.getMinOccurs());
-                assertEquals("1", element.getMaxOccurs());
-                assertEquals("true", element.getNillable());
-                assertEquals("java.lang.String", element.getBinding());
-            } else if (elementName.equals("time")) {
-                assertEquals("0", element.getMinOccurs());
-                assertEquals("1", element.getMaxOccurs());
-                assertEquals("true", element.getNillable());
-                assertTrue(allowedDateFormats.contains(element.getBinding()));
-            } else if (elementName.equals("date")) {
-                assertEquals("0", element.getMinOccurs());
-                assertEquals("1", element.getMaxOccurs());
-                assertEquals("true", element.getNillable());
-                assertEquals("java.lang.String", element.getBinding());
-            } else if (elementName.equals("depth")) {
-                assertEquals("0", element.getMinOccurs());
-                assertEquals("1", element.getMaxOccurs());
-                assertEquals("true", element.getNillable());
-                assertEquals("java.lang.Integer", element.getBinding());
-            }
-        }
+    // check index format
+    RESTStructuredCoverageIndexSchema indexFormat = manager.getGranuleIndexSchema(DEFAULT_WS, coverageName, coverageName);
+    assertNotNull(indexFormat);
+    assertFalse(indexFormat.isEmpty());
+    assertEquals(5, indexFormat.size());
 
-        RESTStructuredCoverageGranulesList granulesList = null;
-        RESTStructuredCoverageGranule granule = null;
-        
-        
-        // get with paging
-        granulesList = manager.getGranules(DEFAULT_WS, coverageStoreName, coverageName , null, 0, 1);
-        assertNotNull(granulesList);
-        assertEquals(1, granulesList.size());
-        assertFalse(granulesList.isEmpty());
-        granule = granulesList.get(0);
-        assertNotNull(granule);       
-        
-        granulesList = manager.getGranules(DEFAULT_WS, coverageStoreName, coverageName, null, null, 2);
-        assertNotNull(granulesList);
-        assertEquals(2, granulesList.size());
-        assertFalse(granulesList.isEmpty());
-        granule = granulesList.get(0);
-        assertNotNull(granule);
-        
-        // get with no paging
-        granulesList = manager.getGranules(DEFAULT_WS, coverageStoreName, coverageName);
-        assertNotNull(granulesList);
+    Set<String> allowedDateFormats = new HashSet<String>(Arrays.asList(
+            "java.util.Date", // shapefile
+            "java.sql.Timestamp")); // h2
 
-        for (RESTStructuredCoverageGranule g : granulesList) {
-            LOG.info("    GRANULE before delete: " + g);
-        }
+    for (RESTStructuredCoverageIndexAttribute element : indexFormat) {
 
-        assertEquals("At first insertion 4 granules are expected", 4, granulesList.size());
-        assertFalse(granulesList.isEmpty());
-        granule = granulesList.get(0);
-        assertNotNull(granule);   
+      final String elementName = element.getName();
 
-        // examples of filtering with CQL
-        granulesList = manager.getGranules(DEFAULT_WS, coverageStoreName, coverageName, "depth = 100", null, null);
-        assertNotNull(granulesList);
-        assertEquals(2, granulesList.size());
-        assertFalse(granulesList.isEmpty());
-        granule = granulesList.get(0);
-        assertNotNull(granule); 
-        
-        granulesList = manager.getGranules(DEFAULT_WS, coverageStoreName, coverageName, "depth = 100 AND date='20081101T0000000'", null, null);
-        assertNotNull(granulesList);
-        assertEquals(1, granulesList.size());
-        assertFalse(granulesList.isEmpty());
-        granule = granulesList.get(0);
-        assertNotNull(granule); 
-        
-        granulesList = manager.getGranules(DEFAULT_WS, coverageStoreName, coverageName, "location LIKE 'NCOM_wattemp%'", 0, 1);
-        assertNotNull(granulesList);
-        assertEquals(1, granulesList.size());
-        assertFalse(granulesList.isEmpty());
-        granule = granulesList.get(0);
-        assertNotNull(granule); 
-        
-        // remove by filter
-        final String fileLocation = "NCOM_wattemp_100_20081101T0000000_12.tiff";
-        boolean result = manager.removeGranulesByCQL(DEFAULT_WS, coverageStoreName, coverageName, "location = '" + fileLocation + "'");
-        Assert.assertTrue(result);
-        
-        granulesList = manager.getGranules(DEFAULT_WS, coverageStoreName, coverageName);
-        assertNotNull(granulesList);
-        assertFalse(granulesList.isEmpty());
-
-        for (RESTStructuredCoverageGranule g : granulesList) {
-            LOG.info("    GRANULE: " + g);
-        }
-
-        assertEquals("After deletion only 3 granules are expected", 3, granulesList.size());
-        granule = granulesList.get(0);
-        assertNotNull(granule);
-        
-        // Readding that granule with harvest
-        result = manager.harvestExternal(DEFAULT_WS, coverageStoreName, format, new ClassPathResource("testdata/granules/NCOM_wattemp_100_20081101T0000000_12.tiff").getFile().getAbsolutePath() );
-        Assert.assertTrue(result);
-        
-        granulesList = manager.getGranules(DEFAULT_WS, coverageStoreName, coverageName, null, null, null);
-        assertNotNull(granulesList);
-        assertEquals("After harvest 4 granules are expected", 4, granulesList.size());
-        assertFalse(granulesList.isEmpty());
-        granule = granulesList.get(0);
-        assertNotNull(granule);
-        
-        
-        // delete
-        delete(DEFAULT_WS, coverageStoreName);
+      if (elementName.equals("location")) {
+        assertEquals("0", element.getMinOccurs());
+        assertEquals("1", element.getMaxOccurs());
+        assertEquals("true", element.getNillable());
+        assertEquals("java.lang.String", element.getBinding());
+      } else if (elementName.equals("time")) {
+        assertEquals("0", element.getMinOccurs());
+        assertEquals("1", element.getMaxOccurs());
+        assertEquals("true", element.getNillable());
+        assertTrue(allowedDateFormats.contains(element.getBinding()));
+      } else if (elementName.equals("date")) {
+        assertEquals("0", element.getMinOccurs());
+        assertEquals("1", element.getMaxOccurs());
+        assertEquals("true", element.getNillable());
+        assertEquals("java.lang.String", element.getBinding());
+      } else if (elementName.equals("depth")) {
+        assertEquals("0", element.getMinOccurs());
+        assertEquals("1", element.getMaxOccurs());
+        assertEquals("true", element.getNillable());
+        assertEquals("java.lang.Integer", element.getBinding());
+      }
     }
 
+    RESTStructuredCoverageGranulesList granulesList = null;
+    RESTStructuredCoverageGranule granule = null;
 
-    /**
-     * This method enables the various dimensions for the coverage autocreated for this test.
-     * 
-     * <p> Notice that 
-     * @param wsName the workspace
-     * @param coverageStoreName the coverage store name
-     * @param csname the coverage name
-     */
-    
-    private void fixDimensions(String wsName, String coverageStoreName, String csname) {
-        final GSImageMosaicEncoder coverageEncoder = copyParameters(wsName, coverageStoreName,
-                csname);
-  
-               
-        // activate time dimension
-        final GSDimensionInfoEncoder time=new GSDimensionInfoEncoder(true);
-        time.setUnit("Seconds");
-        time.setUnitSymbol("s");
-        time.setPresentation(Presentation.CONTINUOUS_INTERVAL);
-        coverageEncoder.setMetadataDimension("time", time);
-        
-        // activate run which is a custom dimension
-        final GSDimensionInfoEncoder date=new GSDimensionInfoEncoder(true);
-        date.setPresentation(Presentation.LIST);
-        coverageEncoder.setMetadataDimension("date", date,true);
-        
-        final GSDimensionInfoEncoder depth=new GSDimensionInfoEncoder(true);
-        depth.setPresentation(Presentation.LIST);
-        depth.setUnit("Meters");
-        depth.setUnitSymbol("m");
-        coverageEncoder.setMetadataDimension("depth", depth,true);
-        
-        // persiste the changes
-        boolean config=publisher.configureCoverage(coverageEncoder, wsName, csname);
-        assertTrue(config);
-       
+    // get with paging
+    granulesList = manager.getGranules(DEFAULT_WS, coverageStoreName, coverageName, null, 0, 1);
+    assertNotNull(granulesList);
+    assertEquals(1, granulesList.size());
+    assertFalse(granulesList.isEmpty());
+    granule = granulesList.get(0);
+    assertNotNull(granule);
+
+    granulesList = manager.getGranules(DEFAULT_WS, coverageStoreName, coverageName, null, null, 2);
+    assertNotNull(granulesList);
+    assertEquals(2, granulesList.size());
+    assertFalse(granulesList.isEmpty());
+    granule = granulesList.get(0);
+    assertNotNull(granule);
+
+    // get with no paging
+    granulesList = manager.getGranules(DEFAULT_WS, coverageStoreName, coverageName);
+    assertNotNull(granulesList);
+
+    for (RESTStructuredCoverageGranule g : granulesList) {
+      LOG.info("    GRANULE before delete: " + g);
     }
 
+    assertEquals("At first insertion 4 granules are expected", 4, granulesList.size());
+    assertFalse(granulesList.isEmpty());
+    granule = granulesList.get(0);
+    assertNotNull(granule);
 
-    /**
-     * @param wsName
-     * @param coverageStoreName
-     * @param csname
-     * @return
-     * @throws NumberFormatException
-     */
-    private GSImageMosaicEncoder copyParameters(String wsName, String coverageStoreName,
-            String csname) throws NumberFormatException {
-        // get current config for the coverage to extract the params we want to set again
-        final RESTCoverage coverage = reader.getCoverage(wsName, coverageStoreName, csname);
-        if (coverage==null)
-            return null;
-        final Map<String, String> params = coverage.getParametersList();     
-        
-        // prepare and fill the encoder 
-        final GSImageMosaicEncoder coverageEncoder = new GSImageMosaicEncoder();
-        coverageEncoder.setName("mosaic");
-        
-        // set the current params, change here if you want to change the values
-        for(Map.Entry<String, String> entry:params.entrySet()){
-            if(entry.getKey().equals(GSImageMosaicEncoder.allowMultithreading)){
-                coverageEncoder.setAllowMultithreading(Boolean.parseBoolean(entry.getValue()));
-                continue;
-            }
-            
-            if(entry.getKey().equals(GSImageMosaicEncoder.backgroundValues)){
-                coverageEncoder.setBackgroundValues(entry.getValue());
-                continue;
-            }
-            
-            if(entry.getKey().equals(GSImageMosaicEncoder.filter)){
-                coverageEncoder.setFilter(entry.getValue());
-                continue;
-            }
-            
-            if(entry.getKey().equals(GSImageMosaicEncoder.inputTransparentColor)){
-                coverageEncoder.setInputTransparentColor(entry.getValue());
-                continue;
-            }
-            
-            if(entry.getKey().equals(GSImageMosaicEncoder.maxAllowedTiles)){
-                coverageEncoder.setMaxAllowedTiles(Integer.parseInt(entry.getValue()));
-                continue;
-            }
-            
-            if(entry.getKey().equals(GSImageMosaicEncoder.MERGEBEHAVIOR)){
-                coverageEncoder.setMergeBehavior(entry.getValue());
-                continue;
-            }
-            
-            if(entry.getKey().equals(GSImageMosaicEncoder.outputTransparentColor)){
-                coverageEncoder.setOutputTransparentColor(entry.getValue());
-                continue;
-            }
-            
-            if(entry.getKey().equals(GSImageMosaicEncoder.SORTING)){
-                coverageEncoder.setSORTING(entry.getValue());
-                continue;
-            }
-            
-            if(entry.getKey().equals(GSImageMosaicEncoder.SUGGESTED_TILE_SIZE)){
-                coverageEncoder.setSUGGESTED_TILE_SIZE(entry.getValue());
-                continue;
-            }
-            
-            if(entry.getKey().equals(GSImageMosaicEncoder.USE_JAI_IMAGEREAD)){
-                coverageEncoder.setUSE_JAI_IMAGEREAD(Boolean.parseBoolean(entry.getValue()));
-                continue;
-            }
-            
-        }
-        return coverageEncoder;
+    // examples of filtering with CQL
+    granulesList = manager.getGranules(DEFAULT_WS, coverageStoreName, coverageName, "depth = 100", null, null);
+    assertNotNull(granulesList);
+    assertEquals(2, granulesList.size());
+    assertFalse(granulesList.isEmpty());
+    granule = granulesList.get(0);
+    assertNotNull(granule);
+
+    granulesList = manager.getGranules(DEFAULT_WS, coverageStoreName, coverageName, "depth = 100 AND date='20081101T0000000'", null, null);
+    assertNotNull(granulesList);
+    assertEquals(1, granulesList.size());
+    assertFalse(granulesList.isEmpty());
+    granule = granulesList.get(0);
+    assertNotNull(granule);
+
+    granulesList = manager.getGranules(DEFAULT_WS, coverageStoreName, coverageName, "location LIKE 'NCOM_wattemp%'", 0, 1);
+    assertNotNull(granulesList);
+    assertEquals(1, granulesList.size());
+    assertFalse(granulesList.isEmpty());
+    granule = granulesList.get(0);
+    assertNotNull(granule);
+
+    // remove by filter
+    final String fileLocation = "NCOM_wattemp_100_20081101T0000000_12.tiff";
+    boolean result = manager.removeGranulesByCQL(DEFAULT_WS, coverageStoreName, coverageName, "location = '" + fileLocation + "'");
+    Assert.assertTrue(result);
+
+    granulesList = manager.getGranules(DEFAULT_WS, coverageStoreName, coverageName);
+    assertNotNull(granulesList);
+    assertFalse(granulesList.isEmpty());
+
+    for (RESTStructuredCoverageGranule g : granulesList) {
+      LOG.info("    GRANULE: " + g);
     }
-    
-    /**
-     * Deletes the provided coverage recursively with purging.
-     * @param workspaceName
-     * @param coverageStoreName
-     * @throws Exception
-     */
-    private void delete(String workspaceName, String coverageStoreName) throws Exception {
-        if (!enabled()) {
-            return;
-        }
-        
-        // delete mosaic
-        boolean result = publisher.removeCoverageStore(workspaceName, coverageStoreName, true);
-        assertTrue(result);
+
+    assertEquals("After deletion only 3 granules are expected", 3, granulesList.size());
+    granule = granulesList.get(0);
+    assertNotNull(granule);
+
+    // Readding that granule with harvest
+    result = manager.harvestExternal(DEFAULT_WS, coverageStoreName, format, new ClassPathResource("testdata/granules/NCOM_wattemp_100_20081101T0000000_12.tiff").getFile().getAbsolutePath());
+    Assert.assertTrue(result);
+
+    granulesList = manager.getGranules(DEFAULT_WS, coverageStoreName, coverageName, null, null, null);
+    assertNotNull(granulesList);
+    assertEquals("After harvest 4 granules are expected", 4, granulesList.size());
+    assertFalse(granulesList.isEmpty());
+    granule = granulesList.get(0);
+    assertNotNull(granule);
+
+    // delete
+    delete(DEFAULT_WS, coverageStoreName);
+  }
+
+  /**
+   * This method enables the various dimensions for the coverage autocreated for this test.
+   *
+   * <p>
+   * Notice that
+   *
+   * @param wsName the workspace
+   * @param coverageStoreName the coverage store name
+   * @param csname the coverage name
+   */
+  private void fixDimensions(String wsName, String coverageStoreName, String csname) {
+    final GSImageMosaicEncoder coverageEncoder = copyParameters(wsName, coverageStoreName,
+            csname);
+
+    // activate time dimension
+    final GSDimensionInfoEncoder time = new GSDimensionInfoEncoder(true);
+    time.setUnit("Seconds");
+    time.setUnitSymbol("s");
+    time.setPresentation(Presentation.CONTINUOUS_INTERVAL);
+    coverageEncoder.setMetadataDimension("time", time);
+
+    // activate run which is a custom dimension
+    final GSDimensionInfoEncoder date = new GSDimensionInfoEncoder(true);
+    date.setPresentation(Presentation.LIST);
+    coverageEncoder.setMetadataDimension("date", date, true);
+
+    final GSDimensionInfoEncoder depth = new GSDimensionInfoEncoder(true);
+    depth.setPresentation(Presentation.LIST);
+    depth.setUnit("Meters");
+    depth.setUnitSymbol("m");
+    coverageEncoder.setMetadataDimension("depth", depth, true);
+
+    // persiste the changes
+    boolean config = publisher.configureCoverage(coverageEncoder, wsName, csname);
+    assertTrue(config);
+
+  }
+
+  /**
+   * @param wsName
+   * @param coverageStoreName
+   * @param csname
+   * @return
+   * @throws NumberFormatException
+   */
+  private GSImageMosaicEncoder copyParameters(String wsName, String coverageStoreName,
+          String csname) throws NumberFormatException {
+    // get current config for the coverage to extract the params we want to set again
+    final RESTCoverage coverage = reader.getCoverage(wsName, coverageStoreName, csname);
+    if (coverage == null) {
+      return null;
     }
- 
+    final Map<String, String> params = coverage.getParametersList();
+
+    // prepare and fill the encoder 
+    final GSImageMosaicEncoder coverageEncoder = new GSImageMosaicEncoder();
+    coverageEncoder.setName("mosaic");
+
+    // set the current params, change here if you want to change the values
+    for (Map.Entry<String, String> entry : params.entrySet()) {
+      if (entry.getKey().equals(GSImageMosaicEncoder.allowMultithreading)) {
+        coverageEncoder.setAllowMultithreading(Boolean.parseBoolean(entry.getValue()));
+        continue;
+      }
+
+      if (entry.getKey().equals(GSImageMosaicEncoder.backgroundValues)) {
+        coverageEncoder.setBackgroundValues(entry.getValue());
+        continue;
+      }
+
+      if (entry.getKey().equals(GSImageMosaicEncoder.filter)) {
+        coverageEncoder.setFilter(entry.getValue());
+        continue;
+      }
+
+      if (entry.getKey().equals(GSImageMosaicEncoder.inputTransparentColor)) {
+        coverageEncoder.setInputTransparentColor(entry.getValue());
+        continue;
+      }
+
+      if (entry.getKey().equals(GSImageMosaicEncoder.maxAllowedTiles)) {
+        coverageEncoder.setMaxAllowedTiles(Integer.parseInt(entry.getValue()));
+        continue;
+      }
+
+      if (entry.getKey().equals(GSImageMosaicEncoder.MERGEBEHAVIOR)) {
+        coverageEncoder.setMergeBehavior(entry.getValue());
+        continue;
+      }
+
+      if (entry.getKey().equals(GSImageMosaicEncoder.outputTransparentColor)) {
+        coverageEncoder.setOutputTransparentColor(entry.getValue());
+        continue;
+      }
+
+      if (entry.getKey().equals(GSImageMosaicEncoder.SORTING)) {
+        coverageEncoder.setSORTING(entry.getValue());
+        continue;
+      }
+
+      if (entry.getKey().equals(GSImageMosaicEncoder.SUGGESTED_TILE_SIZE)) {
+        coverageEncoder.setSUGGESTED_TILE_SIZE(entry.getValue());
+        continue;
+      }
+
+      if (entry.getKey().equals(GSImageMosaicEncoder.USE_JAI_IMAGEREAD)) {
+        coverageEncoder.setUSE_JAI_IMAGEREAD(Boolean.parseBoolean(entry.getValue()));
+        continue;
+      }
+
+    }
+    return coverageEncoder;
+  }
+
+  /**
+   * Deletes the provided coverage recursively with purging.
+   *
+   * @param workspaceName
+   * @param coverageStoreName
+   * @throws Exception
+   */
+  private void delete(String workspaceName, String coverageStoreName) throws Exception {
+    if (!enabled()) {
+      return;
+    }
+
+    // delete mosaic
+    boolean result = publisher.removeCoverageStore(workspaceName, coverageStoreName, true);
+    assertTrue(result);
+  }
+
 }

@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.decoder;
 
 import it.geosolutions.geoserver.rest.decoder.utils.JDOMBuilder;
@@ -33,34 +32,35 @@ import org.jdom.Element;
 /**
  * Parses list of summary data about Styles.
  *
- * <P>This is the XML REST representation:
+ * <P>
+ * This is the XML REST representation:
  * <PRE>
-  {@code <styles>
-      <style>
-        <name>pophatch</name>
-        <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/styles/pophatch.xml" type="application/xml"/>
-      </style>
-      <style>
-        <name>point</name>
-        <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/styles/point.xml" type="application/xml"/>
-      </style>
-      <style>
-        <name>population</name>
-        <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/styles/population.xml" type="application/xml"/>
-      </style>
-}</PRE>
+ * {@code <styles>
+ * <style>
+ * <name>pophatch</name>
+ * <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/styles/pophatch.xml" type="application/xml"/>
+ * </style>
+ * <style>
+ * <name>point</name>
+ * <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/styles/point.xml" type="application/xml"/>
+ * </style>
+ * <style>
+ * <name>population</name>
+ * <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" href="http://localhost:8080/geoserver/rest/styles/population.xml" type="application/xml"/>
+ * </style>
+ * }</PRE>
  *
  * @author ETj (etj at geo-solutions.it)
  */
 public class RESTStyleList extends RESTAbstractList<NameLinkElem> {
 
-    public static RESTStyleList build(String response) {
-        Element elem = JDOMBuilder.buildElement(response);
-        return elem == null? null : new RESTStyleList(elem);
-	}
+  public static RESTStyleList build(String response) {
+    Element elem = JDOMBuilder.buildElement(response);
+    return elem == null ? null : new RESTStyleList(elem);
+  }
 
-    protected RESTStyleList(Element list) {
-        super(list);
-    }
-    
+  protected RESTStyleList(Element list) {
+    super(list);
+  }
+
 }

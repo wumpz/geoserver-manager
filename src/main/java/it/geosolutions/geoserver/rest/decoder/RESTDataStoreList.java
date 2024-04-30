@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.decoder;
 
 import it.geosolutions.geoserver.rest.decoder.utils.JDOMBuilder;
@@ -37,12 +36,12 @@ import org.jdom.Element;
  */
 public class RESTDataStoreList extends RESTAbstractList<NameLinkElem> {
 
-    public static RESTDataStoreList build(String response) {
-        Element elem = JDOMBuilder.buildElement(response);
-        return elem == null? null : new RESTDataStoreList(elem);
-	}
+  public static RESTDataStoreList build(String response) {
+    Element elem = JDOMBuilder.buildElement(response);
+    return elem == null ? null : new RESTDataStoreList(elem);
+  }
 
-    protected RESTDataStoreList(Element list) {
-        super(list);
-    }
+  protected RESTDataStoreList(Element list) {
+    super(list);
+  }
 }

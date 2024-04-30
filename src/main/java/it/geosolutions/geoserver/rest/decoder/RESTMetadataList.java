@@ -34,98 +34,98 @@ import org.jdom.Element;
  */
 public class RESTMetadataList implements Iterable<RESTMetadataList.RESTMetadataElement> {
 
-    private final List<Element> metadataList;
-    
-    /**
-     * @param list
-     */
-    protected RESTMetadataList(Element list) {
-       List<Element> tmpList = new ArrayList<Element>();
-       for(Element el : (List<Element>)list.getChildren("entry")){
-           tmpList.add(el);
-       }
-       metadataList = Collections.unmodifiableList(tmpList);
-    }
-    
-    public int size() {
-        return metadataList.size();
-    }
+  private final List<Element> metadataList;
 
-    public boolean isEmpty() {
-        return metadataList.isEmpty();
+  /**
+   * @param list
+   */
+  protected RESTMetadataList(Element list) {
+    List<Element> tmpList = new ArrayList<Element>();
+    for (Element el : (List<Element>) list.getChildren("entry")) {
+      tmpList.add(el);
     }
+    metadataList = Collections.unmodifiableList(tmpList);
+  }
 
-    public RESTMetadataElement get(int index) {
-        return new RESTMetadataElement(metadataList.get(index));
-    }
-    
-    /* (non-Javadoc)
+  public int size() {
+    return metadataList.size();
+  }
+
+  public boolean isEmpty() {
+    return metadataList.isEmpty();
+  }
+
+  public RESTMetadataElement get(int index) {
+    return new RESTMetadataElement(metadataList.get(index));
+  }
+
+  /* (non-Javadoc)
      * @see java.lang.Iterable#iterator()
+   */
+  @Override
+  public Iterator<RESTMetadataElement> iterator() {
+    return new RESTMetadataIterator(metadataList);
+  }
+
+  private static class RESTMetadataIterator implements Iterator<RESTMetadataElement> {
+
+    private final Iterator<Element> iter;
+
+    /**
+     * @param iter
+     */
+    public RESTMetadataIterator(List<Element> orig) {
+      this.iter = orig.iterator();
+    }
+
+    /* (non-Javadoc)
+         * @see java.util.Iterator#hasNext()
      */
     @Override
-    public Iterator<RESTMetadataElement> iterator() {
-        return new RESTMetadataIterator(metadataList);
+    public boolean hasNext() {
+      return iter.hasNext();
     }
-    
-    private static class RESTMetadataIterator implements Iterator<RESTMetadataElement>{
-        
-        private final Iterator<Element> iter;
-        
-        /**
-         * @param iter
-         */
-        public RESTMetadataIterator(List<Element> orig) {
-            this.iter = orig.iterator();
-        }
 
-        /* (non-Javadoc)
-         * @see java.util.Iterator#hasNext()
-         */
-        @Override
-        public boolean hasNext() {
-            return iter.hasNext();
-        }
-
-        /* (non-Javadoc)
+    /* (non-Javadoc)
          * @see java.util.Iterator#next()
-         */
-        @Override
-        public RESTMetadataElement next() {
-            return new RESTMetadataElement(iter.next());
-        }
-
-        /* (non-Javadoc)
-         * @see java.util.Iterator#remove()
-         */
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException("Not supported.");
-            
-        }
-    }
-    
-    
-    /**
-     * Generic metadata Object
-     *  
-     * @author DamianoG
-     *
      */
-    public static class RESTMetadataElement {
-        protected final Element metadataElem;
-
-        public RESTMetadataElement(Element elem) {
-            this.metadataElem = elem;
-        }
-
-        public String getKey() {
-            return metadataElem.getAttributeValue("key");
-        }
-        
-        public Element getMetadataElem() {
-            return metadataElem;
-        }
-        
+    @Override
+    public RESTMetadataElement next() {
+      return new RESTMetadataElement(iter.next());
     }
+
+    /* (non-Javadoc)
+         * @see java.util.Iterator#remove()
+     */
+    @Override
+    public void remove() {
+      throw new UnsupportedOperationException("Not supported.");
+
+    }
+  }
+
+  /**
+   * Generic metadata Object
+   *
+   * @author DamianoG
+   *
+   */
+  public static class RESTMetadataElement {
+
+    protected final Element metadataElem;
+
+    public RESTMetadataElement(Element elem) {
+      this.metadataElem = elem;
+    }
+
+    public String getKey() {
+      return metadataElem.getAttributeValue("key");
+    }
+
+    public Element getMetadataElem() {
+      return metadataElem;
+    }
+
+  }
 
 }

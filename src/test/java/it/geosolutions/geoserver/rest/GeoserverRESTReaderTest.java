@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest;
 
 import it.geosolutions.geoserver.rest.decoder.RESTDataStore;
@@ -37,9 +36,7 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 
-
 import static org.junit.Assert.*;
-
 
 /**
  *
@@ -49,186 +46,198 @@ public class GeoserverRESTReaderTest extends GeoserverRESTTest {
 
   private static final Logger LOG = Logger.getLogger(GeoserverRESTReaderTest.class.getName());
 
-	
+  /**
+   * Test of getLayers method, of class GeoServerRESTReader.
+   */
+  @Test
+  public void testGetLayers() {
+    if (!enabled()) {
+      return;
+    }
 
-	/**
-	 * Test of getLayers method, of class GeoServerRESTReader.
-	 */
-	@Test
-	public void testGetLayers() {
-        if(!enabled()) return;
-
-		RESTLayerList result = reader.getLayers();
-		assertNotNull(result);
+    RESTLayerList result = reader.getLayers();
+    assertNotNull(result);
 //        assertEquals(/*CHANGEME*/19, result.getChildren("layer").size()); // value in default gs installation
 
 //        System.out.println("Layers:" + result.getChildren("layer").size());
-        LOG.fine("Layers: " + result.size());
+    LOG.fine("Layers: " + result.size());
 //		LOG.fine("Layers:" );
-        for (NameLinkElem shlayer : result) {
-            assertNotNull(shlayer.getName());
-            LOG.fine(shlayer.getName() + " ");
-        }
+    for (NameLinkElem shlayer : result) {
+      assertNotNull(shlayer.getName());
+      LOG.fine(shlayer.getName() + " ");
+    }
 //		for (Element layer : (List<Element>)result.getChildren("layer")) {
 //			System.out.print(layer.getChildText("name") + " ");
 //		}
-        LOG.fine("");
-	}
+    LOG.fine("");
+  }
 
-	/**
-	 * Test of getDatastores method, of class GeoServerRESTReader.
-	 */
-	@Test
-	public void testGetDatastores() {
-        if(!enabled()) return;
+  /**
+   * Test of getDatastores method, of class GeoServerRESTReader.
+   */
+  @Test
+  public void testGetDatastores() {
+    if (!enabled()) {
+      return;
+    }
 
-		RESTWorkspaceList wslist = reader.getWorkspaces();
-		assertNotNull(wslist);
+    RESTWorkspaceList wslist = reader.getWorkspaces();
+    assertNotNull(wslist);
 //        assertEquals(7, wslist.size()); // value in default gs installation
 
-        LOG.fine("Workspaces: " + wslist.size());
-        int dsnum = 0;
-		for (RESTWorkspaceList.RESTShortWorkspace ws : wslist) {
-            LOG.fine("Getting DSlist for WS " + ws.getName() + "..." );
-			RESTDataStoreList result = reader.getDatastores(ws.getName());
-			assertNotNull(result);
-            dsnum += result.size();
-            for (NameLinkElem ds : result) {
-                assertNotNull(ds.getName());
-                LOG.fine(ds.getName() + " " );
-                RESTDataStore datastore = reader.getDatastore(ws.getName(), ds.getName());
-                assertNotNull(datastore);
-                assertEquals(ds.getName(), datastore.getName());
-                assertEquals(ws.getName(), datastore.getWorkspaceName());
-            }
-            LOG.fine("");
-		}
-        LOG.fine("");
-        LOG.fine("Datastores:" + dsnum); // value in default gs installation
+    LOG.fine("Workspaces: " + wslist.size());
+    int dsnum = 0;
+    for (RESTWorkspaceList.RESTShortWorkspace ws : wslist) {
+      LOG.fine("Getting DSlist for WS " + ws.getName() + "...");
+      RESTDataStoreList result = reader.getDatastores(ws.getName());
+      assertNotNull(result);
+      dsnum += result.size();
+      for (NameLinkElem ds : result) {
+        assertNotNull(ds.getName());
+        LOG.fine(ds.getName() + " ");
+        RESTDataStore datastore = reader.getDatastore(ws.getName(), ds.getName());
+        assertNotNull(datastore);
+        assertEquals(ds.getName(), datastore.getName());
+        assertEquals(ws.getName(), datastore.getWorkspaceName());
+      }
+      LOG.fine("");
+    }
+    LOG.fine("");
+    LOG.fine("Datastores:" + dsnum); // value in default gs installation
 //        assertEquals(4, dsnum); // value in default gs installation
 
-	}
+  }
 
-	@Test
-	public void testGetWSDSNames() {
-        if(!enabled())
-            return;
+  @Test
+  public void testGetWSDSNames() {
+    if (!enabled()) {
+      return;
+    }
 
-		RESTWorkspaceList wslist = reader.getWorkspaces();
-        assertNotNull(wslist);
+    RESTWorkspaceList wslist = reader.getWorkspaces();
+    assertNotNull(wslist);
 //        assertEquals(7, wslist.size()); // value in default gs installation
 
-		List<String> wsnames = reader.getWorkspaceNames();
-        assertNotNull(wsnames);
+    List<String> wsnames = reader.getWorkspaceNames();
+    assertNotNull(wsnames);
 //        assertEquals(7, wsnames.size()); // value in default gs installation
 
 //        System.out.println("Workspaces: " + wslist.size());
-        int wscnt = 0;
-		for (RESTWorkspaceList.RESTShortWorkspace ws : wslist) {
-            String wsname = wsnames.get(wscnt++);
+    int wscnt = 0;
+    for (RESTWorkspaceList.RESTShortWorkspace ws : wslist) {
+      String wsname = wsnames.get(wscnt++);
 
-			List<String> dsnames = reader.getDatastores(wsname).getNames();
-            RESTDataStoreList dslist = reader.getDatastores(ws.getName());
-			assertNotNull(dsnames);
-			assertNotNull(dslist);
-            assertEquals(dsnames.size(), dslist.size());
-		}
-	}
+      List<String> dsnames = reader.getDatastores(wsname).getNames();
+      RESTDataStoreList dslist = reader.getDatastores(ws.getName());
+      assertNotNull(dsnames);
+      assertNotNull(dslist);
+      assertEquals(dsnames.size(), dslist.size());
+    }
+  }
 
-	/**
-	 * Test of getDatastore method, of class GeoServerRESTReader.
-	 */
-	@Test
-	public void testGetDatastore() {
-        //tested in testGetDatastores()
-	}
+  /**
+   * Test of getDatastore method, of class GeoServerRESTReader.
+   */
+  @Test
+  public void testGetDatastore() {
+    //tested in testGetDatastores()
+  }
 
-	/**
-	 * Test of getLayer method, of class GeoServerRESTReader.
-	 */
-	@Test
-	public void testGetLayer() {
-	}
+  /**
+   * Test of getLayer method, of class GeoServerRESTReader.
+   */
+  @Test
+  public void testGetLayer() {
+  }
 
-	/**
-	 * Test of getNamespaceNames method, of class GeoServerRESTReader.
-	 */
-	@Test
-	public void testGetNamespaces() {
-        if(!enabled()) return;
+  /**
+   * Test of getNamespaceNames method, of class GeoServerRESTReader.
+   */
+  @Test
+  public void testGetNamespaces() {
+    if (!enabled()) {
+      return;
+    }
 
-        RESTNamespaceList result = reader.getNamespaces();
-        List<String> names = reader.getNamespaceNames();
-		assertNotNull(result);
+    RESTNamespaceList result = reader.getNamespaces();
+    List<String> names = reader.getNamespaceNames();
+    assertNotNull(result);
 //        assertEquals(7, result.size()); // value in default gs installation
-		assertNotNull(names);
-        assertEquals(names.size(), result.size()); // value in default gs installation
+    assertNotNull(names);
+    assertEquals(names.size(), result.size()); // value in default gs installation
 
-        LOG.fine("Namespaces:" + result.size());
-        LOG.fine("Namespaces:" );
-        int namesIdx = 0;
-        for (RESTNamespaceList.RESTShortNamespace ns : result) {
-            assertEquals("namespace mismatch", names.get(namesIdx++), ns.getName());
-            LOG.fine(ns.getName() + " " );
-        }
-        LOG.fine("");
-	}
-	
-	/**
-	 * Test of getWorkspaceNames method, of class GeoServerRESTReader.
-	 */
-	@Test
-	public void testGetNamespaceNames() {
-        if(!enabled()) return;
+    LOG.fine("Namespaces:" + result.size());
+    LOG.fine("Namespaces:");
+    int namesIdx = 0;
+    for (RESTNamespaceList.RESTShortNamespace ns : result) {
+      assertEquals("namespace mismatch", names.get(namesIdx++), ns.getName());
+      LOG.fine(ns.getName() + " ");
+    }
+    LOG.fine("");
+  }
 
-		List<String> names = reader.getNamespaceNames();
-		assertNotNull(names);
+  /**
+   * Test of getWorkspaceNames method, of class GeoServerRESTReader.
+   */
+  @Test
+  public void testGetNamespaceNames() {
+    if (!enabled()) {
+      return;
+    }
+
+    List<String> names = reader.getNamespaceNames();
+    assertNotNull(names);
 //        assertEquals(7, names.size()); // value in default gs installation
 
-		LOG.fine("Namespaces:" + names.size());
-		LOG.fine("Namespaces:");
-		for (String name : names) {
-			LOG.fine(name + " ");
-		}
-		LOG.fine("");
-	}
+    LOG.fine("Namespaces:" + names.size());
+    LOG.fine("Namespaces:");
+    for (String name : names) {
+      LOG.fine(name + " ");
+    }
+    LOG.fine("");
+  }
 
-	/**
-	 * Test of getWorkspaceNames method, of class GeoServerRESTReader.
-	 */
-	@Test
-	public void testGetWorkspaces() {
-        if(!enabled()) return;
+  /**
+   * Test of getWorkspaceNames method, of class GeoServerRESTReader.
+   */
+  @Test
+  public void testGetWorkspaces() {
+    if (!enabled()) {
+      return;
+    }
 
-		RESTWorkspaceList wslist = reader.getWorkspaces();
-		assertNotNull(wslist);
+    RESTWorkspaceList wslist = reader.getWorkspaces();
+    assertNotNull(wslist);
 //        assertEquals(7, wslist.size()); // value in default gs installation
 
-		LOG.fine("Workspaces:" + wslist.size());
-		LOG.fine("Workspaces:");
-		for (RESTWorkspaceList.RESTShortWorkspace ws : wslist) {
-			LOG.fine(ws.getName() + " ");
-		}
-		LOG.fine("");
+    LOG.fine("Workspaces:" + wslist.size());
+    LOG.fine("Workspaces:");
+    for (RESTWorkspaceList.RESTShortWorkspace ws : wslist) {
+      LOG.fine(ws.getName() + " ");
+    }
+    LOG.fine("");
 
-        assertEquals(wslist.size(), reader.getWorkspaceNames().size());
-	}
-	/**
-	 * Test of getWorkspaceNames method, of class GeoServerRESTReader.
-	 */
-	@Test
-	public void testGetWorkspaceNames() {
-        if(!enabled()) return;
+    assertEquals(wslist.size(), reader.getWorkspaceNames().size());
+  }
 
-		List<String> names = reader.getWorkspaceNames();
-		assertNotNull(names);
+  /**
+   * Test of getWorkspaceNames method, of class GeoServerRESTReader.
+   */
+  @Test
+  public void testGetWorkspaceNames() {
+    if (!enabled()) {
+      return;
+    }
+
+    List<String> names = reader.getWorkspaceNames();
+    assertNotNull(names);
 //        assertEquals(7, names.size()); // value in default gs installation
 
-		LOG.fine("Workspaces:" + names.size());
-		LOG.fine("Workspaces:");
-		for (String name : names) {
-			LOG.fine(name + " ");
-		}
-		LOG.fine("");
-	}
+    LOG.fine("Workspaces:" + names.size());
+    LOG.fine("Workspaces:");
+    for (String name : names) {
+      LOG.fine(name + " ");
+    }
+    LOG.fine("");
+  }
 }

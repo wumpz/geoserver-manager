@@ -27,39 +27,39 @@ import org.junit.Test;
 import org.springframework.util.Assert;
 
 /**
- * 
+ *
  * @author Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
  */
 public class GSImageMosaicEncoderTest extends TestCase {
 
-    public GSImageMosaicEncoderTest() {
-    }
+  public GSImageMosaicEncoderTest() {
+  }
   /**
    * Default logger
    */
   private static final Logger LOG = Logger.getLogger(GSImageMosaicEncoderTest.class.getName());
 
-    @Test
-    public void testAll() {
-        final GSImageMosaicEncoder encoder = new GSImageMosaicEncoder();
+  @Test
+  public void testAll() {
+    final GSImageMosaicEncoder encoder = new GSImageMosaicEncoder();
 
-        Assert.isNull(encoder.getUseJaiImageRead());
+    Assert.isNull(encoder.getUseJaiImageRead());
 
-        encoder.setAllowMultithreading(true);
+    encoder.setAllowMultithreading(true);
 
-        Assert.isTrue(encoder.getAllowMultithreading());
+    Assert.isTrue(encoder.getAllowMultithreading());
 
-        encoder.setAllowMultithreading(false);
+    encoder.setAllowMultithreading(false);
 
-        Assert.isTrue(!encoder.getAllowMultithreading());
+    Assert.isTrue(!encoder.getAllowMultithreading());
 
-        encoder.setSUGGESTED_TILE_SIZE("512,512");
+    encoder.setSUGGESTED_TILE_SIZE("512,512");
 
-        Assert.isTrue(encoder.getSuggestedTileSize().equalsIgnoreCase("512,512"));
+    Assert.isTrue(encoder.getSuggestedTileSize().equalsIgnoreCase("512,512"));
 
-        LOG.info(encoder.toString());
+    LOG.info(encoder.toString());
 
-        encoder.addSUGGESTED_TILE_SIZE("512,512");
+    encoder.addSUGGESTED_TILE_SIZE("512,512");
 
-    }
+  }
 }

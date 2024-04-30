@@ -24,26 +24,23 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-
 /**
- * 
+ *
  * @author Carlo Cancellieri - carlo.cancellieri@geo-solutions.it
  */
 public class GSWorkspaceEncoderTest extends TestCase {
 
   private static final Logger LOG = Logger.getLogger(GSWorkspaceEncoderTest.class.getName());
 
-    
+  @Test
+  public void testAll() {
+    final GSWorkspaceEncoder wsenc = new GSWorkspaceEncoder("WS1");
+    LOG.info(wsenc.toString());
 
-    @Test
-    public void testAll() {
-        final GSWorkspaceEncoder wsenc = new GSWorkspaceEncoder("WS1");
-        LOG.info(wsenc.toString());
+    wsenc.setName("test_name");
+    LOG.info(wsenc.toString());
+    wsenc.setName("new_name");
+    LOG.info(wsenc.toString());
 
-        wsenc.setName("test_name");
-        LOG.info(wsenc.toString());
-        wsenc.setName("new_name");
-        LOG.info(wsenc.toString());
-
-    }
+  }
 }

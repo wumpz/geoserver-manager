@@ -18,52 +18,51 @@ import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
 /**
- * 
+ *
  * Apply Layer decoder tests on a GS 2.1 layer REST config
- * 
+ *
  * @author eblondel
  *
  */
-public class LayerDecoder21Test{
+public class LayerDecoder21Test {
 
   private static final Logger LOG = Logger.getLogger(LayerDecoder21Test.class.getName());
 
-	RESTLayer21 layer;
-	
-	@Before
-	public void setUp() throws IOException{
-		File layerFile = new ClassPathResource("testdata/layerExample21.xml").getFile();
-	    String layerString = FileUtils.readFileToString(layerFile);
-		layer = (RESTLayer21) RESTLayer21.build(layerString);
-	}
-	
-	@Test
-	public void testAdvertised(){
-		Assert.assertEquals(true, layer.getAdvertised());
-	}
-	
-	@Test
-	public void testAuthorityURLs() {
-		List<GSAuthorityURLInfoEncoder> authorityURLs = layer
-				.getEncodedAuthorityURLInfoList();
-		LOG.fine("Number of authority URLs: " + authorityURLs.size());
-		Assert.assertEquals("authority1", authorityURLs.get(0).getName());
-		Assert.assertEquals("http://www.authority1.org", authorityURLs.get(0)
-				.getHref());
-		Assert.assertEquals("authority2", authorityURLs.get(1).getName());
-		Assert.assertEquals("http://www.authority2.org", authorityURLs.get(1)
-				.getHref());
-	}
+  RESTLayer21 layer;
 
-	@Test
-	public void testIdentifiers() {
-		List<GSIdentifierInfoEncoder> authorityURLs = layer
-				.getEncodedIdentifierInfoList();
-		Assert.assertEquals("authority1", authorityURLs.get(0).getAuthority());
-		Assert.assertEquals("identifier1", authorityURLs.get(0).getIdentifier());
-		Assert.assertEquals("authority2", authorityURLs.get(1).getAuthority());
-		Assert.assertEquals("identifier2", authorityURLs.get(1).getIdentifier());
-	}
+  @Before
+  public void setUp() throws IOException {
+    File layerFile = new ClassPathResource("testdata/layerExample21.xml").getFile();
+    String layerString = FileUtils.readFileToString(layerFile);
+    layer = (RESTLayer21) RESTLayer21.build(layerString);
+  }
 
+  @Test
+  public void testAdvertised() {
+    Assert.assertEquals(true, layer.getAdvertised());
+  }
+
+  @Test
+  public void testAuthorityURLs() {
+    List<GSAuthorityURLInfoEncoder> authorityURLs = layer
+            .getEncodedAuthorityURLInfoList();
+    LOG.fine("Number of authority URLs: " + authorityURLs.size());
+    Assert.assertEquals("authority1", authorityURLs.get(0).getName());
+    Assert.assertEquals("http://www.authority1.org", authorityURLs.get(0)
+            .getHref());
+    Assert.assertEquals("authority2", authorityURLs.get(1).getName());
+    Assert.assertEquals("http://www.authority2.org", authorityURLs.get(1)
+            .getHref());
+  }
+
+  @Test
+  public void testIdentifiers() {
+    List<GSIdentifierInfoEncoder> authorityURLs = layer
+            .getEncodedIdentifierInfoList();
+    Assert.assertEquals("authority1", authorityURLs.get(0).getAuthority());
+    Assert.assertEquals("identifier1", authorityURLs.get(0).getIdentifier());
+    Assert.assertEquals("authority2", authorityURLs.get(1).getAuthority());
+    Assert.assertEquals("identifier2", authorityURLs.get(1).getIdentifier());
+  }
 
 }

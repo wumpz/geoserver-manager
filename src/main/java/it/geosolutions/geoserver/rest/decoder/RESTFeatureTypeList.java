@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.decoder;
 
 import it.geosolutions.geoserver.rest.decoder.utils.JDOMBuilder;
@@ -38,12 +37,12 @@ import org.jdom.Element;
  * <BR>This is an XML fragment:
  * <PRE>
  *{@code
-<featureType>
-    <name>states</name>
-    <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate" 
-	   href="http://localhost:8080/geoserver/rest/workspaces/topp/featuretypes/states.xml" 
-	   type="application/xml"/>
-</featureType>
+ * <featureType>
+ * <name>states</name>
+ * <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="alternate"
+ * href="http://localhost:8080/geoserver/rest/workspaces/topp/featuretypes/states.xml"
+ * type="application/xml"/>
+ * </featureType>
  * }
  * </PRE>
  *
@@ -51,12 +50,12 @@ import org.jdom.Element;
  */
 public class RESTFeatureTypeList extends RESTAbstractList<NameLinkElem> {
 
-    public static RESTFeatureTypeList build(String response) {
-        Element elem = JDOMBuilder.buildElement(response);
-        return elem == null? null : new RESTFeatureTypeList(elem);
-	}
+  public static RESTFeatureTypeList build(String response) {
+    Element elem = JDOMBuilder.buildElement(response);
+    return elem == null ? null : new RESTFeatureTypeList(elem);
+  }
 
-    protected RESTFeatureTypeList(Element list) {
-        super(list);
-    }
+  protected RESTFeatureTypeList(Element list) {
+    super(list);
+  }
 }

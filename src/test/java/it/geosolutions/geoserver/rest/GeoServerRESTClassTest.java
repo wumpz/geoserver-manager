@@ -33,30 +33,27 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 
-
 /**
  * Simple class for testing that the DeleteAllLayerGroups() method behaves correctly.
- * 
- * @author Nicola Lagomarsini 
+ *
+ * @author Nicola Lagomarsini
  */
 public class GeoServerRESTClassTest extends GeoserverRESTTest {
 
   private static final Logger LOG = Logger.getLogger(GeoServerRESTClassTest.class.getName());
 
-    
-
-    @Test
-    public void testGetLayerGroups() {
-        if(!enabled()){
-            return;
-        }
-        List<String> groups = reader.getLayerGroups().getNames();
-        LOG.info("Found " + groups.size() + " layerGroups");
-        for (String groupName : groups) {
-            RESTLayerGroup group = reader.getLayerGroup(groupName);
-            if (groups != null) {
-                assertNotNull(group.getPublishedList());
-            }
-        }
+  @Test
+  public void testGetLayerGroups() {
+    if (!enabled()) {
+      return;
     }
+    List<String> groups = reader.getLayerGroups().getNames();
+    LOG.info("Found " + groups.size() + " layerGroups");
+    for (String groupName : groups) {
+      RESTLayerGroup group = reader.getLayerGroup(groupName);
+      if (groups != null) {
+        assertNotNull(group.getPublishedList());
+      }
+    }
+  }
 }

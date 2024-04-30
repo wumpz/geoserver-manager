@@ -47,45 +47,46 @@ import org.junit.Test;
  */
 public class VersionDecoderTest extends GeoserverRESTTest {
 
-    private final String version = "<about><resource name=\"GeoServer\"><Build-Timestamp>10-Oct-2013 03:08</Build-Timestamp>"
-            + "<Git-Revision>32db076555e57cc5f826b0361d1af4efe6d3f01b</Git-Revision><Version>2.2-ENTERPRISE-SNAPSHOT</Version></resource></about>";
+  private final String version = "<about><resource name=\"GeoServer\"><Build-Timestamp>10-Oct-2013 03:08</Build-Timestamp>"
+          + "<Git-Revision>32db076555e57cc5f826b0361d1af4efe6d3f01b</Git-Revision><Version>2.2-ENTERPRISE-SNAPSHOT</Version></resource></about>";
 
-    @Test
-    public void testVersionDecoder() {
-        
-        GSVersionDecoder dec=new GSVersionDecoder(version);
-        Assert.assertEquals(GSVersionDecoder.VERSION.v22, dec.getVersion());
-        Assert.assertEquals("GeoServer", dec.getGeoServer().getName());
-        
-        GSVersionDecoder.GSAboutResource geoserver=dec.getGeoServer();
-        geoserver.setVersion("2.3-SNAPSHOT");
-        geoserver.setName("_CustomGeoServerName_");
-        Assert.assertEquals(GSVersionDecoder.VERSION.v23, dec.getVersion());
-        Assert.assertEquals("_CustomGeoServerName_", dec.getGeoServer().getName());
-        
-        dec=new GSVersionDecoder(null);
-        Assert.assertEquals(GSVersionDecoder.VERSION.UNRECOGNIZED, dec.getVersion());
-        Assert.assertEquals(null, dec.getGeoServer().getName());
-        
-        //print(dec.getRoot());
+  @Test
+  public void testVersionDecoder() {
+
+    GSVersionDecoder dec = new GSVersionDecoder(version);
+    Assert.assertEquals(GSVersionDecoder.VERSION.v22, dec.getVersion());
+    Assert.assertEquals("GeoServer", dec.getGeoServer().getName());
+
+    GSVersionDecoder.GSAboutResource geoserver = dec.getGeoServer();
+    geoserver.setVersion("2.3-SNAPSHOT");
+    geoserver.setName("_CustomGeoServerName_");
+    Assert.assertEquals(GSVersionDecoder.VERSION.v23, dec.getVersion());
+    Assert.assertEquals("_CustomGeoServerName_", dec.getGeoServer().getName());
+
+    dec = new GSVersionDecoder(null);
+    Assert.assertEquals(GSVersionDecoder.VERSION.UNRECOGNIZED, dec.getVersion());
+    Assert.assertEquals(null, dec.getGeoServer().getName());
+
+    //print(dec.getRoot());
+  }
+
+  @Test
+  public void testIntegrationVersionDecoder() {
+    if (!enabled()) {
+      return;
     }
-    
-    @Test
-    public void testIntegrationVersionDecoder() {
-        if (!enabled())
-            return;
-        GSVersionDecoder geoserver = reader.getGeoserverVersion();
-        if (GSVersionDecoder.VERSION.v22.equals(GSVersionDecoder.VERSION.getVersion(GS_VERSION))) {
-            Assert.assertEquals(geoserver.getVersion(), GSVersionDecoder.VERSION.v22);
-        } else if (GSVersionDecoder.VERSION.UNRECOGNIZED.equals(GSVersionDecoder.VERSION
-                .getVersion(GS_VERSION))) {
-            Assert.assertEquals(geoserver.getVersion(), GSVersionDecoder.VERSION.UNRECOGNIZED);
-        }
-        // print(dec.getRoot());
+    GSVersionDecoder geoserver = reader.getGeoserverVersion();
+    if (GSVersionDecoder.VERSION.v22.equals(GSVersionDecoder.VERSION.getVersion(GS_VERSION))) {
+      Assert.assertEquals(geoserver.getVersion(), GSVersionDecoder.VERSION.v22);
+    } else if (GSVersionDecoder.VERSION.UNRECOGNIZED.equals(GSVersionDecoder.VERSION
+            .getVersion(GS_VERSION))) {
+      Assert.assertEquals(geoserver.getVersion(), GSVersionDecoder.VERSION.UNRECOGNIZED);
     }
-    
-    public String print(Element e){
-        return new XMLOutputter().outputString(e);
-    }
+    // print(dec.getRoot());
+  }
+
+  public String print(Element e) {
+    return new XMLOutputter().outputString(e);
+  }
 
 }

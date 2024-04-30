@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package it.geosolutions.geoserver.rest.decoder;
 
 import it.geosolutions.geoserver.rest.decoder.utils.JDOMBuilder;
@@ -42,93 +41,94 @@ import org.jdom.Element;
  */
 public class RESTNamespaceList implements Iterable<RESTNamespaceList.RESTShortNamespace> {
 
-    private final List<Element> nsList;
+  private final List<Element> nsList;
 
-    public static RESTNamespaceList build(String response) {
-        if(response == null)
-            return null;
-
-        Element elem = JDOMBuilder.buildElement(response);
-        if(elem != null)
-            return new RESTNamespaceList(elem);
-        else
-            return null;
-	}
-
-    protected RESTNamespaceList(Element wslistroot) {
-        List<Element> tmpList = new ArrayList<Element>();
-        for (Element wselem : (List<Element>) wslistroot.getChildren("namespace")) {
-            tmpList.add(wselem);
-        }
-
-        nsList = Collections.unmodifiableList(tmpList);
+  public static RESTNamespaceList build(String response) {
+    if (response == null) {
+      return null;
     }
 
-    public int size() {
-        return nsList.size();
+    Element elem = JDOMBuilder.buildElement(response);
+    if (elem != null) {
+      return new RESTNamespaceList(elem);
+    } else {
+      return null;
+    }
+  }
+
+  protected RESTNamespaceList(Element wslistroot) {
+    List<Element> tmpList = new ArrayList<Element>();
+    for (Element wselem : (List<Element>) wslistroot.getChildren("namespace")) {
+      tmpList.add(wselem);
     }
 
-    public boolean isEmpty() {
-        return nsList.isEmpty();
+    nsList = Collections.unmodifiableList(tmpList);
+  }
+
+  public int size() {
+    return nsList.size();
+  }
+
+  public boolean isEmpty() {
+    return nsList.isEmpty();
+  }
+
+  public RESTShortNamespace get(int index) {
+    return new RESTShortNamespace(nsList.get(index));
+  }
+
+  public Iterator<RESTShortNamespace> iterator() {
+    return new RESTNSListIterator(nsList);
+  }
+
+  private static class RESTNSListIterator implements Iterator<RESTShortNamespace> {
+
+    private final Iterator<Element> iter;
+
+    public RESTNSListIterator(List<Element> orig) {
+      iter = orig.iterator();
     }
 
-    public RESTShortNamespace get(int index) {
-        return new RESTShortNamespace(nsList.get(index));
+    public boolean hasNext() {
+      return iter.hasNext();
     }
 
-    public Iterator<RESTShortNamespace> iterator() {
-        return new RESTNSListIterator(nsList);
+    public RESTShortNamespace next() {
+      return new RESTShortNamespace(iter.next());
     }
 
+    public void remove() {
+      throw new UnsupportedOperationException("Not supported.");
+    }
+  }
 
-    private static class RESTNSListIterator implements Iterator<RESTShortNamespace> {
+  /**
+   * Namespace summary info.
+   * <BR>This is an XML fragment:
+   *
+   * <PRE>
+   * {@code
+   *   <namespace>
+   *      <name>it.geosolutions</name>
+   *      <atom:link xmlns:atom="http://www.w3.org/2005/Atom"
+   *          rel="alternate"
+   *          href="http://localhost:8080/geoserver/rest/namespaces/it.geosolutions.xml"
+   *          type="application/xml"/>
+   *  </namespace>
+   * }
+   * </PRE>
+   */
+  public static class RESTShortNamespace {
 
-        private final Iterator<Element> iter;
+    private final Element nsElem;
 
-        public RESTNSListIterator(List<Element> orig) {
-            iter = orig.iterator();
-        }        
-
-        public boolean hasNext() {
-            return iter.hasNext();
-        }
-
-        public RESTShortNamespace next() {
-            return new RESTShortNamespace(iter.next());
-        }
-
-        public void remove() {
-            throw new UnsupportedOperationException("Not supported.");
-        }
+    public RESTShortNamespace(Element elem) {
+      this.nsElem = elem;
     }
 
-    /**
-     * Namespace summary info.
-     * <BR>This is an XML fragment:
-     *
-     * <PRE>
-     * {@code
-     *   <namespace>
-     *      <name>it.geosolutions</name>
-     *      <atom:link xmlns:atom="http://www.w3.org/2005/Atom"
-     *          rel="alternate"
-     *          href="http://localhost:8080/geoserver/rest/namespaces/it.geosolutions.xml"
-     *          type="application/xml"/>
-     *  </namespace>
-     * }
-     * </PRE>
-     */
-
-    public static class RESTShortNamespace {
-        private final Element nsElem;
-
-        public RESTShortNamespace(Element elem) {
-            this.nsElem = elem;
-        }
-
-        public String getName() {
-            return nsElem.getChildText("name");
-        }
+    public String getName() {
+      return nsElem.getChildText("name");
     }
+  }
 
 }

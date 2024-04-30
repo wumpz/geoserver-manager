@@ -24,30 +24,30 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 /**
-*
-* @author eblondel
-*
-*/
+ *
+ * @author eblondel
+ *
+ */
 public class GSMetadataLinkInfoEncoderTest {
 
-	@Test
-	public void metadataLinkInfoTest(){
-		GSMetadataLinkInfoEncoder encoder = new GSMetadataLinkInfoEncoder();
-		encoder.setup("text/xml", "ISO19115:2003","http://www.organization.org/metadata1");
+  @Test
+  public void metadataLinkInfoTest() {
+    GSMetadataLinkInfoEncoder encoder = new GSMetadataLinkInfoEncoder();
+    encoder.setup("text/xml", "ISO19115:2003", "http://www.organization.org/metadata1");
 
-		Assert.assertEquals("text/xml", encoder.getType());
-		Assert.assertEquals("ISO19115:2003", encoder.getMetadataType());
-		Assert.assertEquals("http://www.organization.org/metadata1", encoder.getContent());
+    Assert.assertEquals("text/xml", encoder.getType());
+    Assert.assertEquals("ISO19115:2003", encoder.getMetadataType());
+    Assert.assertEquals("http://www.organization.org/metadata1", encoder.getContent());
 
-		Assert.assertTrue(encoder.delContent());
-		Assert.assertNull(encoder.getContent());
+    Assert.assertTrue(encoder.delContent());
+    Assert.assertNull(encoder.getContent());
 
-		encoder.setType("text/html");
-		encoder.setMetadataType("FGDC");
-		encoder.setContent("http://www.organization.org/metadata2");
-		Assert.assertEquals("text/html", encoder.getType());
-		Assert.assertEquals("FGDC", encoder.getMetadataType());
-		Assert.assertEquals("http://www.organization.org/metadata2", encoder.getContent());
+    encoder.setType("text/html");
+    encoder.setMetadataType("FGDC");
+    encoder.setContent("http://www.organization.org/metadata2");
+    Assert.assertEquals("text/html", encoder.getType());
+    Assert.assertEquals("FGDC", encoder.getMetadataType());
+    Assert.assertEquals("http://www.organization.org/metadata2", encoder.getContent());
 
-	}
+  }
 }

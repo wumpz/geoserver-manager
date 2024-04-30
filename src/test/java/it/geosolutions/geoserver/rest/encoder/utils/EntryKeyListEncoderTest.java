@@ -30,30 +30,30 @@ import org.junit.Test;
  */
 public class EntryKeyListEncoderTest extends TestCase {
 
-    public EntryKeyListEncoderTest() {
-    }
+  public EntryKeyListEncoderTest() {
+  }
 
-    @Test
-    public void testAll() {
-        NestedElementEncoder ekle = new NestedElementEncoder("EKL");
-        ekle.add("k1", "v1");
-        ekle.add("k2", "v2");
-        ekle.add("k3", "v3");
+  @Test
+  public void testAll() {
+    NestedElementEncoder ekle = new NestedElementEncoder("EKL");
+    ekle.add("k1", "v1");
+    ekle.add("k2", "v2");
+    ekle.add("k3", "v3");
 
-        Element root = new Element("root");
-        root.addContent(ekle.getRoot());
+    Element root = new Element("root");
+    root.addContent(ekle.getRoot());
 
-        assertEquals(1, root.getChildren().size());
-        assertNotNull(root.getChild("EKL"));
-        assertEquals(3, root.getChild("EKL").getChildren().size());
-        assertEquals(3, root.getChild("EKL").getChildren("entry").size());
+    assertEquals(1, root.getChildren().size());
+    assertNotNull(root.getChild("EKL"));
+    assertEquals(3, root.getChild("EKL").getChildren().size());
+    assertEquals(3, root.getChild("EKL").getChildren("entry").size());
 
-        assertEquals("k1", ((Element)root.getChild("EKL").getChildren("entry").get(0)).getAttributeValue("key"));
-        assertEquals("k2", ((Element)root.getChild("EKL").getChildren("entry").get(1)).getAttributeValue("key"));
-        assertEquals("k3", ((Element)root.getChild("EKL").getChildren("entry").get(2)).getAttributeValue("key"));
+    assertEquals("k1", ((Element) root.getChild("EKL").getChildren("entry").get(0)).getAttributeValue("key"));
+    assertEquals("k2", ((Element) root.getChild("EKL").getChildren("entry").get(1)).getAttributeValue("key"));
+    assertEquals("k3", ((Element) root.getChild("EKL").getChildren("entry").get(2)).getAttributeValue("key"));
 
-        assertEquals("v1", ((Element)root.getChild("EKL").getChildren("entry").get(0)).getText());
-        assertEquals("v2", ((Element)root.getChild("EKL").getChildren("entry").get(1)).getText());
-        assertEquals("v3", ((Element)root.getChild("EKL").getChildren("entry").get(2)).getText());
-    }
+    assertEquals("v1", ((Element) root.getChild("EKL").getChildren("entry").get(0)).getText());
+    assertEquals("v2", ((Element) root.getChild("EKL").getChildren("entry").get(1)).getText());
+    assertEquals("v3", ((Element) root.getChild("EKL").getChildren("entry").get(2)).getText());
+  }
 }
