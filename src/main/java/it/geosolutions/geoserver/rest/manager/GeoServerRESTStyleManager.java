@@ -779,11 +779,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
       InputStream stream = new ByteArrayInputStream(sldBody.getBytes(Charset.forName("UTF-8")));
       Document doc = builder.parse(stream);
       result = this.checkSLD10Version(doc);
-    } catch (SAXException ex) {
-      LOG.severe("Error parsing SLD file: " + ex);
-    } catch (IOException ex) {
-      LOG.severe("Error parsing SLD file: " + ex);
-    } catch (ParserConfigurationException ex) {
+    } catch (SAXException | IOException | ParserConfigurationException ex) {
       LOG.severe("Error parsing SLD file: " + ex);
     }
     return result;
@@ -796,11 +792,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
       DocumentBuilder builder = factory.newDocumentBuilder();
       Document doc = builder.parse(fileSLD);
       result = this.checkSLD10Version(doc);
-    } catch (SAXException ex) {
-      LOG.severe("Error parsing SLD file: " + ex);
-    } catch (IOException ex) {
-      LOG.severe("Error parsing SLD file: " + ex);
-    } catch (ParserConfigurationException ex) {
+    } catch (SAXException | IOException | ParserConfigurationException ex) {
       LOG.severe("Error parsing SLD file: " + ex);
     }
     return result;

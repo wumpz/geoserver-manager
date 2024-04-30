@@ -231,9 +231,7 @@ public class GeoServerRESTStructuredGridCoverageReaderManager extends GeoServerR
     RESTStructuredCoverageGranulesList granulesList = null;
     try {
       granulesList = getGranules(workspace, coverageStore, coverage, filter, null, 1);
-    } catch (MalformedURLException e) {
-      LOG.log(Level.FINEST, e.getLocalizedMessage(), e);
-    } catch (UnsupportedEncodingException e) {
+    } catch (MalformedURLException | UnsupportedEncodingException e) {
       LOG.log(Level.FINEST, e.getLocalizedMessage(), e);
     }
     if (granulesList == null || granulesList.isEmpty()) {
@@ -254,9 +252,7 @@ public class GeoServerRESTStructuredGridCoverageReaderManager extends GeoServerR
     granulesList = null;
     try {
       granulesList = getGranules(workspace, coverageStore, coverage, filter, null, 1);
-    } catch (MalformedURLException e) {
-      LOG.log(Level.FINEST, e.getLocalizedMessage(), e);
-    } catch (UnsupportedEncodingException e) {
+    } catch (MalformedURLException | UnsupportedEncodingException e) {
       LOG.log(Level.FINEST, e.getLocalizedMessage(), e);
     }
     if (granulesList == null || granulesList.isEmpty()) {
@@ -293,11 +289,9 @@ public class GeoServerRESTStructuredGridCoverageReaderManager extends GeoServerR
     RESTStructuredCoverageGranulesList granule = null;
     try {
       granule = getGranuleById(workspace, coverageStore, coverage, granuleId);
-    } catch (MalformedURLException e) {
+    } catch (MalformedURLException | UnsupportedEncodingException e) {
       LOG.log(Level.FINEST, e.getLocalizedMessage(), e);
 
-    } catch (UnsupportedEncodingException e) {
-      LOG.log(Level.FINEST, e.getLocalizedMessage(), e);
     }
     if (granule == null) {
       LOG.finest("Granule for id: " + granuleId + " does not exist for coverage "
@@ -318,9 +312,7 @@ public class GeoServerRESTStructuredGridCoverageReaderManager extends GeoServerR
     granule = null;
     try {
       granule = getGranuleById(workspace, coverageStore, coverage, granuleId);
-    } catch (MalformedURLException e) {
-      LOG.log(Level.FINEST, e.getLocalizedMessage(), e);
-    } catch (UnsupportedEncodingException e) {
+    } catch (MalformedURLException | UnsupportedEncodingException e) {
       LOG.log(Level.FINEST, e.getLocalizedMessage(), e);
     }
     if (granule == null) {

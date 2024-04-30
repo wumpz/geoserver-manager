@@ -3015,9 +3015,7 @@ public class GeoServerRESTPublisher {
       GeoServerRESTStructuredGridCoverageReaderManager manager = new GeoServerRESTStructuredGridCoverageReaderManager(
               new URL(restURL), gsuser, gspass);
       return manager.harvestExternal(workspace, coverageStore, format, path);
-    } catch (IllegalArgumentException e) {
-      LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
-    } catch (MalformedURLException e) {
+    } catch (IllegalArgumentException | MalformedURLException e) {
       LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
     }
     return false;
@@ -3122,9 +3120,7 @@ public class GeoServerRESTPublisher {
       GeoServerRESTStructuredGridCoverageReaderManager manager = new GeoServerRESTStructuredGridCoverageReaderManager(
               new URL(restURL), gsuser, gspass);
       return manager.removeGranuleById(workspace, coverageStore, coverage, granuleId);
-    } catch (IllegalArgumentException e) {
-      LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
-    } catch (MalformedURLException e) {
+    } catch (IllegalArgumentException | MalformedURLException e) {
       LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
     }
     return false;
@@ -3150,9 +3146,7 @@ public class GeoServerRESTPublisher {
       GeoServerRESTStructuredGridCoverageReaderManager manager = new GeoServerRESTStructuredGridCoverageReaderManager(
               new URL(restURL), gsuser, gspass);
       return manager.removeGranulesByCQL(workspace, coverageStore, coverage, filter);
-    } catch (IllegalArgumentException e) {
-      LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
-    } catch (MalformedURLException e) {
+    } catch (IllegalArgumentException | MalformedURLException e) {
       LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
     }
     return false;

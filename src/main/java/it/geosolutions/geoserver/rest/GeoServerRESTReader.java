@@ -1085,9 +1085,7 @@ public class GeoServerRESTReader {
       GeoServerRESTStructuredGridCoverageReaderManager manager
               = new GeoServerRESTStructuredGridCoverageReaderManager(new URL(baseurl), username, password);
       return manager.getGranuleIndexSchema(workspace, coverageStore, coverage);
-    } catch (IllegalArgumentException e) {
-      LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
-    } catch (MalformedURLException e) {
+    } catch (IllegalArgumentException | MalformedURLException e) {
       LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
     }
     return null;

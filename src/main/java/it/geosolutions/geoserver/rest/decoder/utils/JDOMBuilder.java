@@ -51,9 +51,7 @@ public class JDOMBuilder {
       SAXBuilder builder = new SAXBuilder();
       Document doc = builder.build(new StringReader(response));
       return doc.getRootElement();
-    } catch (JDOMException ex) {
-      LOG.log(Level.WARNING, "Ex parsing response", ex);
-    } catch (IOException ex) {
+    } catch (JDOMException | IOException ex) {
       LOG.log(Level.WARNING, "Ex parsing response", ex);
     }
 
