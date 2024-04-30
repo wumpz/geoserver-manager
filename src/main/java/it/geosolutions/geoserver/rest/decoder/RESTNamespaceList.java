@@ -57,7 +57,7 @@ public class RESTNamespaceList implements Iterable<RESTNamespaceList.RESTShortNa
   }
 
   protected RESTNamespaceList(Element wslistroot) {
-    List<Element> tmpList = new ArrayList<Element>();
+    List<Element> tmpList = new ArrayList<>();
     for (Element wselem : (List<Element>) wslistroot.getChildren("namespace")) {
       tmpList.add(wselem);
     }

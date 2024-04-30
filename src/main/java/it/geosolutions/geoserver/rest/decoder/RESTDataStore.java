@@ -135,7 +135,7 @@ public class RESTDataStore {
     if (elConnparm != null) {
       @SuppressWarnings("unchecked")
       List<Element> elements = (List<Element>) elConnparm.getChildren("entry");
-      Map<String, String> params = new HashMap<String, String>(elements.size());
+      Map<String, String> params = new HashMap<>(elements.size());
       for (Element element : elements) {
         String key = element.getAttributeValue("key");
         String value = element.getTextTrim();

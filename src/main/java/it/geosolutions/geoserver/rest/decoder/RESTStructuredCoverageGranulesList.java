@@ -119,7 +119,7 @@ public class RESTStructuredCoverageGranulesList implements Iterable<RESTStructur
     bbox = boundedBy.getChild("Box", GML_NAMESPACE);
 
     // now get the feature members
-    List<RESTStructuredCoverageGranule> tmpList = new ArrayList<RESTStructuredCoverageGranule>();
+    List<RESTStructuredCoverageGranule> tmpList = new ArrayList<>();
     for (Element el : (List<Element>) featureCollection.getChildren("featureMember", GML_NAMESPACE)) {
       tmpList.add(new RESTStructuredCoverageGranule(el));
     }

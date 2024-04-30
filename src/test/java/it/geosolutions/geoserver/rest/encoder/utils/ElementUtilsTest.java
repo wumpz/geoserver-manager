@@ -20,8 +20,8 @@ public class ElementUtilsTest {
   final int maxDepth = 5;
   final Filter filter = new Filter() {
     public boolean matches(Object obj) {
-      if (obj instanceof Element) {
-        if (((Element) obj).getName().equals(NAME)) {
+      if (obj instanceof Element element) {
+        if (element.getName().equals(NAME)) {
           return true;
         }
       }
@@ -64,8 +64,8 @@ public class ElementUtilsTest {
 
     final Filter myFilter = new Filter() {
       public boolean matches(Object obj) {
-        if (obj instanceof Element) {
-          final Element el = ((Element) obj);
+        if (obj instanceof Element element) {
+          final Element el = element;
           if (el.getName().equals(NAME)) {
             if (el.getText().equals("1") || el.getText().equals("3")) {
               return true;
@@ -80,8 +80,8 @@ public class ElementUtilsTest {
     final Iterator<?> it = list3.iterator();
     while (it.hasNext()) {
       final Object obj = it.next();
-      if (obj instanceof Element) {
-        final Element el = (Element) obj;
+      if (obj instanceof Element element) {
+        final Element el = element;
         LOG.info("LOCATED-> " + el.getName() + " level " + el.getText());
       }
     }
@@ -96,9 +96,9 @@ public class ElementUtilsTest {
     int nFound = 0;
     while (it.hasNext()) {
       final Object obj = it.next();
-      if (obj instanceof Element) {
+      if (obj instanceof Element element) {
         nFound++;
-        Element el = (Element) obj;
+        Element el = element;
         LOG.info("LOCATED-> " + el.getName() + " level " + el.getText());
       }
     }

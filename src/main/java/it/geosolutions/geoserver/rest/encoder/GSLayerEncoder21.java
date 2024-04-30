@@ -101,7 +101,7 @@ public class GSLayerEncoder21 extends GSLayerEncoder {
    */
   public void addAuthorityURL(GSAuthorityURLInfoEncoder authorityURLInfo) {
     if (authorityURLList == null) {
-      authorityURLList = new LinkedHashMap<String, String>();
+      authorityURLList = new LinkedHashMap<>();
     }
     authorityURLList.put(authorityURLInfo.getHref(), authorityURLInfo.getName());
     String jsonStr = "";
@@ -149,13 +149,13 @@ public class GSLayerEncoder21 extends GSLayerEncoder {
    */
   public void addIdentifier(GSIdentifierInfoEncoder identifierInfo) {
     if (identifierList == null) {
-      identifierList = new LinkedHashMap<String, List<String>>();
+      identifierList = new LinkedHashMap<>();
     }
 
     String authority = identifierInfo.getAuthority();
 
     if (!identifierList.containsKey(authority)) {
-      List<String> ids = new ArrayList<String>();
+      List<String> ids = new ArrayList<>();
       ids.add(identifierInfo.getIdentifier());
       identifierList.put(authority, ids);
     } else {

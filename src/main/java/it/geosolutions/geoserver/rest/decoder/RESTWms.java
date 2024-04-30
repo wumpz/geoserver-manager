@@ -128,7 +128,7 @@ public class RESTWms extends RESTResource {
   }
 
   public List<RESTDimensionInfo> getDimensionInfo() {
-    List<RESTDimensionInfo> listDim = new ArrayList<RESTDimensionInfo>();
+    List<RESTDimensionInfo> listDim = new ArrayList<>();
     for (RESTMetadataList.RESTMetadataElement el : getMetadataList()) {
       if (el.getKey().equals(RESTDimensionInfo.TIME) || el.getKey().equals(RESTDimensionInfo.ELEVATION)) {
         listDim.add(new RESTDimensionInfo(el.getMetadataElem()));
@@ -144,7 +144,7 @@ public class RESTWms extends RESTResource {
    */
   @SuppressWarnings("unchecked")
   public Map<String, String> getParametersList() {
-    Map<String, String> paramsList = new HashMap<String, String>();
+    Map<String, String> paramsList = new HashMap<>();
 
     final Element paramsRoot = rootElem.getChild("parameters");
     if (paramsRoot != null) {

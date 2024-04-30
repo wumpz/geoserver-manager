@@ -92,7 +92,7 @@ public abstract class ElementUtils {
       throw new IllegalArgumentException("Bad arguments: root=" + root
               + " filter=" + filter + " depth=" + depth);
     }
-    final List<Element> ret = new ArrayList<Element>();
+    final List<Element> ret = new ArrayList<>();
     // if match add myself
     if (filter.matches(root)) {
       LOG.finest("LOCATED-> name:" + root.getName() + " text:"
@@ -105,8 +105,8 @@ public abstract class ElementUtils {
       final Iterator<?> it = childrenList.iterator();
       while (it.hasNext()) {
         final Object obj = it.next();
-        if (obj instanceof Element) {
-          final Element childEl = (Element) obj;
+        if (obj instanceof Element element) {
+          final Element childEl = element;
           ret.addAll(search(childEl, filter, depth - 1));
         }
       }
@@ -119,7 +119,7 @@ public abstract class ElementUtils {
       throw new IllegalArgumentException("Bad arguments: root=" + root
               + " filter=" + filter);
     }
-    final List<Element> ret = new ArrayList<Element>();
+    final List<Element> ret = new ArrayList<>();
     // if match add myself
     if (filter.matches(root)) {
       LOG.finest("LOCATED-> name:" + root.getName() + " text:"
@@ -130,8 +130,7 @@ public abstract class ElementUtils {
     final Iterator<?> it = root.getDescendants(filter);
     while (it.hasNext()) {
       Object obj = it.next();
-      if (obj instanceof Element) {
-        Element el = (Element) obj;
+      if (obj instanceof Element el) {
 
         LOG.finest("LOCATED-> name:" + el.getName() + " text:"
                 + el.getText());
@@ -177,8 +176,7 @@ public abstract class ElementUtils {
       private static final long serialVersionUID = 1L;
 
       public boolean matches(Object obj) {
-        if (obj instanceof Element) {
-          final Element el = ((Element) obj);
+        if (obj instanceof Element el) {
           if (el.getName().equals(name) && el.getText().equals(val)) {
             return true;
           }
@@ -223,8 +221,7 @@ public abstract class ElementUtils {
       private static final long serialVersionUID = 1L;
 
       public boolean matches(Object obj) {
-        if (obj instanceof Element) {
-          final Element el = ((Element) obj);
+        if (obj instanceof Element el) {
           if (el.getName().equals(name)) {
             return true;
           }
@@ -260,8 +257,7 @@ public abstract class ElementUtils {
       private static final long serialVersionUID = 1L;
 
       public boolean matches(Object obj) {
-        if (obj instanceof Element) {
-          final Element element = ((Element) obj);
+        if (obj instanceof Element element) {
           if (element.equals(el)) {
             return true;
           }

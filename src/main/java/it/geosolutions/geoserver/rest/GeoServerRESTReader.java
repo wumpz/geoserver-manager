@@ -908,7 +908,7 @@ public class GeoServerRESTReader {
    */
   public List<String> getNamespaceNames() {
     RESTNamespaceList list = getNamespaces();
-    List<String> names = new ArrayList<String>(list.size());
+    List<String> names = new ArrayList<>(list.size());
     for (RESTNamespaceList.RESTShortNamespace item : list) {
       names.add(item.getName());
     }
@@ -969,7 +969,7 @@ public class GeoServerRESTReader {
     if (list == null) {
       return Collections.emptyList();
     }
-    List<String> names = new ArrayList<String>(list.size());
+    List<String> names = new ArrayList<>(list.size());
     for (RESTWorkspaceList.RESTShortWorkspace item : list) {
       names.add(item.getName());
     }

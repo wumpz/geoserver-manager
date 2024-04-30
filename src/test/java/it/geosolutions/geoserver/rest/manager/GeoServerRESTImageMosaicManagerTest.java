@@ -82,7 +82,7 @@ public class GeoServerRESTImageMosaicManagerTest extends GeoserverRESTTest {
     assertFalse(indexFormat.isEmpty());
     assertEquals(5, indexFormat.size());
 
-    Set<String> allowedDateFormats = new HashSet<String>(Arrays.asList(
+    Set<String> allowedDateFormats = new HashSet<>(Arrays.asList(
             "java.util.Date", // shapefile
             "java.sql.Timestamp")); // h2
 

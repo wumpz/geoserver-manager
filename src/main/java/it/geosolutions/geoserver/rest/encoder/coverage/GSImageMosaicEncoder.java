@@ -66,9 +66,9 @@ public class GSImageMosaicEncoder extends GSCoverageEncoder {
     private static final long serialVersionUID = 1L;
 
     public boolean matches(Object obj) {
-      if (obj instanceof Element) {
-        if (((Element) obj).getName().equals(ENTRY)) {
-          final Element el = ((Element) obj).getChild(STRING);
+      if (obj instanceof Element element) {
+        if (element.getName().equals(ENTRY)) {
+          final Element el = element.getChild(STRING);
           if (el == null) {
             return false;
           }
@@ -108,7 +108,7 @@ public class GSImageMosaicEncoder extends GSCoverageEncoder {
    * @param val
    */
   protected void addAllowMultithreading(final boolean val) {
-    final List<Element> list = new ArrayList<Element>(2);
+    final List<Element> list = new ArrayList<>(2);
     list.add(new Element(STRING).setText(allowMultithreading));
     list.add(new Element(STRING).setText((val) ? "true" : "false"));
 
@@ -146,7 +146,7 @@ public class GSImageMosaicEncoder extends GSCoverageEncoder {
    * @param val
    */
   protected void addFilter(final String val) {
-    final List<Element> list = new ArrayList<Element>(2);
+    final List<Element> list = new ArrayList<>(2);
     list.add(new Element(STRING).setText(filter));
     list.add(new Element(STRING).setText(val));
     parameters.add(null, list);
@@ -182,7 +182,7 @@ public class GSImageMosaicEncoder extends GSCoverageEncoder {
    * @param val
    */
   protected void addMaxAllowedTiles(final int val) {
-    final List<Element> list = new ArrayList<Element>(2);
+    final List<Element> list = new ArrayList<>(2);
     list.add(new Element(STRING).setText(maxAllowedTiles));
     list.add(new Element(STRING).setText(String.valueOf(val)));
     parameters.add(null, list);
@@ -218,7 +218,7 @@ public class GSImageMosaicEncoder extends GSCoverageEncoder {
    * @param val
    */
   protected void addInputTransparentColor(final String val) {
-    final List<Element> list = new ArrayList<Element>(2);
+    final List<Element> list = new ArrayList<>(2);
     list.add(new Element(STRING).setText(inputTransparentColor));
     list.add(new Element(STRING).setText(val));
     parameters.add(null, list);
@@ -255,7 +255,7 @@ public class GSImageMosaicEncoder extends GSCoverageEncoder {
    * @param val
    */
   protected void addOutputTransparentColor(final String val) {
-    final List<Element> list = new ArrayList<Element>(2);
+    final List<Element> list = new ArrayList<>(2);
     list.add(new Element(STRING).setText(outputTransparentColor));
     list.add(new Element(STRING).setText(val));
     parameters.add(null, list);
@@ -292,7 +292,7 @@ public class GSImageMosaicEncoder extends GSCoverageEncoder {
    * @param val
    */
   protected void addSUGGESTED_TILE_SIZE(final String val) {
-    final List<Element> list = new ArrayList<Element>(2);
+    final List<Element> list = new ArrayList<>(2);
     list.add(new Element(STRING).setText(SUGGESTED_TILE_SIZE));
     list.add(new Element(STRING).setText(val));
     parameters.add(null, list);
@@ -330,7 +330,7 @@ public class GSImageMosaicEncoder extends GSCoverageEncoder {
    * @param val
    */
   protected void addUSE_JAI_IMAGEREAD(final boolean val) {
-    final List<Element> list = new ArrayList<Element>(2);
+    final List<Element> list = new ArrayList<>(2);
     list.add(new Element(STRING).setText(USE_JAI_IMAGEREAD));
     list.add(new Element(STRING).setText((val) ? "true" : "false"));
     parameters.add(null, list);
@@ -366,7 +366,7 @@ public class GSImageMosaicEncoder extends GSCoverageEncoder {
    * @param val
    */
   protected void addBackgroundValues(final String val) {
-    final List<Element> list = new ArrayList<Element>(2);
+    final List<Element> list = new ArrayList<>(2);
     list.add(new Element(STRING).setText(backgroundValues));
     list.add(new Element(STRING).setText(val));
     parameters.add(null, list);
@@ -402,7 +402,7 @@ public class GSImageMosaicEncoder extends GSCoverageEncoder {
    * @param val
    */
   protected void addSORTING(final String val) {
-    final List<Element> list = new ArrayList<Element>(2);
+    final List<Element> list = new ArrayList<>(2);
     list.add(new Element(STRING).setText(SORTING));
     list.add(new Element(STRING).setText(val));
     parameters.add(null, list);
@@ -424,7 +424,7 @@ public class GSImageMosaicEncoder extends GSCoverageEncoder {
    * @param val
    */
   protected void addMergeBehavior(final String val) {
-    final List<Element> list = new ArrayList<Element>(2);
+    final List<Element> list = new ArrayList<>(2);
     list.add(new Element(STRING).setText(MERGEBEHAVIOR));
     list.add(new Element(STRING).setText(val));
     parameters.add(null, list);

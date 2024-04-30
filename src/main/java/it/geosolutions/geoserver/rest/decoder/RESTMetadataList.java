@@ -40,7 +40,7 @@ public class RESTMetadataList implements Iterable<RESTMetadataList.RESTMetadataE
    * @param list
    */
   protected RESTMetadataList(Element list) {
-    List<Element> tmpList = new ArrayList<Element>();
+    List<Element> tmpList = new ArrayList<>();
     for (Element el : (List<Element>) list.getChildren("entry")) {
       tmpList.add(el);
     }

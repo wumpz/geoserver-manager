@@ -82,7 +82,7 @@ public class RESTResource {
     if (keywordsRoot != null) {
       final List<Element> keywords = keywordsRoot.getChildren();
       if (keywords != null) {
-        kwdsList = new ArrayList<String>(keywords.size());
+        kwdsList = new ArrayList<>(keywords.size());
         for (Element keyword : keywords) {
           kwdsList.add(keyword.getValue());
         }
@@ -185,7 +185,7 @@ public class RESTResource {
     if (metaLinksRoot != null) {
       final List<Element> metaLinks = metaLinksRoot.getChildren();
       if (metaLinks != null) {
-        metaLinksList = new ArrayList<GSMetadataLinkInfoEncoder>(metaLinks.size());
+        metaLinksList = new ArrayList<>(metaLinks.size());
         for (Element metaLink : metaLinks) {
           final GSMetadataLinkInfoEncoder metaLinkEnc = new GSMetadataLinkInfoEncoder();
           metaLinkEnc
@@ -216,7 +216,7 @@ public class RESTResource {
     if (dimensionsRoot != null) {
       final List<Element> dimensions = dimensionsRoot.getChildren();
       if (dimensions != null) {
-        dimensionList = new ArrayList<GSCoverageDimensionEncoder>(dimensions.size());
+        dimensionList = new ArrayList<>(dimensions.size());
         for (Element coverageDimension : dimensions) {
           final String name = coverageDimension.getChildText("name");
           final String description = coverageDimension.getChildText("description");

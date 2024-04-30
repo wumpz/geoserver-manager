@@ -58,7 +58,7 @@ public class RESTWorkspaceList implements Iterable<RESTWorkspaceList.RESTShortWo
   }
 
   protected RESTWorkspaceList(Element wslistroot) {
-    List<Element> tmpList = new ArrayList<Element>();
+    List<Element> tmpList = new ArrayList<>();
     for (Element wselem : (List<Element>) wslistroot.getChildren("workspace")) {
       tmpList.add(wselem);
     }

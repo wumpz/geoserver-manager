@@ -64,9 +64,9 @@ public class GSJP2KEncoder extends GSCoverageEncoder {
     private static final long serialVersionUID = 1L;
 
     public boolean matches(Object obj) {
-      if (obj instanceof Element) {
-        if (((Element) obj).getName().equals(ENTRY)) {
-          List<Element> values = ((Element) obj).getChildren(STRING);
+      if (obj instanceof Element element) {
+        if (element.getName().equals(ENTRY)) {
+          List<Element> values = element.getChildren(STRING);
           for (Element el : values) {
             if (el == null) {
               return false;
@@ -111,7 +111,7 @@ public class GSJP2KEncoder extends GSCoverageEncoder {
    * @param val
    */
   protected void addUseMultithreading(final boolean val) {
-    final List<Element> list = new ArrayList<Element>(2);
+    final List<Element> list = new ArrayList<>(2);
     list.add(new Element(STRING).setText(useMultithreading));
     list.add(new Element(STRING).setText((val) ? "true" : "false"));
 
@@ -145,7 +145,7 @@ public class GSJP2KEncoder extends GSCoverageEncoder {
    * @param val
    */
   protected void addSuggestedTileSize(final String val) {
-    final List<Element> list = new ArrayList<Element>(2);
+    final List<Element> list = new ArrayList<>(2);
     list.add(new Element(STRING).setText(SUGGESTED_TILE_SIZE));
     list.add(new Element(STRING).setText(val));
     parameters.add(null, list);
@@ -180,7 +180,7 @@ public class GSJP2KEncoder extends GSCoverageEncoder {
    * @param val
    */
   protected void addUseJaiImageRead(final boolean val) {
-    final List<Element> list = new ArrayList<Element>(2);
+    final List<Element> list = new ArrayList<>(2);
     list.add(new Element(STRING).setText(USE_JAI_IMAGEREAD));
     list.add(new Element(STRING).setText((val) ? "true" : "false"));
     parameters.add(null, list);

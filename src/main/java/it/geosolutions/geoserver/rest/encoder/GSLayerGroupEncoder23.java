@@ -43,7 +43,7 @@ public class GSLayerGroupEncoder23 extends GSLayerGroupEncoder {
   private static final Set<String> modes;
 
   static {
-    modes = new HashSet<String>();
+    modes = new HashSet<>();
     modes.add(MODE_SINGLE);
     modes.add(MODE_NAMED);
     modes.add(MODE_CONTAINER);

@@ -46,7 +46,7 @@ public class Util {
    */
   public static List<RESTStyle> searchStyles(GeoServerRESTReader reader, String stylename) {
 
-    List<RESTStyle> styles = new ArrayList<RESTStyle>();
+    List<RESTStyle> styles = new ArrayList<>();
 
     RESTStyle style = reader.getStyle(stylename);
 

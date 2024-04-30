@@ -120,7 +120,7 @@ public class RESTStructuredCoverageIndexSchema implements Iterable<RESTStructure
       throw new IllegalStateException("Root element should be Schema");
     }
 
-    List<RESTStructuredCoverageIndexAttribute> tmpList = new ArrayList<RESTStructuredCoverageIndexAttribute>();
+    List<RESTStructuredCoverageIndexAttribute> tmpList = new ArrayList<>();
     for (Element el : (List<Element>) attributes.getChildren()) {
       tmpList.add(new RESTStructuredCoverageIndexAttribute(el));
     }

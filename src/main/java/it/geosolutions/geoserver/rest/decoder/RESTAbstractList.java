@@ -64,7 +64,7 @@ public class RESTAbstractList<ELEM extends NameLinkElem> implements Iterable<ELE
   }
 
   protected RESTAbstractList(Element list) {
-    List<Element> tempList = new ArrayList<Element>();
+    List<Element> tempList = new ArrayList<>();
     String baseName = null;
 
     for (Element listItem : (List<Element>) list.getChildren()) {
@@ -97,7 +97,7 @@ public class RESTAbstractList<ELEM extends NameLinkElem> implements Iterable<ELE
   }
 
   public List<String> getNames() {
-    List<String> names = new ArrayList<String>(elementList.size());
+    List<String> names = new ArrayList<>(elementList.size());
     for (ELEM elem : this) {
       names.add(elem.getName());
     }

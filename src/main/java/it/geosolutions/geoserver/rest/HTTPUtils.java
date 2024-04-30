@@ -281,7 +281,7 @@ public class HTTPUtils {
    */
   public static String postMultipartForm(String url, File dir, String username, String pw) {
     try {
-      List<Part> parts = new ArrayList<Part>();
+      List<Part> parts = new ArrayList<>();
       for (File f : dir.listFiles()) {
         parts.add(new FilePart(f.getName(), f));
       }

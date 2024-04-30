@@ -232,7 +232,7 @@ public class RESTLayer {
     if (authorityURLsRoot != null) {
       final List<Element> authorityURLs = authorityURLsRoot.getChildren();
       if (authorityURLs != null) {
-        authorityURLList = new ArrayList<GSAuthorityURLInfoEncoder>(
+        authorityURLList = new ArrayList<>(
                 authorityURLs.size());
         for (Element authorityURL : authorityURLs) {
           final GSAuthorityURLInfoEncoder authEnc = new GSAuthorityURLInfoEncoder();
@@ -259,7 +259,7 @@ public class RESTLayer {
     if (idRoot != null) {
       final List<Element> identifiers = idRoot.getChildren();
       if (identifiers != null) {
-        idList = new ArrayList<GSIdentifierInfoEncoder>(
+        idList = new ArrayList<>(
                 identifiers.size());
         for (Element identifier : identifiers) {
           final GSIdentifierInfoEncoder idEnc = new GSIdentifierInfoEncoder();

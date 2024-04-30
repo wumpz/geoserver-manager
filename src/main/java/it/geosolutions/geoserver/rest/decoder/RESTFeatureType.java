@@ -258,9 +258,9 @@ public class RESTFeatureType extends RESTResource {
     if (attrsRoot != null) {
       final List<Element> attrs = attrsRoot.getChildren();
       if (attrs != null) {
-        attrsList = new ArrayList<Map<FeatureTypeAttribute, String>>(attrs.size());
+        attrsList = new ArrayList<>(attrs.size());
         for (Element attr : attrs) {
-          Map<FeatureTypeAttribute, String> attrsMap = new HashMap<FeatureTypeAttribute, String>();
+          Map<FeatureTypeAttribute, String> attrsMap = new HashMap<>();
           attrsList.add(attrsMap);
           for (FeatureTypeAttribute at : FeatureTypeAttribute.values()) {
             String key = at.toString();
@@ -279,7 +279,7 @@ public class RESTFeatureType extends RESTResource {
     if (attrsRoot != null) {
       final List<Element> attrs = attrsRoot.getChildren();
       if (attrs != null) {
-        attrsList = new ArrayList<GSAttributeEncoder>(attrs.size());
+        attrsList = new ArrayList<>(attrs.size());
         for (Element attr : attrs) {
           final GSAttributeEncoder attrEnc = new GSAttributeEncoder();
           for (FeatureTypeAttribute at : FeatureTypeAttribute.values()) {

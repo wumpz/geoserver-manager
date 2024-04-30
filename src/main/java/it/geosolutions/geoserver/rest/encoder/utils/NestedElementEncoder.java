@@ -112,8 +112,8 @@ public class NestedElementEncoder extends XmlElement {
     }
 
     public boolean matches(Object obj) {
-      if (obj instanceof Element) {
-        final Element el = ((Element) obj);
+      if (obj instanceof Element element) {
+        final Element el = element;
         if (root.isAncestor(el)) {
           if (el.getName().equals(ENTRY)/* && el.getText().equals(value) */) {
             boolean keyCheck = true;

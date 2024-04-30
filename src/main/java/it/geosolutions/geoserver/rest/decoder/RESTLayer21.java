@@ -114,7 +114,7 @@ public class RESTLayer21 extends RESTLayer {
                     jsonStr.length() - 3);
 
             String[] items = jsonStr.split("\\}(,)\\{");
-            authorityURLList = new ArrayList<GSAuthorityURLInfoEncoder>(items.length);
+            authorityURLList = new ArrayList<>(items.length);
             for (String item : items) {
               String[] props = item.split(",");
 
@@ -156,7 +156,7 @@ public class RESTLayer21 extends RESTLayer {
                     jsonStr.length() - 3);
 
             String[] items = jsonStr.split("\\}(,)\\{");
-            identifierList = new ArrayList<GSIdentifierInfoEncoder>(items.length);
+            identifierList = new ArrayList<>(items.length);
             for (String item : items) {
               String[] props = item.split(",");
 
