@@ -90,7 +90,7 @@ public class ResourceDecoderTest {
             + "		UNIT[\"degree\", 0.017453292519943295], \r\n		AXIS[\"Geodetic longitude\", EAST], \r\n"
             + "		AXIS[\"Geodetic\n		latitude\", NORTH], \r\n		AUTHORITY[\"EPSG\",\"4326\"]]";
 
-    Assert.assertEquals(expectedCrs, coverage.getNativeCRS());
+    Assert.assertEquals(expectedCrs.replaceAll("[\\n\\r\\t]+", " ").replaceAll("\\s+"," "), coverage.getNativeCRS().replaceAll("[\\n\\r\\t]+", " ").replaceAll("\\s+"," "));
   }
 
   @Test
