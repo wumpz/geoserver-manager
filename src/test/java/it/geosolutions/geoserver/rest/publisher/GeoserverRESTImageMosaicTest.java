@@ -43,13 +43,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.util.logging.Logger;
 
 import org.apache.commons.httpclient.NameValuePair;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -77,7 +77,7 @@ import org.springframework.core.io.ClassPathResource;
  */
 public class GeoserverRESTImageMosaicTest extends GeoserverRESTTest {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(GeoserverRESTImageMosaicTest.class);
+  private static final Logger LOG = Logger.getLogger(GeoserverRESTImageMosaicTest.class.getName());
 
     @Test
     public void testCreateDeleteImageMosaicDatastore() throws MalformedURLException, UnsupportedEncodingException {
@@ -132,7 +132,7 @@ public class GeoserverRESTImageMosaicTest extends GeoserverRESTTest {
         
         assertTrue(publisher.createWorkspace(wsName));
         
-        LOGGER.info(coverageEncoder.toString());
+        LOG.info(coverageEncoder.toString());
         
         final String styleName = "raster_1";
         File sldFile;
@@ -149,7 +149,7 @@ public class GeoserverRESTImageMosaicTest extends GeoserverRESTTest {
         GSLayerEncoder layerEncoder=new GSLayerEncoder();
         
         layerEncoder.setDefaultStyle(styleName);
-        LOGGER.info(layerEncoder.toString());
+        LOG.info(layerEncoder.toString());
         // creation test
         RESTCoverageStore coverageStore =null;
         try {
@@ -161,7 +161,7 @@ public class GeoserverRESTImageMosaicTest extends GeoserverRESTTest {
     		coverageStore = reader.getCoverageStore(wsName,coverageStoreName);
     		
     		if (coverageStore==null){
-                LOGGER.error("*** coveragestore " + coverageStoreName + " has not been created.");
+                LOG.severe("*** coveragestore " + coverageStoreName + " has not been created.");
                 fail("*** coveragestore " + coverageStoreName + " has not been created.");
     		}
 
@@ -184,7 +184,7 @@ public class GeoserverRESTImageMosaicTest extends GeoserverRESTTest {
         // removing recursively coveragestore
         boolean removed = publisher.removeCoverageStore(coverageStore.getWorkspaceName(), coverageStore.getName(), true);
         if( ! removed ){
-            LOGGER.error("*** CoverageStore " + coverageStoreName + " has not been removed.");
+            LOG.severe("*** CoverageStore " + coverageStoreName + " has not been removed.");
             fail("*** CoverageStore " + coverageStoreName + " has not been removed.");
         }
         

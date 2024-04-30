@@ -114,9 +114,9 @@ public class GeoServerRESTStoreManager extends GeoServerRESTAbstractManager {
 
             boolean deleted = HTTPUtils.delete(deleteStore.toExternalForm(), gsuser, gspass);
 //            if (!deleted) {
-//                LOGGER.warn("Could not delete CoverageStore " + workspace + ":" + storename);
+//                LOG.warning("Could not delete CoverageStore " + workspace + ":" + storename);
 //            } else {
-//                LOGGER.info("CoverageStore successfully deleted " + workspace + ":" + storename);
+//                LOG.info("CoverageStore successfully deleted " + workspace + ":" + storename);
 //            }
             return deleted;
     }

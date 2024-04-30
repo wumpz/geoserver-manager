@@ -42,12 +42,12 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.jdom.Element;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -60,7 +60,9 @@ import org.springframework.core.io.ClassPathResource;
  * @author Emmanuel Blondel - emmanuel.blondel1@gmail.com | emmanuel.blondel@fao.org
  */
 public class GSFeatureEncoderTest extends GeoserverRESTTest {
-    protected final static Logger LOGGER = LoggerFactory.getLogger(GSFeatureEncoderTest.class);
+
+  private static final Logger LOG = Logger.getLogger(GSFeatureEncoderTest.class.getName());
+    
 
     @Test
     public void testIntegration() throws IOException {
@@ -183,7 +185,7 @@ public class GSFeatureEncoderTest extends GeoserverRESTTest {
         Element el = ElementUtils.contains(encoder.getRoot(), GSDimensionInfoEncoder.PRESENTATION);
         assertNotNull(el);
 
-        LOGGER.info("contains_key:" + el.toString());
+        LOG.info("contains_key:" + el.toString());
 
         dim2.setPresentation(Presentation.DISCRETE_INTERVAL, BigDecimal.valueOf(12));
         el = ElementUtils.contains(encoder.getRoot(), GSDimensionInfoEncoder.RESOLUTION);
@@ -200,19 +202,18 @@ public class GSFeatureEncoderTest extends GeoserverRESTTest {
 
         el = ElementUtils.contains(encoder.getRoot(), GSResourceEncoder.METADATA);
         assertNotNull(el);
-        LOGGER.info("contains_key:" + el.toString());
+        LOG.info("contains_key:" + el.toString());
 
         final boolean removed = ElementUtils.remove(encoder.getRoot(), el);
-        LOGGER.info("remove:" + removed);
+        LOG.info("remove:" + removed);
         assertTrue(removed);
 
         el = ElementUtils.contains(encoder.getRoot(), "metadata");
         assertNull(el);
         if (el == null)
-            LOGGER.info("REMOVED");
+            LOG.info("REMOVED");
 
-        if (LOGGER.isInfoEnabled())
-            LOGGER.info(encoder.toString());
+            LOG.info(encoder.toString());
 
         assertEquals(encoder.getName(), "Layername");
     }
@@ -245,27 +246,25 @@ public class GSFeatureEncoderTest extends GeoserverRESTTest {
         final GSFeatureDimensionInfoEncoder elevationDimension = new GSFeatureDimensionInfoEncoder(
                 "elevation_field");
 
-        // if (LOGGER.isInfoEnabled())
-        // LOGGER.info(encoder.toString());
+        // if (LOG.isInfoEnabled())
+        // LOG.info(encoder.toString());
 
         final String metadata = "elevation";
         encoder.setMetadataDimension(metadata, elevationDimension);
 
         elevationDimension.setPresentation(Presentation.DISCRETE_INTERVAL, BigDecimal.valueOf(10));
 
-        if (LOGGER.isInfoEnabled())
-            LOGGER.info(encoder.toString());
+            LOG.info(encoder.toString());
 
         assertTrue(encoder.delMetadata(metadata));
 
-        if (LOGGER.isInfoEnabled())
-            LOGGER.info(encoder.toString());
+            LOG.info(encoder.toString());
 
         final Element el = ElementUtils.contains(encoder.getRoot(),
                 GSDimensionInfoEncoder.DIMENSIONINFO);
         assertNull(el);
         if (el == null)
-            LOGGER.info("REMOVED");
+            LOG.info("REMOVED");
 
     }
 

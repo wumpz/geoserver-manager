@@ -35,13 +35,13 @@ import it.geosolutions.geoserver.rest.encoder.coverage.GSCoverageEncoderTest;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import org.apache.commons.httpclient.NameValuePair;
 import org.junit.After;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -54,7 +54,9 @@ import org.springframework.core.io.ClassPathResource;
  */
 public class GeoserverRESTShapeTest extends GeoserverRESTTest {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(GeoserverRESTShapeTest.class);
+  private static final Logger LOG = Logger.getLogger(GeoserverRESTShapeTest.class.getName());
+
+    
     
     @After
     public void cleanUp(){
@@ -108,7 +110,7 @@ public class GeoserverRESTShapeTest extends GeoserverRESTTest {
 
         RESTLayer layer = reader.getLayer(layerName);
 
-        LOGGER.info("Layer style is " + layer.getDefaultStyle());
+        LOG.info("Layer style is " + layer.getDefaultStyle());
 
         //test delete
         boolean ok = publisher.unpublishFeatureType(DEFAULT_WS, storeName, layerName);
@@ -150,7 +152,7 @@ public class GeoserverRESTShapeTest extends GeoserverRESTTest {
 
         RESTLayer layer = reader.getLayer(datasetName);
 
-        LOGGER.info("Layer style is " + layer.getDefaultStyle());
+        LOG.info("Layer style is " + layer.getDefaultStyle());
 
         //test delete
         boolean ok = publisher.unpublishFeatureType(DEFAULT_WS, storeName, datasetName);
@@ -184,7 +186,7 @@ public class GeoserverRESTShapeTest extends GeoserverRESTTest {
 
         RESTLayer layer = reader.getLayer(datasetName);
 
-        LOGGER.info("Layer style is " + layer.getDefaultStyle());
+        LOG.info("Layer style is " + layer.getDefaultStyle());
 
         //test delete
         boolean ok = publisher.unpublishFeatureType(DEFAULT_WS, storeName, datasetName);
@@ -228,7 +230,7 @@ public class GeoserverRESTShapeTest extends GeoserverRESTTest {
 
         RESTLayer layer = reader.getLayer(layerName);
 //        RESTLayer layerDecoder = new RESTLayer(layer);
-        LOGGER.info("Layer style is " + layer.getDefaultStyle());
+        LOG.info("Layer style is " + layer.getDefaultStyle());
         assertEquals("Style not assigned properly", styleName, layer.getDefaultStyle());
 
         // remove also datastore
@@ -273,7 +275,7 @@ public class GeoserverRESTShapeTest extends GeoserverRESTTest {
 
         RESTLayer layer = reader.getLayer(layerName);
 //        RESTLayer layerDecoder = new RESTLayer(layer);
-        LOGGER.info("Layer style is " + layer.getDefaultStyle());
+        LOG.info("Layer style is " + layer.getDefaultStyle());
         assertEquals("Style not assigned properly", DEFAULT_WS + ":" + styleName, layer.getDefaultStyle());
         assertEquals("Style not assigned properly", DEFAULT_WS, layer.getDefaultStyleWorkspace());
 
@@ -311,7 +313,7 @@ public class GeoserverRESTShapeTest extends GeoserverRESTTest {
 
         RESTLayer layer = reader.getLayer(layerName);
 
-        LOGGER.info("Layer style is " + layer.getDefaultStyle());
+        LOG.info("Layer style is " + layer.getDefaultStyle());
 
         //test delete
         boolean ok = publisher.unpublishFeatureType(DEFAULT_WS, storeName, layerName);

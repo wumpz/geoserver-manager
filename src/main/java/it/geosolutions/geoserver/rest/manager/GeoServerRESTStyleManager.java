@@ -36,6 +36,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -44,8 +46,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -55,7 +56,9 @@ import org.xml.sax.SAXException;
  */
 public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(GeoServerRESTStyleManager.class);
+  private static final Logger LOG = Logger.getLogger(GeoServerRESTStyleManager.class.getName());
+
+    
     
     /**
      * Default constructor.
@@ -97,9 +100,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
      */
     public RESTStyleList getStyles() {
         String url = "/rest/styles.xml";
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving Styles list from " + url);
-        }
+            LOG.fine("### Retrieving Styles list from " + url);
 
         String response = HTTPUtils.get(gsBaseUrl + url, gsuser, gspass);
         return RESTStyleList.build(response);
@@ -147,9 +148,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
      */
     public RESTStyleList getStyles(String workspace) {
         String url = "/rest/workspaces/"+workspace+"/styles.xml";
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving Styles list from " + url);
-        }
+            LOG.fine("### Retrieving Styles list from " + url);
 
         String response = HTTPUtils.get(gsBaseUrl + url, gsuser, gspass);
         return RESTStyleList.build(response);
@@ -161,9 +160,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
      */
     public RESTStyle getStyle(String workspace, String name) {
         String url = buildXmlUrl(workspace, name);
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving Style " + name + " from " + url);
-        }
+            LOG.fine("### Retrieving Style " + name + " from " + url);
 
         String response = HTTPUtils.get(url, gsuser, gspass);
         return RESTStyle.build(response);
@@ -193,9 +190,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
                 return null;
         }
         
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving SLD body from " + url);
-        }
+            LOG.fine("### Retrieving SLD body from " + url);
         return HTTPUtils.get(url, gsuser, gspass);
     }
     
@@ -228,9 +223,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
         try {
             return publishStyle(sldBody, null);
         } catch (IllegalArgumentException e) {
-            if (LOGGER.isErrorEnabled()) {
-                LOGGER.error(e.getLocalizedMessage(), e);
-            }
+                LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
         return false;
     }
@@ -283,7 +276,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
      */
     public boolean publishStyle(File sldFile, String name) {
         String sUrl = buildPostUrl(null, name);
-        LOGGER.debug("POSTing new style " + name + " to " + sUrl);
+        LOG.fine("POSTing new style " + name + " to " + sUrl);
         String result = HTTPUtils.post(sUrl, sldFile, GeoServerRESTPublisher.Format.SLD.getContentType(), gsuser, gspass);
         return result != null;
     }
@@ -315,7 +308,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
         if(!this.checkSLD10Version(sldBody)){
             contentType = GeoServerRESTPublisher.Format.SLD_1_1_0.getContentType();
         }
-        LOGGER.debug("POSTing new style " + name + " to " + sUrl + " using version: " + contentType);
+        LOG.fine("POSTing new style " + name + " to " + sUrl + " using version: " + contentType);
         String result = HTTPUtils.post(sUrl.toString(), sldBody, contentType, gsuser, gspass);
         return result != null;
     }
@@ -343,7 +336,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
         if(!this.checkSLD10Version(sldFile)){
             contentType = GeoServerRESTPublisher.Format.SLD_1_1_0.getContentType();
         }
-        LOGGER.debug("POSTing new style " + name + " to " + sUrl + " using version: " + contentType);
+        LOG.fine("POSTing new style " + name + " to " + sUrl + " using version: " + contentType);
         String result = HTTPUtils.post(sUrl.toString(), sldFile, contentType, gsuser, gspass);
         return result != null;
     }
@@ -378,7 +371,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
         if(!this.checkSLD10Version(sldFile)){
             contentType = GeoServerRESTPublisher.Format.SLD_1_1_0.getContentType();
         }
-        LOGGER.debug("PUTting style " + name + " to " + sUrl + " using version: " + contentType);
+        LOG.fine("PUTting style " + name + " to " + sUrl + " using version: " + contentType);
         String result = HTTPUtils.put(sUrl.toString(), sldFile, contentType, gsuser, gspass);
         return result != null;
     }
@@ -413,7 +406,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
         if(!this.checkSLD10Version(sldBody)){
             contentType = GeoServerRESTPublisher.Format.SLD_1_1_0.getContentType();
         }
-        LOGGER.debug("PUTting style " + name + " to " + sUrl + " using version: " + contentType);
+        LOG.fine("PUTting style " + name + " to " + sUrl + " using version: " + contentType);
         String result = HTTPUtils.put(sUrl.toString(), sldBody, contentType, gsuser, gspass);
         return result != null;
     }
@@ -501,7 +494,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
         // TODO may we want to throw an exception instead of
         // change style name?
         if(styleName.contains(":"))
-            LOGGER.warn("Style name is going to be changed ["+styleName+"]");
+            LOG.warning("Style name is going to be changed ["+styleName+"]");
         styleName = styleName.replaceAll(":", "_");
         
         // currently REST interface does't support URLencoded URL 
@@ -528,9 +521,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
         try {
             return removeStyle(styleName, true);
         } catch (IllegalArgumentException e) {
-            if (LOGGER.isErrorEnabled()) {
-                LOGGER.error(e.getLocalizedMessage(), e);
-            }
+                LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
         return false;
     }
@@ -551,9 +542,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
         try {
             return publishStyleInWorkspace(workspace, sldBody, null);
         } catch (IllegalArgumentException e) {
-            if (LOGGER.isErrorEnabled()) {
-                LOGGER.error(e.getLocalizedMessage(), e);
-            }
+            LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
         return false;
     }
@@ -602,7 +591,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
      */
     public boolean publishStyleInWorkspace(final String workspace, File sldFile, String name) {
         String sUrl = buildPostUrl(workspace, name);
-        LOGGER.debug("POSTing new style " + name + " to " + sUrl);
+        LOG.fine("POSTing new style " + name + " to " + sUrl);
         String result = HTTPUtils.post(sUrl, sldFile, GeoServerRESTPublisher.Format.SLD.getContentType(), gsuser, gspass);
         return result != null;
     }
@@ -612,7 +601,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
         if (raw) {
             Util.appendParameter(sUrl, "raw", "true");
         }
-        LOGGER.debug("POSTing new style " + styleName + " to " + sUrl);
+        LOG.fine("POSTing new style " + styleName + " to " + sUrl);
         
         GeoServerRESTPublisher.Format format = GeoServerRESTPublisher.Format.SLD;
         String fileName = styleFile.getName().toLowerCase();
@@ -701,7 +690,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
         // check style name
         // TODO may we want to throw an exception instead of change style name?
         if(styleName.contains(":"))
-            LOGGER.warn("Style name is going to be changed ["+styleName+"]");
+            LOG.warning("Style name is going to be changed ["+styleName+"]");
         styleName = styleName.replaceAll(":", "_");
         styleName = URLEncoder.encode(styleName);
 
@@ -728,9 +717,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
         try {
             return removeStyleInWorkspace(workspace, styleName, true);
         } catch (IllegalArgumentException e) {
-            if (LOGGER.isErrorEnabled()) {
-                LOGGER.error(e.getLocalizedMessage(), e);
-            }
+           LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
         return false;
     }
@@ -792,11 +779,11 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
             Document doc = builder.parse(stream);
             result = this.checkSLD10Version(doc);
         } catch (SAXException ex) {
-            LOGGER.error("Error parsing SLD file: " + ex);
+            LOG.severe("Error parsing SLD file: " + ex);
         } catch (IOException ex) {
-            LOGGER.error("Error parsing SLD file: " + ex);
+            LOG.severe("Error parsing SLD file: " + ex);
         } catch (ParserConfigurationException ex) {
-            LOGGER.error("Error parsing SLD file: " + ex);
+            LOG.severe("Error parsing SLD file: " + ex);
         }
         return result;
     }
@@ -809,11 +796,11 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
             Document doc = builder.parse(fileSLD);
             result = this.checkSLD10Version(doc);
         } catch (SAXException ex) {
-            LOGGER.error("Error parsing SLD file: " + ex);
+            LOG.severe("Error parsing SLD file: " + ex);
         } catch (IOException ex) {
-            LOGGER.error("Error parsing SLD file: " + ex);
+            LOG.severe("Error parsing SLD file: " + ex);
         } catch (ParserConfigurationException ex) {
-            LOGGER.error("Error parsing SLD file: " + ex);
+            LOG.severe("Error parsing SLD file: " + ex);
         }
         return result;
     }
@@ -826,7 +813,7 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
             XPathExpression expr = xpath.compile("//@version='1.0.0'");
             result = (Boolean)expr.evaluate(doc, XPathConstants.BOOLEAN);
         } catch (XPathExpressionException ex) {
-            LOGGER.error("Error parsing SLD file: " + ex);
+            LOG.severe("Error parsing SLD file: " + ex);
         }
         return result;
     }

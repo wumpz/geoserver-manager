@@ -35,10 +35,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipFile;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Manage GeoTools StructuredGridCoverageReader. It allows to create a store from a file or harvest the coverages contained in a file, to delete
@@ -62,12 +61,8 @@ public class GeoServerRESTStructuredGridCoverageReaderManager extends GeoServerR
             return ALL;
         }
     }
-
-    /**
-     * Default logger
-     */
-    private final static Logger LOGGER = LoggerFactory
-            .getLogger(GeoServerRESTStructuredGridCoverageReaderManager.class);
+    
+  private static final Logger LOG = Logger.getLogger(GeoServerRESTStructuredGridCoverageReaderManager.class.getName());
 
     /**
      * Default constructor.
@@ -128,7 +123,7 @@ public class GeoServerRESTStructuredGridCoverageReaderManager extends GeoServerR
             zip= new ZipFile(zipFile);
             zip.getName();
         }catch (Exception e) {
-            LOGGER.trace(e.getLocalizedMessage(),e.getStackTrace());
+            LOG.log(Level.FINEST, e.getLocalizedMessage(),e);
             throw new IllegalArgumentException("The provided pathname does not point to a valide zip file: "+path);
         }finally{
             if(zip!=null){
@@ -136,7 +131,7 @@ public class GeoServerRESTStructuredGridCoverageReaderManager extends GeoServerR
                     zip.close();
                 } catch (IOException e) {
                     // swallow
-                    LOGGER.trace(e.getLocalizedMessage(),e.getStackTrace());
+                    LOG.log(Level.FINEST, e.getLocalizedMessage(),e);
                 }
             }
         }
@@ -234,19 +229,13 @@ public class GeoServerRESTStructuredGridCoverageReaderManager extends GeoServerR
         try {
             granulesList = getGranules(workspace, coverageStore, coverage, filter, null, 1);
         } catch (MalformedURLException e) {
-            if (LOGGER.isTraceEnabled()) {
-                LOGGER.trace(e.getMessage(), e);
-            }
+                LOG.log(Level.FINEST, e.getLocalizedMessage(),e);
         } catch (UnsupportedEncodingException e) {
-            if (LOGGER.isTraceEnabled()) {
-                LOGGER.trace(e.getMessage(), e);
-            }
+                LOG.log(Level.FINEST, e.getLocalizedMessage(),e);
         }
         if (granulesList == null || granulesList.isEmpty()) {
-            if (LOGGER.isTraceEnabled()) {
-                LOGGER.trace("Granules for filter: " + filter + " does not exist for coverage "
+                LOG.finest("Granules for filter: " + filter + " does not exist for coverage "
                         + coverage);
-            }
             return true; // nothing to remove
         }
 
@@ -263,13 +252,9 @@ public class GeoServerRESTStructuredGridCoverageReaderManager extends GeoServerR
         try {
             granulesList = getGranules(workspace, coverageStore, coverage, filter, null, 1);
         } catch (MalformedURLException e) {
-            if (LOGGER.isTraceEnabled()) {
-                LOGGER.trace(e.getMessage(), e);
-            }
+                LOG.log(Level.FINEST, e.getLocalizedMessage(),e);
         } catch (UnsupportedEncodingException e) {
-            if (LOGGER.isTraceEnabled()) {
-                LOGGER.trace(e.getMessage(), e);
-            }
+                LOG.log(Level.FINEST, e.getLocalizedMessage(),e);
         }
         if (granulesList == null || granulesList.isEmpty()) {
             return true; // nothing to remove
@@ -305,19 +290,14 @@ public class GeoServerRESTStructuredGridCoverageReaderManager extends GeoServerR
         try {
             granule = getGranuleById(workspace, coverageStore, coverage, granuleId);
         } catch (MalformedURLException e) {
-            if (LOGGER.isTraceEnabled()) {
-                LOGGER.trace(e.getMessage(), e);
-            }
+            LOG.log(Level.FINEST, e.getLocalizedMessage(),e);
+            
         } catch (UnsupportedEncodingException e) {
-            if (LOGGER.isTraceEnabled()) {
-                LOGGER.trace(e.getMessage(), e);
-            }
+           LOG.log(Level.FINEST, e.getLocalizedMessage(),e);
         }
         if (granule == null) {
-            if (LOGGER.isTraceEnabled()) {
-                LOGGER.trace("Granule for id: " + granuleId + " does not exist for coverage "
+                LOG.finest("Granule for id: " + granuleId + " does not exist for coverage "
                         + coverage);
-            }
             return true; // nothing to remove
         }
 
@@ -335,13 +315,9 @@ public class GeoServerRESTStructuredGridCoverageReaderManager extends GeoServerR
         try {
             granule = getGranuleById(workspace, coverageStore, coverage, granuleId);
         } catch (MalformedURLException e) {
-            if (LOGGER.isTraceEnabled()) {
-                LOGGER.trace(e.getMessage(), e);
-            }
+            LOG.log(Level.FINEST, e.getLocalizedMessage(),e);
         } catch (UnsupportedEncodingException e) {
-            if (LOGGER.isTraceEnabled()) {
-                LOGGER.trace(e.getMessage(), e);
-            }
+            LOG.log(Level.FINEST, e.getLocalizedMessage(),e);
         }
         if (granule == null) {
             return true;

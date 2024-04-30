@@ -25,13 +25,13 @@ import it.geosolutions.geoserver.rest.encoder.dimensions.GSCoverageDimensionEnco
 import it.geosolutions.geoserver.rest.encoder.metadata.GSDimensionInfoEncoder;
 import it.geosolutions.geoserver.rest.encoder.metadata.GSDimensionInfoEncoder.Presentation;
 import it.geosolutions.geoserver.rest.encoder.utils.ElementUtils;
+import java.util.logging.Logger;
 import junit.framework.TestCase;
 
 import org.jdom.Element;
 import org.junit.Assert;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  *
@@ -48,15 +48,9 @@ public class GSCoverageEncoderTest extends TestCase {
 
     public GSCoverageEncoderTest() {
     }
+  
+  private static final Logger LOG = Logger.getLogger(GSCoverageEncoderTest.class.getName());
 
-    /**
-     * Default logger
-     */
-    protected final static Logger LOGGER = LoggerFactory.getLogger(GSCoverageEncoderTest.class);
-    
-	/**
-	 * test set or reset of reprojection
-	 */
 	@Test
 	public void testReprojection(){
 		GSResourceEncoder/*<GSDimensionInfoEncoder>*/ re=new GSCoverageEncoder();
@@ -112,12 +106,11 @@ public class GSCoverageEncoderTest extends TestCase {
     	timeDimension.setPresentation(Presentation.CONTINUOUS_INTERVAL);
     	encoder.setMetadata("time", timeDimension);
     	
-    	if (LOGGER.isInfoEnabled())
-    		LOGGER.info(encoder.toString());
+    	LOG.info(encoder.toString());
     	
     	final Element el=ElementUtils.contains(encoder.getRoot(),GSResourceEncoder.METADATA);
     	Assert.assertNotNull(el);
-    	LOGGER.info("contains_key:"+el.toString());
+    	LOG.info("contains_key:"+el.toString());
     	
     	final GSDimensionInfoEncoder elevationDimension=new GSDimensionInfoEncoder(true);
     	elevationDimension.setPresentation(Presentation.LIST);
@@ -130,8 +123,8 @@ public class GSCoverageEncoderTest extends TestCase {
         encoder.addCoverageDimensionInfo(gsCoverageDimensionEncoder);
 
         encoder.setNativeCoverageName("Sample native name");
-        if (LOGGER.isInfoEnabled())
-    		LOGGER.info(encoder.toString());
+
+    		LOG.info(encoder.toString());
     	
         Element nativeCoverageName = ElementUtils.contains(encoder.getRoot(), GSCoverageEncoder.NATIVECOVERAGENAME);
         assertNotNull(nativeCoverageName);
@@ -139,23 +132,23 @@ public class GSCoverageEncoderTest extends TestCase {
         
     	final Element el2=ElementUtils.contains(encoder.getRoot(),GSDimensionInfoEncoder.PRESENTATION);
     	Assert.assertNotNull(el2);
-    	LOGGER.info("contains_key:"+el2.toString());
+    	LOG.info("contains_key:"+el2.toString());
     	
     	encoder.delMetadata("time");
-    	if (LOGGER.isInfoEnabled())
-    		LOGGER.info(encoder.toString());
+
+    		LOG.info(encoder.toString());
     	
     	final Element el3=ElementUtils.contains(encoder.getRoot(),GSResourceEncoder.METADATA);
     	Assert.assertNotNull(el3);
-    	LOGGER.info("contains_by_node:"+el3.toString());
+    	LOG.info("contains_by_node:"+el3.toString());
     	
     	final boolean removed=ElementUtils.remove(encoder.getRoot(),el3);
-    	LOGGER.info("remove:"+removed);
+    	LOG.info("remove:"+removed);
     	Assert.assertTrue(removed);
     	
     	final Element el4=ElementUtils.contains(encoder.getRoot(),GSResourceEncoder.METADATA);
     	Assert.assertNull(el4);
     	if (el4==null)
-    		LOGGER.info("REMOVED");
+    		LOG.info("REMOVED");
     }
 }

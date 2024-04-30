@@ -30,11 +30,11 @@ import it.geosolutions.geoserver.rest.decoder.RESTLayer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 
 /**
@@ -47,20 +47,22 @@ import org.slf4j.LoggerFactory;
  */
 public class GeoserverRESTPublisherTest extends GeoserverRESTTest {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(GeoserverRESTPublisherTest.class);
+  private static final Logger LOG = Logger.getLogger(GeoserverRESTPublisherTest.class.getName());
+
+     
 
     protected void cleanupTestFT(String layerName, String ns, String storeName) {
         // dry run delete to work in a known state
         RESTLayer testLayer = reader.getLayer(layerName);
         if (testLayer != null) {
-            LOGGER.info("Clearing stale test layer " + layerName);
+            LOG.info("Clearing stale test layer " + layerName);
             boolean ok = publisher.unpublishFeatureType(ns, storeName, layerName);
             if (!ok) {
                 fail("Could not unpublish layer " + layerName);
             }
         }
         if (publisher.removeDatastore(ns, storeName)) {
-            LOGGER.info("Cleared stale datastore " + storeName);
+            LOG.info("Cleared stale datastore " + storeName);
         }
 
         assertFalse("Cleanup failed", existsLayer(layerName));

@@ -27,13 +27,14 @@ package it.geosolutions.geoserver.rest.decoder.utils;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  *
@@ -41,7 +42,7 @@ import org.slf4j.LoggerFactory;
  */
 public class JDOMBuilder {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(JDOMBuilder.class);
+  private static final Logger LOG = Logger.getLogger(JDOMBuilder.class.getName());   
 
     public static Element buildElement(String response) {
         if(response == null)
@@ -52,9 +53,9 @@ public class JDOMBuilder {
 			Document doc = builder.build(new StringReader(response));
 			return  doc.getRootElement();
 		} catch (JDOMException ex) {
-			LOGGER.warn("Ex parsing response", ex);
+			LOG.log(Level.WARNING, "Ex parsing response", ex);
 		} catch (IOException ex) {
-			LOGGER.warn("Ex loading response", ex);
+			LOG.log(Level.WARNING, "Ex parsing response", ex);
 		}
 
 		return null;

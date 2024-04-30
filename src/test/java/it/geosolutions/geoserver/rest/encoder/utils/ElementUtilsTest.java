@@ -3,6 +3,7 @@ package it.geosolutions.geoserver.rest.encoder.utils;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.jdom.Element;
 import org.jdom.filter.Filter;
@@ -10,17 +11,11 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 public class ElementUtilsTest {
-	
 
-    /**
-     * Default logger
-     */
-    protected final static Logger LOGGER = LoggerFactory.getLogger(ElementUtilsTest.class);
-    
+  private static final Logger LOG = Logger.getLogger(ElementUtilsTest.class.getName());
 	
 	final static String NAME="TEST";
 	final Element root=new Element(NAME);
@@ -61,7 +56,7 @@ public class ElementUtilsTest {
 
 	@Test
 	public void containsFilterDepthTest(){
-		LOGGER.info("STARTING-> containsFilterDepthTest");
+		LOG.info("STARTING-> containsFilterDepthTest");
 		
 		final List<Element> list=ElementUtils.search(this.root, filter, 0);
 		Assert.assertEquals(1,list.size());
@@ -88,14 +83,14 @@ public class ElementUtilsTest {
 			final Object obj=it.next();
 			if (obj instanceof Element){
 				final Element el=(Element)obj;
-				LOGGER.info("LOCATED-> "+el.getName()+" level "+el.getText());
+				LOG.info("LOCATED-> "+el.getName()+" level "+el.getText());
 			}
 		}
 	}
 	
 	@Test
 	public void containsFilterTest(){
-		LOGGER.info("STARTING-> containsFilterTest");
+		LOG.info("STARTING-> containsFilterTest");
 		
 		final Iterator<?> it=ElementUtils.search(this.root, filter).iterator();
 		Assert.assertTrue("Elements found", it.hasNext());
@@ -105,7 +100,7 @@ public class ElementUtilsTest {
 			if (obj instanceof Element){
 				nFound++;
 				Element el=(Element)obj;
-				LOGGER.info("LOCATED-> "+el.getName()+" level "+el.getText());
+				LOG.info("LOCATED-> "+el.getName()+" level "+el.getText());
 			}
 		}
 		Assert.assertEquals(maxDepth,nFound);
@@ -114,7 +109,7 @@ public class ElementUtilsTest {
 	
 	@Test
 	public void containsWrappersTest(){
-		LOGGER.info("STARTING-> containsWrapperTest");
+		LOG.info("STARTING-> containsWrapperTest");
 		
 		Element el=ElementUtils.contains(this.root, root);
 		Assert.assertNotNull(el);
@@ -137,7 +132,7 @@ public class ElementUtilsTest {
 	
 	@Test
 	public void removeTest(){
-		LOGGER.info("STARTING-> removeTest");
+		LOG.info("STARTING-> removeTest");
 		
 		// contains
 		Element el=ElementUtils.contains(this.root, NAME, "4");

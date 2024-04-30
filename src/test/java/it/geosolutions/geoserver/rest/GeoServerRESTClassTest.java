@@ -29,10 +29,10 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import it.geosolutions.geoserver.rest.decoder.RESTLayerGroup;
+import java.util.logging.Logger;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  * Simple class for testing that the DeleteAllLayerGroups() method behaves correctly.
@@ -41,7 +41,9 @@ import org.slf4j.LoggerFactory;
  */
 public class GeoServerRESTClassTest extends GeoserverRESTTest {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GeoserverRESTTest.class);;
+  private static final Logger LOG = Logger.getLogger(GeoServerRESTClassTest.class.getName());
+
+    
 
     @Test
     public void testGetLayerGroups() {
@@ -49,7 +51,7 @@ public class GeoServerRESTClassTest extends GeoserverRESTTest {
             return;
         }
         List<String> groups = reader.getLayerGroups().getNames();
-        LOGGER.info("Found " + groups.size() + " layerGroups");
+        LOG.info("Found " + groups.size() + " layerGroups");
         for (String groupName : groups) {
             RESTLayerGroup group = reader.getLayerGroup(groupName);
             if (groups != null) {

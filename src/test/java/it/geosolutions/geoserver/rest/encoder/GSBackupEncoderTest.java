@@ -19,9 +19,9 @@
  */
 package it.geosolutions.geoserver.rest.encoder;
 
+import java.util.logging.Logger;
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
 import org.junit.Test;
 
 
@@ -31,31 +31,26 @@ import org.junit.Test;
  */
 public class GSBackupEncoderTest extends TestCase
 {
-
-    /**
-     * Default logger
-     */
-    protected static final Logger LOGGER = Logger.getLogger(GSBackupEncoderTest.class);
-
+  private static final Logger LOG = Logger.getLogger(GSBackupEncoderTest.class.getName());
 
     @Test
     public void testAll()
     {
         final GSBackupEncoder bkpenc = new GSBackupEncoder("BK1");
-        LOGGER.info(bkpenc.toString());
+        LOG.info(bkpenc.toString());
 
         bkpenc.setPath("test_path");
-        LOGGER.info(bkpenc.toString());
+        LOG.info(bkpenc.toString());
         bkpenc.setPath("new_path");
-        LOGGER.info(bkpenc.toString());
+        LOG.info(bkpenc.toString());
 
         bkpenc.setIncludeData(true);
-        LOGGER.info(bkpenc.toString());
+        LOG.info(bkpenc.toString());
 
         bkpenc.setIncludeGwc(false);
-        LOGGER.info(bkpenc.toString());
+        LOG.info(bkpenc.toString());
 
         bkpenc.setIncludeLog(false);
-        LOGGER.info(bkpenc.toString());
+        LOG.info(bkpenc.toString());
 }
 }

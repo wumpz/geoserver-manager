@@ -28,9 +28,9 @@ import it.geosolutions.geoserver.rest.decoder.RESTStyle;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 import static org.junit.Assert.*;
 import org.springframework.core.io.ClassPathResource;
@@ -41,7 +41,7 @@ import org.springframework.core.io.ClassPathResource;
  */
 public class UtilTest extends GeoserverRESTTest {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(UtilTest.class);
+  private static final Logger LOG = Logger.getLogger(UtilTest.class.getName());    
 
     @Test
     public void testSearchStyle() throws IOException {
@@ -87,7 +87,7 @@ public class UtilTest extends GeoserverRESTTest {
         
         for(RESTStyle style : Util.searchStyles(reader, STYLENAME))
         {
-            LOGGER.debug(style.getWorkspace() + " :: " + style.getName());
+            LOG.fine(style.getWorkspace() + " :: " + style.getName());
         }
 
         // there's a bug in geoserver here: the global style will include workspace info

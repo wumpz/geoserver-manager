@@ -1,10 +1,10 @@
 package it.geosolutions.geoserver.rest.manager;
 
 import it.geosolutions.geoserver.rest.GeoserverRESTTest;
+import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  * Self contained test for working with Structured readers
@@ -15,8 +15,6 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class GeoServerRESTFileSystemManagerTest extends GeoserverRESTTest {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(GeoServerRESTFileSystemManagerTest.class);
 
     @Test
     public void testXmlConfigExists() {

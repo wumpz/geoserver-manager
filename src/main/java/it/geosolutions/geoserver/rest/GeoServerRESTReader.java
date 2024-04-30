@@ -60,11 +60,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -76,7 +73,8 @@ import org.slf4j.LoggerFactory;
  */
 public class GeoServerRESTReader {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(GeoServerRESTReader.class);
+  private static final Logger LOG = Logger.getLogger(GeoServerRESTReader.class.getName());
+
 
     private final String baseurl;
     private String username;
@@ -150,13 +148,13 @@ public class GeoServerRESTReader {
     }
 
     private String load(String url) {
-        LOGGER.info("Loading from REST path " + url);
+        LOG.info("Loading from REST path " + url);
         String response = HTTPUtils.get(baseurl + url, username, password);
         return response;
     }
 
     private String loadFullURL(String url) {
-        LOGGER.info("Loading from REST path " + url);
+        LOG.info("Loading from REST path " + url);
         String response = HTTPUtils.get(url, username, password);
         return response;
     }
@@ -290,9 +288,7 @@ public class GeoServerRESTReader {
      */
     public RESTDataStoreList getDatastores(String workspace) {
         String url = "/rest/workspaces/" + workspace + "/datastores.xml";
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving DS list from " + url);
-        }
+            LOG.fine("### Retrieving DS list from " + url);
         return RESTDataStoreList.build(load(url));
     }
 
@@ -305,9 +301,7 @@ public class GeoServerRESTReader {
      */
     public RESTDataStore getDatastore(String workspace, String dsName) {
         String url = "/rest/workspaces/" + workspace + "/datastores/" + dsName + ".xml";
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving DS from " + url);
-        }
+            LOG.fine("### Retrieving DS from " + url);
         String response = load(url);
 //        System.out.println("DATASTORE " + workspace+":"+dsName+"\n"+response);
         return RESTDataStore.build(response);
@@ -322,9 +316,7 @@ public class GeoServerRESTReader {
     public RESTDataStore getDatastore(RESTFeatureType featureType) {
 
         String url = featureType.getStoreUrl();
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving DS from fullurl " + url);
-        }
+            LOG.fine("### Retrieving DS from fullurl " + url);
         String response = loadFullURL(url);
         return RESTDataStore.build(response);
     }
@@ -413,9 +405,7 @@ public class GeoServerRESTReader {
      */
     public RESTCoverageStoreList getCoverageStores(String workspace) {
         String url = "/rest/workspaces/" + workspace + "/coveragestores.xml";
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving CS list from " + url);
-        }
+            LOG.fine("### Retrieving CS list from " + url);
         return RESTCoverageStoreList.build(load(url));
     }
 
@@ -428,9 +418,7 @@ public class GeoServerRESTReader {
      */
     public RESTCoverageStore getCoverageStore(String workspace, String csName) {
         String url = "/rest/workspaces/" + workspace + "/coveragestores/" + csName + ".xml";
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving CS from " + url);
-        }
+            LOG.fine("### Retrieving CS from " + url);
         return RESTCoverageStore.build(load(url));
     }
     
@@ -443,9 +431,7 @@ public class GeoServerRESTReader {
     public RESTCoverageStore getCoverageStore(RESTCoverage coverage) {
 
         String url = coverage.getStoreUrl();
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving CS from fullurl " + url);
-        }
+            LOG.fine("### Retrieving CS from fullurl " + url);
         String response = loadFullURL(url);
         return RESTCoverageStore.build(response);
     }
@@ -489,9 +475,7 @@ public class GeoServerRESTReader {
     public RESTCoverageList getCoverages(String workspace, String csName) {
             // restURL + "/rest/workspaces/" + workspace + "/coveragestores/" + coverageStore + "/coverages.xml";
         String url = "/rest/workspaces/" + workspace + "/coveragestores/" + csName + "/coverages.xml";
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving Covs from " + url);
-        }
+            LOG.fine("### Retrieving Covs from " + url);
         return RESTCoverageList.build(load(url));
     }
     
@@ -505,9 +489,7 @@ public class GeoServerRESTReader {
      */
     public RESTCoverage getCoverage(String workspace, String store, String name) {
         String url = "/rest/workspaces/" + workspace + "/coveragestores/" + store + "/coverages/"+name+".xml";
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving Coverage from " + url);
-        }
+            LOG.fine("### Retrieving Coverage from " + url);
         return RESTCoverage.build(load(url));
     }
     
@@ -565,9 +547,7 @@ public class GeoServerRESTReader {
      */
     public RESTWmsStoreList getWmsStores(String workspace) {
         String url = "/rest/workspaces/" + workspace + "/wmsstores.xml";
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving CS list from " + url);
-        }
+            LOG.fine("### Retrieving CS list from " + url);
         return RESTWmsStoreList.build(load(url));
     }
     
@@ -580,9 +560,7 @@ public class GeoServerRESTReader {
      */
     public RESTWmsStore getWmsStore(String workspace, String wsName) {
         String url = "/rest/workspaces/" + workspace + "/wmsstores/" + wsName + ".xml";
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving CS from " + url);
-        }
+            LOG.fine("### Retrieving CS from " + url);
         return RESTWmsStore.build(load(url));
     }
     
@@ -594,9 +572,7 @@ public class GeoServerRESTReader {
      */
     public RESTWmsStore getWmsStore(RESTWms wms) {
         String url = wms.getStoreUrl();
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving CS from fullurl " + url);
-        }
+            LOG.fine("### Retrieving CS from fullurl " + url);
         String response = loadFullURL(url);
         return RESTWmsStore.build(response);
     }
@@ -639,9 +615,7 @@ public class GeoServerRESTReader {
      */
     public RESTWmsList getWms(String workspace, String wsName) {
         String url = "/rest/workspaces/" + workspace + "/wmsstores/" + wsName + "/wmslayers.xml";
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving Wmss from " + url);
-        }
+            LOG.fine("### Retrieving Wmss from " + url);
         return RESTWmsList.build(load(url));
     }
     
@@ -655,9 +629,7 @@ public class GeoServerRESTReader {
      */
     public RESTWms getWms(String workspace, String store, String name) {
         String url = "/rest/workspaces/" + workspace + "/wmsstores/" + store + "/wmslayers/"+name+".xml";
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving Wmss from " + url);
-        }
+            LOG.fine("### Retrieving Wmss from " + url);
         return RESTWms.build(load(url));
     }
     
@@ -731,9 +703,7 @@ public class GeoServerRESTReader {
             url = "/rest/workspaces/" + workspace + "/layergroups.xml";
         }
         
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving layergroups from " + url);
-        }
+            LOG.fine("### Retrieving layergroups from " + url);
         return RESTLayerGroupList.build(load(url));
     }
 
@@ -752,9 +722,7 @@ public class GeoServerRESTReader {
             url = "/rest/workspaces/" + workspace + "/layergroups/" + name + ".xml";
         }        
         
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving layergroup from " + url);
-        }
+            LOG.fine("### Retrieving layergroup from " + url);
         return RESTLayerGroup.build(load(url));
     }
     
@@ -818,9 +786,7 @@ public class GeoServerRESTReader {
      */
     public RESTLayerList getLayers() {
         String url = "/rest/layers.xml";
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving layers from " + url);
-        }
+            LOG.fine("### Retrieving layers from " + url);
         return RESTLayerList.build(load(url));
     }
 	
@@ -831,9 +797,7 @@ public class GeoServerRESTReader {
      */
     public RESTFeatureTypeList getFeatureTypes(String workspace) {
         String url = "/rest/workspaces/" + workspace + "/featuretypes.xml";
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving featuretypes from " + url);
-        }
+            LOG.fine("### Retrieving featuretypes from " + url);
         return RESTFeatureTypeList.build(load(url));
     }
 
@@ -847,9 +811,7 @@ public class GeoServerRESTReader {
      */
     public RESTLayer getLayer(String name) {
         String url = "/rest/layers/" + name + ".xml";
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving layer from " + url);
-        }
+            LOG.fine("### Retrieving layer from " + url);
         return RESTLayer.build(load(url));
     }
 
@@ -866,9 +828,7 @@ public class GeoServerRESTReader {
         if (name == null || name.isEmpty())
             throw new IllegalArgumentException("Layername may not be null");
         String url = HTTPUtils.append("/rest/layers/",workspace,":",name,".xml").toString();
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving layer from " + url);
-        }
+            LOG.fine("### Retrieving layer from " + url);
         
 		RESTLayer layer = null;
 		if (this.getGeoserverVersion().getVersion()
@@ -927,9 +887,7 @@ public class GeoServerRESTReader {
 				"Namespace prefix cannot be null or empty");			
 		}
     	String url = "/rest/namespaces/"+prefix+".xml";
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Getting namespace from " + url);
-        }
+            LOG.fine("### Getting namespace from " + url);
         return RESTNamespace.build(load(url));
     }
     
@@ -940,9 +898,7 @@ public class GeoServerRESTReader {
      */
     public RESTNamespaceList getNamespaces() {
         String url = "/rest/namespaces.xml";
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving namespaces from " + url);
-        }
+            LOG.fine("### Retrieving namespaces from " + url);
         return RESTNamespaceList.build(load(url));
     }
 
@@ -998,9 +954,7 @@ public class GeoServerRESTReader {
      */
     public RESTWorkspaceList getWorkspaces() {
         String url = "/rest/workspaces.xml";
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("### Retrieving workspaces from " + url);
-        }
+            LOG.fine("### Retrieving workspaces from " + url);
         
         return RESTWorkspaceList.build(load(url));
     }
@@ -1074,14 +1028,8 @@ public class GeoServerRESTReader {
             GeoServerRESTStructuredGridCoverageReaderManager manager = 
                 new GeoServerRESTStructuredGridCoverageReaderManager(new URL(baseurl), username, password);
             return manager.getGranuleById(workspace, coverageStore, coverage, id);
-        } catch (IllegalArgumentException e) {
-            if(LOGGER.isInfoEnabled()){
-                LOGGER.info(e.getLocalizedMessage(),e);
-            }
-        } catch (MalformedURLException e) {
-            if(LOGGER.isInfoEnabled()){
-                LOGGER.info(e.getLocalizedMessage(),e);
-            }
+        } catch (IllegalArgumentException | MalformedURLException e) {
+                LOG.log(Level.SEVERE, e.getLocalizedMessage(),e);
         }
         return null;
     }
@@ -1136,13 +1084,9 @@ public class GeoServerRESTReader {
                  new GeoServerRESTStructuredGridCoverageReaderManager(new URL(baseurl), username, password);
              return manager.getGranuleIndexSchema(workspace, coverageStore, coverage);
          } catch (IllegalArgumentException e) {
-             if(LOGGER.isInfoEnabled()){
-                 LOGGER.info(e.getLocalizedMessage(),e);
-             }
+                 LOG.log(Level.SEVERE, e.getLocalizedMessage(),e);
          } catch (MalformedURLException e) {
-             if(LOGGER.isInfoEnabled()){
-                 LOGGER.info(e.getLocalizedMessage(),e);
-             }
+                 LOG.log(Level.SEVERE, e.getLocalizedMessage(),e);
          }
          return null;
      }
@@ -1168,14 +1112,8 @@ public class GeoServerRESTReader {
              GeoServerRESTStructuredGridCoverageReaderManager manager = 
                  new GeoServerRESTStructuredGridCoverageReaderManager(new URL(baseurl), username, password);
              return manager.getGranules(workspace, coverageStore, coverage, filter, offset, limit);
-         } catch (IllegalArgumentException e) {
-             if(LOGGER.isInfoEnabled()){
-                 LOGGER.info(e.getLocalizedMessage(),e);
-             }
-         } catch (MalformedURLException e) {
-             if(LOGGER.isInfoEnabled()){
-                 LOGGER.info(e.getLocalizedMessage(),e);
-             }
+         } catch (IllegalArgumentException | MalformedURLException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage(),e);
          }
          return null;
      }

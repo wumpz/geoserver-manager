@@ -20,8 +20,8 @@ public class GSFeatureDimensionInfoEncoderTest {
 		final GSFeatureDimensionInfoEncoder elevationDimension = new GSFeatureDimensionInfoEncoder(
 				"elevation_field");
 
-		// if (LOGGER.isInfoEnabled())
-		// LOGGER.info(encoder.toString());
+		// if (LOG.isInfoEnabled())
+		// LOG.info(encoder.toString());
 
 		elevationDimension.setPresentation(
 				Presentation.DISCRETE_INTERVAL, BigDecimal.valueOf(10));

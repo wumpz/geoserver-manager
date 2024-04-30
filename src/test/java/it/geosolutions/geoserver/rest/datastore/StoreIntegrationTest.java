@@ -33,12 +33,12 @@ import it.geosolutions.geoserver.rest.encoder.feature.GSFeatureTypeEncoder;
 import it.geosolutions.geoserver.rest.manager.GeoServerRESTStoreManager;
 
 import java.net.MalformedURLException;
+import java.util.logging.Logger;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  * <P>
@@ -60,8 +60,9 @@ public abstract class StoreIntegrationTest extends GeoserverRESTTest {
      * ignore integration tests
      */
     protected final boolean ignore;
+  private static final Logger LOG = Logger.getLogger(StoreIntegrationTest.class.getName());
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(StoreIntegrationTest.class);
+    
 
     public boolean isIgnore() {
         return ignore;
@@ -103,7 +104,7 @@ public abstract class StoreIntegrationTest extends GeoserverRESTTest {
 
         RESTDataStore datastore = reader.getDatastore(DEFAULT_WS, storeName);
         assertNotNull(datastore);
-        LOGGER.info("The type of the created datastore is: " + datastore.getStoreType());
+        LOG.info("The type of the created datastore is: " + datastore.getStoreType());
 
         // check if the datastore is properly configured in GS for publishing layers
         String layername = "states";

@@ -30,13 +30,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -46,14 +46,16 @@ import org.springframework.core.io.ClassPathResource;
  */
 public class ConfigTest extends GeoserverRESTTest {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(ConfigTest.class);
+  private static final Logger LOG = Logger.getLogger(ConfigTest.class.getName());
+
+    
 
     private static final String DEFAULT_WS = "geosolutions";
 
     @Test
     public void insertStyles() throws FileNotFoundException, IOException {
         if (!enabled()) {
-            LOGGER.info("Skipping test " + "insertStyles" + "for class:" + this.getClass().getSimpleName());
+            LOG.info("Skipping test " + "insertStyles" + "for class:" + this.getClass().getSimpleName());
             return;
         }
         deleteAll();
@@ -65,9 +67,9 @@ public class ConfigTest extends GeoserverRESTTest {
                     || !UNDELETABLE_STYLES.contains(sldFile.getName().substring(8,sldFile.getName().length()-4)))
                     && !"raster.sld".equals(sldFile.getName())) {
 
-                LOGGER.info("Existing styles: " + reader.getStyles().getNames());
+                LOG.info("Existing styles: " + reader.getStyles().getNames());
                 String basename = FilenameUtils.getBaseName(sldFile.toString());
-                LOGGER.info("Publishing style " + sldFile + " as " + basename);
+                LOG.info("Publishing style " + sldFile + " as " + basename);
                 assertTrue("Could not publish " + sldFile, publisher.publishStyle(sldFile, basename));
             }
         }
@@ -76,7 +78,7 @@ public class ConfigTest extends GeoserverRESTTest {
     @Test
     public void insertExternalGeotiff() throws FileNotFoundException, IOException {
         if (!enabled()) {
-            LOGGER.info("Skipping test " + "insertExternalGeotiff" + "for class:" + this.getClass().getSimpleName());
+            LOG.info("Skipping test " + "insertExternalGeotiff" + "for class:" + this.getClass().getSimpleName());
             return;
         }
         deleteAll();
@@ -96,7 +98,7 @@ public class ConfigTest extends GeoserverRESTTest {
     @Test
     public void insertExternalShape() throws FileNotFoundException, IOException {
         if (!enabled()) {
-            LOGGER.info("Skipping test " + "insertExternalShape" + "for class:" + this.getClass().getSimpleName());
+            LOG.info("Skipping test " + "insertExternalShape" + "for class:" + this.getClass().getSimpleName());
             return;
         }
         deleteAll();

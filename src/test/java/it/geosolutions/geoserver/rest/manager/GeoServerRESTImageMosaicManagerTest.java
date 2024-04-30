@@ -15,13 +15,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Ignore;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -34,8 +34,8 @@ import org.springframework.core.io.ClassPathResource;
  */
 public class GeoServerRESTImageMosaicManagerTest extends GeoserverRESTTest {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(GeoServerRESTImageMosaicManagerTest.class);
-    
+  private static final Logger LOG = Logger.getLogger(GeoServerRESTImageMosaicManagerTest.class.getName());
+
     
     /**
      * This test is ignored because it cannot be repeated.
@@ -140,7 +140,7 @@ public class GeoServerRESTImageMosaicManagerTest extends GeoserverRESTTest {
         assertNotNull(granulesList);
 
         for (RESTStructuredCoverageGranule g : granulesList) {
-            LOGGER.info("    GRANULE before delete: " + g);
+            LOG.info("    GRANULE before delete: " + g);
         }
 
         assertEquals("At first insertion 4 granules are expected", 4, granulesList.size());
@@ -180,7 +180,7 @@ public class GeoServerRESTImageMosaicManagerTest extends GeoserverRESTTest {
         assertFalse(granulesList.isEmpty());
 
         for (RESTStructuredCoverageGranule g : granulesList) {
-            LOGGER.info("    GRANULE: " + g);
+            LOG.info("    GRANULE: " + g);
         }
 
         assertEquals("After deletion only 3 granules are expected", 3, granulesList.size());

@@ -19,11 +19,11 @@
  */
 package it.geosolutions.geoserver.rest.encoder.coverage;
 
+import java.util.logging.Logger;
 import junit.framework.TestCase;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.util.Assert;
 
 /**
@@ -35,10 +35,8 @@ public class GSJP2KEncoderTest extends TestCase {
     public GSJP2KEncoderTest() {
     }
 
-    /**
-     * Default logger
-     */
-    protected final static Logger LOGGER = LoggerFactory.getLogger(GSJP2KEncoderTest.class);
+  private static final Logger LOG = Logger.getLogger(GSJP2KEncoderTest.class.getName());
+    
     
     /**
      * TODO implement this test
@@ -50,7 +48,7 @@ public class GSJP2KEncoderTest extends TestCase {
     	Assert.isNull(encoder.getUseJaiImageRead());
     	
     	encoder.setUseMultithreading(true);
-    	LOGGER.info(encoder.toString());
+    	LOG.info(encoder.toString());
     	Assert.isTrue(encoder.getUseMultithreading());
     	
     	encoder.setUseMultithreading(false);
@@ -61,7 +59,7 @@ public class GSJP2KEncoderTest extends TestCase {
     	
     	Assert.isTrue(encoder.getSuggestedTileSize().equalsIgnoreCase("512,512"));
     	
-    	LOGGER.info(encoder.toString());
+    	LOG.info(encoder.toString());
     	
     }
 }

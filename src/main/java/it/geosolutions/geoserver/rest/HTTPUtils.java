@@ -36,6 +36,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.sf.json.JSON;
 import net.sf.json.JSONSerializer;
@@ -58,14 +60,15 @@ import org.apache.commons.httpclient.methods.multipart.FilePart;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Low level HTTP utilities.
  */
 public class HTTPUtils {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HTTPUtils.class);
+
+  private static final Logger LOG = Logger.getLogger(HTTPUtils.class.getName());
+   
+   
 
     /**
      * Performs an HTTP GET on the given URL.
@@ -105,18 +108,18 @@ public class HTTPUtils {
                 String response = IOUtils.toString(is);
                 IOUtils.closeQuietly(is);
                 if (response.trim().length() == 0) { // sometime gs rest fails
-                    LOGGER.warn("ResponseBody is empty");
+                    LOG.warning("ResponseBody is empty");
                     return null;
                 } else {
                     return response;
                 }
             } else {
-                LOGGER.info("(" + status + ") " + HttpStatus.getStatusText(status) + " -- " + url);
+                LOG.info("(" + status + ") " + HttpStatus.getStatusText(status) + " -- " + url);
             }
         } catch (ConnectException e) {
-            LOGGER.info("Couldn't connect to [" + url + "]");
+            LOG.info("Couldn't connect to [" + url + "]");
         } catch (IOException e) {
-            LOGGER.info("Error talking to [" + url + "]", e);
+            LOG.log(Level.WARNING, "Error talking to [" + url + "]", e);
         } finally {
             if (httpMethod != null)
                 httpMethod.releaseConnection();
@@ -178,7 +181,7 @@ public class HTTPUtils {
         try {
             return put(url, new StringRequestEntity(content, contentType, null), username, pw);
         } catch (UnsupportedEncodingException ex) {
-            LOGGER.error("Cannot PUT " + url, ex);
+            LOG.log(Level.SEVERE, "Cannot PUT " + url, ex);
             return null;
         }
     }
@@ -270,7 +273,7 @@ public class HTTPUtils {
         try {
             return post(url, new StringRequestEntity(content, contentType, null), username, pw);
         } catch (UnsupportedEncodingException ex) {
-            LOGGER.error("Cannot POST " + url, ex);
+            LOG.log(Level.SEVERE, "Cannot POST " + url, ex);
             return null;
         }
     }
@@ -302,7 +305,7 @@ public class HTTPUtils {
             
             return post(url, multipart, username, pw);
         } catch (Exception ex) {
-            LOGGER.error("Cannot POST " + url, ex);
+            LOG.log(Level.SEVERE, "Cannot POST " + url, ex);
             return null;
         }
     }
@@ -390,22 +393,20 @@ public class HTTPUtils {
             case HttpURLConnection.HTTP_CREATED:
             case HttpURLConnection.HTTP_ACCEPTED:
                 String response = IOUtils.toString(httpMethod.getResponseBodyAsStream());
-                // LOGGER.info("================= POST " + url);
-                if (LOGGER.isInfoEnabled())
-                    LOGGER.info("HTTP " + httpMethod.getStatusText() + ": " + response);
+                LOG.info("HTTP " + httpMethod.getStatusText() + ": " + response);
                 return response;
             default:
                 responseBody = httpMethod.getResponseBodyAsStream();
-                LOGGER.warn("Bad response: code[" + status + "]" + " msg[" + httpMethod.getStatusText() + "]"
+                LOG.warning("Bad response: code[" + status + "]" + " msg[" + httpMethod.getStatusText() + "]"
                             + " url[" + url + "]" + " method[" + httpMethod.getClass().getSimpleName()
                             + "]: " + (responseBody != null ? IOUtils.toString(responseBody) : ""));
                 return null;
             }
         } catch (ConnectException e) {
-            LOGGER.info("Couldn't connect to [" + url + "]");
+            LOG.info("Couldn't connect to [" + url + "]");
             return null;
         } catch (IOException e) {
-            LOGGER.error("Error talking to " + url + " : " + e.getLocalizedMessage());
+            LOG.severe("Error talking to " + url + " : " + e.getLocalizedMessage());
             return null;
         } finally {
             if (httpMethod != null)
@@ -430,21 +431,19 @@ public class HTTPUtils {
                 response = IOUtils.toString(is);
                 IOUtils.closeQuietly(is);
                 if (response.trim().equals("")) { 
-                    if (LOGGER.isTraceEnabled())
-                        LOGGER.trace("ResponseBody is empty (this may be not an error since we just performed a DELETE call)");
+                        LOG.finest("ResponseBody is empty (this may be not an error since we just performed a DELETE call)");
                     return true;
                 }
-                if (LOGGER.isDebugEnabled())
-                    LOGGER.debug("(" + status + ") " + httpMethod.getStatusText() + " -- " + url);
+                    LOG.fine("(" + status + ") " + httpMethod.getStatusText() + " -- " + url);
                 return true;
             } else {
-                LOGGER.info("(" + status + ") " + httpMethod.getStatusText() + " -- " + url);
-                LOGGER.info("Response: '" + response + "'");
+                LOG.info("(" + status + ") " + httpMethod.getStatusText() + " -- " + url);
+                LOG.info("Response: '" + response + "'");
             }
         } catch (ConnectException e) {
-            LOGGER.info("Couldn't connect to [" + url + "]");
+            LOG.info("Couldn't connect to [" + url + "]");
         } catch (IOException e) {
-            LOGGER.info("Error talking to [" + url + "]", e);
+            LOG.log(Level.WARNING, "Error talking to [" + url + "]", e);
         } finally {
             if (httpMethod != null)
                 httpMethod.releaseConnection();
@@ -472,7 +471,7 @@ public class HTTPUtils {
             connectionManager.getParams().setConnectionTimeout(2000);
             int status = client.executeMethod(httpMethod);
             if (status != HttpStatus.SC_OK) {
-                LOGGER.warn("PING failed at '" + url + "': (" + status + ") " + httpMethod.getStatusText());
+                LOG.warning("PING failed at '" + url + "': (" + status + ") " + httpMethod.getStatusText());
                 return false;
             } else {
                 return true;
@@ -480,7 +479,7 @@ public class HTTPUtils {
         } catch (ConnectException e) {
             return false;
         } catch (IOException e) {
-            LOGGER.error(e.getLocalizedMessage(),e);
+            LOG.log(Level.WARNING, e.getLocalizedMessage(),e);
             return false;
         } finally {
             if (httpMethod != null)
@@ -540,9 +539,7 @@ public class HTTPUtils {
                                                                   // requires
                                                                   // authentication
         } else {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Not setting credentials to access to " + url);
-            }
+                LOG.fine("Not setting credentials to access to " + url);
         }
     }
 

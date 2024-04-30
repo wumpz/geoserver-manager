@@ -34,16 +34,13 @@ import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 
 import org.restlet.data.MediaType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  * @author Alessio Fabiani, GeoSolutions S.A.S.
  *
  */
-public class GeoServerRESTImporterManager extends GeoServerRESTAbstractManager {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(GeoServerRESTImporterManager.class);
+public class GeoServerRESTImporterManager extends GeoServerRESTAbstractManager {   
     
     /**
      * Default constructor.

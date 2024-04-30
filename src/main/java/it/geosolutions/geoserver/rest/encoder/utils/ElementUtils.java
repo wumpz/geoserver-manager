@@ -28,11 +28,11 @@ package it.geosolutions.geoserver.rest.encoder.utils;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.jdom.Element;
 import org.jdom.filter.Filter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  * 
@@ -40,12 +40,10 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public abstract class ElementUtils {
-	/**
-	 * Default logger
-	 */
-	private final static Logger LOGGER = LoggerFactory.getLogger(ElementUtils.class);
-
-	/**
+  private static final Logger LOG = Logger.getLogger(ElementUtils.class.getName());
+	
+  
+  /**
 	 * 
 	 * @param root the root where to start searching to element to remove
 	 * @param el the element to remove (will be set to null since this node is unusable after removal)
@@ -100,8 +98,7 @@ public abstract class ElementUtils {
 		final List<Element> ret = new ArrayList<Element>();
 		// if match add myself
 		if (filter.matches(root)) {
-			if (LOGGER.isTraceEnabled())
-				LOGGER.trace("LOCATED-> name:" + root.getName() + " text:"
+				LOG.finest("LOCATED-> name:" + root.getName() + " text:"
 						+ root.getText());
 			ret.add(root);
 		}
@@ -128,8 +125,7 @@ public abstract class ElementUtils {
 		final List<Element> ret = new ArrayList<Element>();
 		// if match add myself
 		if (filter.matches(root)) {
-			if (LOGGER.isTraceEnabled())
-				LOGGER.trace("LOCATED-> name:" + root.getName() + " text:"
+				LOG.finest("LOCATED-> name:" + root.getName() + " text:"
 						+ root.getText());
 			ret.add(root);
 		}
@@ -140,8 +136,7 @@ public abstract class ElementUtils {
 			if (obj instanceof Element) {
 				Element el = (Element) obj;
 
-				if (LOGGER.isTraceEnabled())
-					LOGGER.trace("LOCATED-> name:" + el.getName() + " text:"
+					LOG.finest("LOCATED-> name:" + el.getName() + " text:"
 							+ el.getText());
 
 				ret.add(el);

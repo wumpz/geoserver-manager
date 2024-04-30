@@ -38,10 +38,10 @@ import it.geosolutions.geoserver.rest.encoder.GSResourceEncoder.ProjectionPolicy
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -53,7 +53,7 @@ import org.springframework.core.io.ClassPathResource;
  */
 public class GeoserverRESTGeoTiffTest extends GeoserverRESTTest {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(GeoserverRESTGeoTiffTest.class);
+  private static final Logger LOG = Logger.getLogger(GeoserverRESTGeoTiffTest.class.getName());
 
     String storeName = "testRESTStoreGeotiff";
     String layerName = "resttestdem";
@@ -80,7 +80,7 @@ public class GeoserverRESTGeoTiffTest extends GeoserverRESTTest {
         assertTrue("publish() failed", pc);
         assertTrue(existsLayer(layerName));
         assertTrue(reader.existsLayer(DEFAULT_WS, layerName));
-        LOGGER.info("Published "+pc);
+        LOG.info("Published "+pc);
         RESTCoverageStore reloadedCS = reader.getCoverageStore(DEFAULT_WS, storeName);
 
         assertEquals(storeName, reloadedCS.getName());

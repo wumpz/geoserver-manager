@@ -52,12 +52,12 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipFile;
 import net.sf.json.JSONObject;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Connect to a GeoServer instance to publish or modify its contents via REST API.
@@ -71,9 +71,10 @@ import org.slf4j.LoggerFactory;
 public class GeoServerRESTPublisher {
 
     public static final String DEFAULT_CRS = "EPSG:4326";
+    
+    private static final Logger LOG = Logger.getLogger(GeoServerRESTPublisher.class.getName());
 
-    /** The logger for this class */
-    private static final Logger LOGGER = LoggerFactory.getLogger(GeoServerRESTPublisher.class);
+    
 
     /**
      * GeoServer instance base URL. E.g.: <TT>http://localhost:8080/geoserver</TT>.
@@ -111,7 +112,7 @@ public class GeoServerRESTPublisher {
         try {
             url = new URL(restURL);
         } catch (MalformedURLException ex) {
-            LOGGER.error("Bad URL: Calls to GeoServer are going to fail" , ex);
+            LOG.log(Level.SEVERE, "Bad URL: Calls to GeoServer are going to fail" , ex);
         }
         styleManager = new GeoServerRESTStyleManager(url, username, password);
         importerManager = new GeoServerRESTImporterManager(url, username, password);
@@ -893,12 +894,10 @@ public class GeoServerRESTPublisher {
         }
 
         if (sentResult != null) {
-            if (LOGGER.isInfoEnabled())
-                LOGGER.info("Store successfully created using ( " + uri + " )");
+                LOG.info("Store successfully created using ( " + uri + " )");
             return true;
         } else {
-            if (LOGGER.isErrorEnabled())
-                LOGGER.error("Error in creating store using: " + uri);
+                LOG.severe("Error in creating store using: " + uri);
             return false;
         }
 
@@ -1022,8 +1021,7 @@ public class GeoServerRESTPublisher {
 
         final String layername = fte.getName();
         if (layername == null || layername.isEmpty()) {
-            if (LOGGER.isErrorEnabled())
-                LOGGER.error("GSFeatureTypeEncoder has no valid name associated, try using GSFeatureTypeEncoder.setName(String)");
+                LOG.severe("GSFeatureTypeEncoder has no valid name associated, try using GSFeatureTypeEncoder.setName(String)");
             return false;
         }
 
@@ -1033,24 +1031,23 @@ public class GeoServerRESTPublisher {
         boolean configured = false;
 
         if (!published) {
-            LOGGER.warn("Error in publishing (" + configuredResult + ") " + workspace + ":"
+            LOG.warning("Error in publishing (" + configuredResult + ") " + workspace + ":"
                     + storename + "/" + layername);
         } else {
-            LOGGER.info("DB layer successfully added (layer:" + layername + ")");
+            LOG.info("DB layer successfully added (layer:" + layername + ")");
 
             if (layerEncoder == null) {
-                if (LOGGER.isErrorEnabled())
-                    LOGGER.error("GSLayerEncoder is null: Unable to find the defaultStyle for this layer");
+                    LOG.severe("GSLayerEncoder is null: Unable to find the defaultStyle for this layer");
                 return false;
             }
 
             configured = configureLayer(workspace, layername, layerEncoder);
 
             if (!configured) {
-                LOGGER.warn("Error in configuring (" + configuredResult + ") " + workspace + ":"
+                LOG.warning("Error in configuring (" + configuredResult + ") " + workspace + ":"
                         + storename + "/" + layername);
             } else {
-                LOGGER.info("DB layer successfully configured (layer:" + layername + ")");
+                LOG.info("DB layer successfully configured (layer:" + layername + ")");
             }
         }
 
@@ -1162,7 +1159,7 @@ public class GeoServerRESTPublisher {
                 (storeName != null) ? storeName : FilenameUtils.getBaseName(shapefile.toString()),
                 method, DataStoreExtension.SHP, mimeType, shapefile, ParameterConfigure.NONE,
                 storeParams)) {
-            LOGGER.error("Unable to create data store for shapefile: " + shapefile);
+            LOG.severe("Unable to create data store for shapefile: " + shapefile);
             return false;
         }
 
@@ -1184,7 +1181,7 @@ public class GeoServerRESTPublisher {
         featureTypeEncoder.setProjectionPolicy(policy);
 
         if (!createResource(workspace, StoreType.DATASTORES, storeName, featureTypeEncoder)) {
-            LOGGER.error("Unable to create a coverage store for coverage: " + shapefile);
+            LOG.severe("Unable to create a coverage store for coverage: " + shapefile);
             return false;
         }
 
@@ -1635,7 +1632,7 @@ public class GeoServerRESTPublisher {
                 (storeName != null) ? storeName : FilenameUtils.getBaseName(arcgrid
                         .getAbsolutePath()), UploadMethod.FILE, CoverageStoreExtension.ARCGRID,
                 "image/arcgrid", arcgrid.toURI(), ParameterConfigure.NONE, (NameValuePair[]) null)) {
-            LOGGER.error("Unable to create coverage store for coverage: " + arcgrid);
+            LOG.severe("Unable to create coverage store for coverage: " + arcgrid);
             return false;
         }
 
@@ -1657,7 +1654,7 @@ public class GeoServerRESTPublisher {
         }
 
         if (!createCoverage(workspace, storeName, coverageEncoder)) {
-            LOGGER.error("Unable to create a coverage store for coverage: " + arcgrid);
+            LOG.severe("Unable to create a coverage store for coverage: " + arcgrid);
             return false;
         }
 
@@ -1740,8 +1737,7 @@ public class GeoServerRESTPublisher {
 
         // create Coverage Store
         if (!createCoverage(workspace, storeName, coverageEncoder)) {
-            if (LOGGER.isErrorEnabled())
-                LOGGER.error("Unable to create a coverage for the store:" + coverageName);
+                LOG.severe("Unable to create a coverage for the store:" + coverageName);
             return null;
         }
 
@@ -1752,7 +1748,7 @@ public class GeoServerRESTPublisher {
                 reader = new GeoServerRESTReader(this.restURL, this.gsuser, this.gspass);
                 return reader.getCoverageStore(workspace, storeName);
             } catch (MalformedURLException e) {
-                LOGGER.error(e.getMessage(), e);
+                LOG.log(Level.SEVERE, e.getMessage(), e);
             }
         }
         return null;
@@ -1844,7 +1840,7 @@ public class GeoServerRESTPublisher {
                 (storeName != null) ? storeName : FilenameUtils.getBaseName(geotiff
                         .getAbsolutePath()), UploadMethod.FILE, CoverageStoreExtension.GEOTIFF,
                 "image/geotiff", geotiff.toURI(), ParameterConfigure.NONE, (NameValuePair[]) null)) {
-            LOGGER.error("Unable to create coverage store for coverage: " + geotiff);
+            LOG.severe("Unable to create coverage store for coverage: " + geotiff);
             return false;
         }
 
@@ -1866,7 +1862,7 @@ public class GeoServerRESTPublisher {
         }
 
         if (!createCoverage(workspace, storeName, coverageEncoder)) {
-            LOGGER.error("Unable to create a coverage store for coverage: " + geotiff);
+            LOG.severe("Unable to create a coverage store for coverage: " + geotiff);
             return false;
         }
 
@@ -1949,8 +1945,7 @@ public class GeoServerRESTPublisher {
 
         // create Coverage Store
         if (!createCoverage(workspace, storeName, coverageEncoder)) {
-            if (LOGGER.isErrorEnabled())
-                LOGGER.error("Unable to create a coverage for the store:" + coverageName);
+                LOG.severe("Unable to create a coverage for the store:" + coverageName);
             return null;
         }
 
@@ -1961,7 +1956,7 @@ public class GeoServerRESTPublisher {
                 reader = new GeoServerRESTReader(this.restURL, this.gsuser, this.gspass);
                 return reader.getCoverageStore(workspace, storeName);
             } catch (MalformedURLException e) {
-                LOGGER.error(e.getMessage(), e);
+                LOG.log(Level.SEVERE, e.getMessage(), e);
             }
         }
         return null;
@@ -2065,8 +2060,7 @@ public class GeoServerRESTPublisher {
          * Carlo (23 Nov 2011): commented out since this directory should be readable by target GeoServer not the calling client!
          */
         if (!mosaicDir.isDirectory()) {
-            if (LOGGER.isWarnEnabled())
-                LOGGER.warn("Directory '"
+                LOG.warning("Directory '"
                         + mosaicDir
                         + "' not exists locally. Continue: please check existance on the remote server.");
         }
@@ -2154,13 +2148,11 @@ public class GeoServerRESTPublisher {
             coverageEncoder.setName(coverageName);
         }
         if (!createCoverage(workspace, storeName, coverageEncoder)) {
-            if (LOGGER.isErrorEnabled())
-                LOGGER.error("Unable to create a coverage for the store:" + coverageName);
+                LOG.severe("Unable to create a coverage for the store:" + coverageName);
             return false;
         }
         if (!configureLayer(workspace, coverageName, layerEncoder)) {
-            if (LOGGER.isErrorEnabled())
-                LOGGER.error("Unable to configure the Layer for the coverage:" + coverageName);
+                LOG.severe("Unable to configure the Layer for the coverage:" + coverageName);
             return false;
         }
         return true;
@@ -2190,37 +2182,31 @@ public class GeoServerRESTPublisher {
 
                 fqLayerName = layerName;
 
-                if (LOGGER.isWarnEnabled()) {
-                    LOGGER.warn("Null workspace while configuring layer : " + layerName
+                    LOG.warning("Null workspace while configuring layer : " + layerName
                             + " -- This behavior is deprecated.");
-                }
             } else {
                 fqLayerName = workspace + ":" + layerName;
             }
             // delete related layer
             URL deleteLayerUrl = new URL(restURL + "/rest/layers/" + fqLayerName);
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Going to delete " + "/rest/layers/" + fqLayerName);
-            }
+                LOG.fine("Going to delete " + "/rest/layers/" + fqLayerName);
             boolean layerDeleted = HTTPUtils
                     .delete(deleteLayerUrl.toExternalForm(), gsuser, gspass);
             if (!layerDeleted) {
-                LOGGER.warn("Could not delete layer '" + fqLayerName + "'");
+                LOG.warning("Could not delete layer '" + fqLayerName + "'");
                 return false;
             }
             // delete the coverage
             URL deleteCovUrl = new URL(restURL + "/rest/workspaces/" + workspace
                     + "/coveragestores/" + storename + "/coverages/" + layerName);
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Going to delete " + "/rest/workspaces/" + workspace
+                LOG.fine("Going to delete " + "/rest/workspaces/" + workspace
                         + "/coveragestores/" + storename + "/coverages/" + layerName);
-            }
             boolean covDeleted = HTTPUtils.delete(deleteCovUrl.toExternalForm(), gsuser, gspass);
             if (!covDeleted) {
-                LOGGER.warn("Could not delete coverage " + workspace + ":" + storename + "/"
+                LOG.warning("Could not delete coverage " + workspace + ":" + storename + "/"
                         + layerName + ", but layer was deleted.");
             } else {
-                LOGGER.info("Coverage successfully deleted " + workspace + ":" + storename + "/"
+                LOG.info("Coverage successfully deleted " + workspace + ":" + storename + "/"
                         + layerName);
             }
             return covDeleted;
@@ -2228,8 +2214,7 @@ public class GeoServerRESTPublisher {
             // the covstore is still there: should we delete it?
 
         } catch (MalformedURLException ex) {
-            if (LOGGER.isErrorEnabled())
-                LOGGER.error(ex.getLocalizedMessage(), ex);
+                LOG.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
             return false;
         }
     }
@@ -2252,10 +2237,8 @@ public class GeoServerRESTPublisher {
 
                 fqLayerName = layerName;
 
-                if (LOGGER.isWarnEnabled()) {
-                    LOGGER.warn("Null workspace while configuring layer : " + layerName
+                    LOG.warning("Null workspace while configuring layer : " + layerName
                             + " -- This behavior is deprecated.");
-                }
             } else {
                 fqLayerName = workspace + ":" + layerName;
             }
@@ -2264,7 +2247,7 @@ public class GeoServerRESTPublisher {
             boolean layerDeleted = HTTPUtils
                     .delete(deleteLayerUrl.toExternalForm(), gsuser, gspass);
             if (!layerDeleted) {
-                LOGGER.warn("Could not delete layer '" + fqLayerName + "'");
+                LOG.warning("Could not delete layer '" + fqLayerName + "'");
                 return false;
             }
             // delete the coverage
@@ -2272,10 +2255,10 @@ public class GeoServerRESTPublisher {
                     + storename + "/featuretypes/" + layerName);
             boolean ftDeleted = HTTPUtils.delete(deleteFtUrl.toExternalForm(), gsuser, gspass);
             if (!ftDeleted) {
-                LOGGER.warn("Could not delete featuretype " + workspace + ":" + storename + "/"
+                LOG.warning("Could not delete featuretype " + workspace + ":" + storename + "/"
                         + layerName + ", but layer was deleted.");
             } else {
-                LOGGER.info("FeatureType successfully deleted " + workspace + ":" + storename + "/"
+                LOG.info("FeatureType successfully deleted " + workspace + ":" + storename + "/"
                         + layerName);
             }
 
@@ -2284,8 +2267,7 @@ public class GeoServerRESTPublisher {
             // the store is still there: should we delete it?
 
         } catch (MalformedURLException ex) {
-            if (LOGGER.isErrorEnabled())
-                LOGGER.error(ex.getLocalizedMessage(), ex);
+                LOG.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
             return false;
         }
     }
@@ -2303,8 +2285,7 @@ public class GeoServerRESTPublisher {
         try {
             return removeDatastore(workspace, storename, true);
         } catch (IllegalArgumentException e) {
-            if (LOGGER.isErrorEnabled())
-                LOGGER.error("Arguments may not be null or empty!", e);
+                LOG.log(Level.SEVERE, "Arguments may not be null or empty!", e);
         }
         return false;
     }
@@ -2401,15 +2382,14 @@ public class GeoServerRESTPublisher {
 
             boolean deleted = HTTPUtils.delete(deleteStore.toExternalForm(), gsuser, gspass);
             if (!deleted) {
-                LOGGER.warn("Could not delete store " + workspace + ":" + storename);
+                LOG.warning("Could not delete store " + workspace + ":" + storename);
             } else {
-                LOGGER.info("Store successfully deleted " + workspace + ":" + storename);
+                LOG.info("Store successfully deleted " + workspace + ":" + storename);
             }
 
             return deleted;
         } catch (MalformedURLException ex) {
-            if (LOGGER.isErrorEnabled())
-                LOGGER.error(ex.getLocalizedMessage(), ex);
+                LOG.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
             return false;
         }
     }
@@ -2454,15 +2434,14 @@ public class GeoServerRESTPublisher {
             final URL deleteUrl = new URL(url.toString());
             boolean deleted = HTTPUtils.delete(deleteUrl.toExternalForm(), gsuser, gspass);
             if (!deleted) {
-                LOGGER.warn("Could not delete Workspace " + workspace);
+                LOG.warning("Could not delete Workspace " + workspace);
             } else {
-                LOGGER.info("Workspace successfully deleted " + workspace);
+                LOG.info("Workspace successfully deleted " + workspace);
             }
 
             return deleted;
         } catch (MalformedURLException ex) {
-            if (LOGGER.isErrorEnabled())
-                LOGGER.error(ex.getLocalizedMessage(), ex);
+                LOG.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
             return false;
         }
     }
@@ -2499,17 +2478,14 @@ public class GeoServerRESTPublisher {
             URL deleteUrl = new URL(url);
             boolean deleted = HTTPUtils.delete(deleteUrl.toExternalForm(), gsuser, gspass);
             if (!deleted) {
-                if (LOGGER.isWarnEnabled())
-                    LOGGER.warn("Could not delete layergroup " + name);
+                    LOG.warning("Could not delete layergroup " + name);
             } else {
-                if (LOGGER.isInfoEnabled())
-                    LOGGER.info("Layergroup successfully deleted: " + name);
+                    LOG.info("Layergroup successfully deleted: " + name);
             }
 
             return deleted;
         } catch (MalformedURLException ex) {
-            if (LOGGER.isErrorEnabled())
-                LOGGER.error(ex.getLocalizedMessage(), ex);
+                LOG.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
             return false;
         }
     }
@@ -2541,17 +2517,13 @@ public class GeoServerRESTPublisher {
 
             fqLayerName = layerName;
 
-            if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn("Null workspace while removing layer : " + layerName
+                LOG.warning("Null workspace while removing layer : " + layerName
                         + " -- This behavior is deprecated.");
-            }
         } else {
             fqLayerName = workspace + ":" + layerName;
         }
         if (layerName == null) {
-            if (LOGGER.isErrorEnabled()) {
-                LOGGER.error("Null layerName : " + layerName);
-            }
+                LOG.severe("Null layerName : " + layerName);
             return false;
         }
 
@@ -2559,12 +2531,9 @@ public class GeoServerRESTPublisher {
 
         boolean result = HTTPUtils.delete(url, gsuser, gspass);
         if (result) {
-            if (LOGGER.isInfoEnabled()) {
-                LOGGER.info("Layer successfully removed: " + fqLayerName);
-            }
+                LOG.info("Layer successfully removed: " + fqLayerName);
         } else {
-            if (LOGGER.isWarnEnabled())
-                LOGGER.warn("Error removing layer " + fqLayerName);
+                LOG.warning("Error removing layer " + fqLayerName);
         }
 
         return result;
@@ -2674,12 +2643,9 @@ public class GeoServerRESTPublisher {
         String layerXml = layer.toString();
         String sendResult = HTTPUtils.putXml(url, layerXml, gsuser, gspass);
         if (sendResult != null) {
-            if (LOGGER.isInfoEnabled()) {
-                LOGGER.info("Layer successfully configured: " + fqLayerName);
-            }
+                LOG.info("Layer successfully configured: " + fqLayerName);
         } else {
-            if (LOGGER.isWarnEnabled())
-                LOGGER.warn("Error configuring layer " + fqLayerName + " (" + sendResult + ")");
+                LOG.warning("Error configuring layer " + fqLayerName + " (" + sendResult + ")");
         }
 
         return sendResult != null;
@@ -2717,12 +2683,9 @@ public class GeoServerRESTPublisher {
 
         String sendResult = HTTPUtils.postXml(url, group.toString(), gsuser, gspass);
         if (sendResult != null) {
-            if (LOGGER.isInfoEnabled()) {
-                LOGGER.info("LayerGroup successfully configured: " + name);
-            }
+                LOG.info("LayerGroup successfully configured: " + name);
         } else {
-            if (LOGGER.isWarnEnabled())
-                LOGGER.warn("Error configuring LayerGroup " + name + " (" + sendResult + ")");
+                LOG.warning("Error configuring LayerGroup " + name + " (" + sendResult + ")");
         }
 
         return sendResult != null;
@@ -2757,12 +2720,9 @@ public class GeoServerRESTPublisher {
 
         String sendResult = HTTPUtils.putXml(url, group.toString(), gsuser, gspass);
         if (sendResult != null) {
-            if (LOGGER.isInfoEnabled()) {
-                LOGGER.info("LayerGroup successfully configured: " + name);
-            }
+                LOG.info("LayerGroup successfully configured: " + name);
         } else {
-            if (LOGGER.isWarnEnabled())
-                LOGGER.warn("Error configuring LayerGroup " + name + " (" + sendResult + ")");
+                LOG.warning("Error configuring LayerGroup " + name + " (" + sendResult + ")");
         }
 
         return sendResult != null;
@@ -2793,8 +2753,7 @@ public class GeoServerRESTPublisher {
     public boolean configureCoverage(final GSCoverageEncoder ce, final String wsname,
             final String csname, final String coverageName) {
         if (coverageName == null) {
-            if (LOGGER.isErrorEnabled())
-                LOGGER.error("Unable to configure a coverage with no name try using GSCoverageEncoder.setName(String)");
+                LOG.severe("Unable to configure a coverage with no name try using GSCoverageEncoder.setName(String)");
             return false;
         }
         // retrieve coverage name
@@ -2802,8 +2761,7 @@ public class GeoServerRESTPublisher {
         try {
             reader = new GeoServerRESTReader(restURL, gsuser, gspass);
         } catch (MalformedURLException e) {
-            if (LOGGER.isErrorEnabled())
-                LOGGER.error(e.getLocalizedMessage(), e);
+                LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
             return false;
         }
         
@@ -2811,8 +2769,8 @@ public class GeoServerRESTPublisher {
         RESTCoverage coverage = reader.getCoverage(wsname, csname, coverageName);
 //        final RESTCoverageList covList = reader.getCoverages(wsname, csname);
 //        if (covList==null||covList.isEmpty()) {
-//            if (LOGGER.isErrorEnabled())
-//                LOGGER.error("No coverages found in new coveragestore " + csname);
+//            if (LOG.isErrorEnabled())
+//                LOG.severe("No coverages found in new coveragestore " + csname);
 //            return false;
 //        }
 //        final Iterator<NameLinkElem> it = covList.iterator();
@@ -2825,8 +2783,7 @@ public class GeoServerRESTPublisher {
 //        }
         // if no coverage to configure is found return false
         if (coverage==null) {
-            if (LOGGER.isErrorEnabled())
-                LOGGER.error("No coverages found in new coveragestore " + csname + " called "
+                LOG.severe("No coverages found in new coveragestore " + csname + " called "
                         + coverageName);
             return false;
         }
@@ -2838,13 +2795,10 @@ public class GeoServerRESTPublisher {
         final String xmlBody = ce.toString();
         final String sendResult = HTTPUtils.putXml(url, xmlBody, gsuser, gspass);
         if (sendResult != null) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Coverage successfully configured " + wsname + ":" + csname + ":"
+                LOG.fine("Coverage successfully configured " + wsname + ":" + csname + ":"
                         + coverageName);
-            }
         } else {
-            if (LOGGER.isWarnEnabled())
-                LOGGER.warn("Error configuring coverage " + wsname + ":" + csname + ":" + coverageName
+                LOG.warning("Error configuring coverage " + wsname + ":" + csname + ":" + coverageName
                         + " (" + sendResult + ")");
         }
 
@@ -2909,13 +2863,10 @@ public class GeoServerRESTPublisher {
         final String xmlBody = re.toString();
         final String sendResult = HTTPUtils.postXml(sbUrl.toString(), xmlBody, gsuser, gspass);
         if (sendResult != null) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug(dsType + " successfully created " + workspace + ":" + storeName + ":"
+                LOG.fine(dsType + " successfully created " + workspace + ":" + storeName + ":"
                         + resourceName);
-            }
         } else {
-            if (LOGGER.isErrorEnabled())
-                LOGGER.error("Error creating coverage " + workspace + ":" + storeName + ":"
+                LOG.severe("Error creating coverage " + workspace + ":" + storeName + ":"
                         + resourceName + " (" + sendResult + ")");
         }
 
@@ -2991,7 +2942,7 @@ public class GeoServerRESTPublisher {
         // try {
         // return URLEncoder.encode(s,"UTF-8");
         // } catch (UnsupportedEncodingException e) {
-        // LOGGER.warn("Error encoding :"+s+" with UTF-8: "+e.getLocalizedMessage());
+        // LOG.warning("Error encoding :"+s+" with UTF-8: "+e.getLocalizedMessage());
         return URLEncoder.encode(s);
         // }
     }
@@ -3015,13 +2966,9 @@ public class GeoServerRESTPublisher {
                     new URL(restURL), gsuser, gspass);
             return manager.harvestExternal(workspace, coverageStore, format, path);
         } catch (IllegalArgumentException e) {
-            if (LOGGER.isInfoEnabled()) {
-                LOGGER.info(e.getLocalizedMessage(), e);
-            }
+                LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
         } catch (MalformedURLException e) {
-            if (LOGGER.isInfoEnabled()) {
-                LOGGER.info(e.getLocalizedMessage(), e);
-            }
+                LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
         return false;
     }
@@ -3072,7 +3019,7 @@ public class GeoServerRESTPublisher {
             zip= new ZipFile(zipFile);
             zip.getName();
         }catch (Exception e) {
-            LOGGER.trace(e.getLocalizedMessage(),e.getStackTrace());
+            LOG.log(Level.FINEST, e.getLocalizedMessage(),e);
             throw new IllegalArgumentException("The provided pathname does not point to a valide zip file: "+path);
         }finally{
             if(zip!=null){
@@ -3080,7 +3027,7 @@ public class GeoServerRESTPublisher {
                     zip.close();
                 } catch (IOException e) {
                     // swallow
-                    LOGGER.trace(e.getLocalizedMessage(),e.getStackTrace());
+                    LOG.log(Level.FINEST, e.getLocalizedMessage(),e);
                 }
             }
         }
@@ -3124,13 +3071,9 @@ public class GeoServerRESTPublisher {
                     new URL(restURL), gsuser, gspass);
             return manager.removeGranuleById(workspace, coverageStore, coverage, granuleId);
         } catch (IllegalArgumentException e) {
-            if (LOGGER.isInfoEnabled()) {
-                LOGGER.info(e.getLocalizedMessage(), e);
-            }
+                LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
         } catch (MalformedURLException e) {
-            if (LOGGER.isInfoEnabled()) {
-                LOGGER.info(e.getLocalizedMessage(), e);
-            }
+                LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
         return false;
     }
@@ -3155,13 +3098,9 @@ public class GeoServerRESTPublisher {
                     new URL(restURL), gsuser, gspass);
             return manager.removeGranulesByCQL(workspace, coverageStore, coverage, filter);
         } catch (IllegalArgumentException e) {
-            if (LOGGER.isInfoEnabled()) {
-                LOGGER.info(e.getLocalizedMessage(), e);
-            }
+                LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
         } catch (MalformedURLException e) {
-            if (LOGGER.isInfoEnabled()) {
-                LOGGER.info(e.getLocalizedMessage(), e);
-            }
+                LOG.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
         return false;
 

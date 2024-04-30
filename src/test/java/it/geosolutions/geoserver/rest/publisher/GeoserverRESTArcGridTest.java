@@ -31,13 +31,13 @@ import it.geosolutions.geoserver.rest.decoder.RESTCoverageStore;
 import it.geosolutions.geoserver.rest.decoder.RESTLayer;
 import it.geosolutions.geoserver.rest.encoder.GSResourceEncoder.ProjectionPolicy;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
@@ -51,7 +51,7 @@ import static org.junit.Assert.*;
  */
 public class GeoserverRESTArcGridTest extends GeoserverRESTTest {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(GeoserverRESTArcGridTest.class);
+  private static final Logger LOG = Logger.getLogger(GeoserverRESTArcGridTest.class.getName());
 
     private String storeName = "testRESTStoreArcGrid";
     private String layerName = "resttestdem";
@@ -78,7 +78,7 @@ public class GeoserverRESTArcGridTest extends GeoserverRESTTest {
         assertTrue("publish() failed", pc);
         assertTrue(existsLayer(layerName));
         assertTrue(reader.existsLayer(DEFAULT_WS, layerName));
-        LOGGER.info("Published "+pc);
+        LOG.info("Published "+pc);
         RESTCoverageStore reloadedCS = reader.getCoverageStore(DEFAULT_WS, storeName);
 
         assertEquals(storeName, reloadedCS.getName());

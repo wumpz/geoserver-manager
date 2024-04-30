@@ -19,11 +19,11 @@
  */
 package it.geosolutions.geoserver.rest.encoder.coverage;
 
+import java.util.logging.Logger;
 import junit.framework.TestCase;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.util.Assert;
 
 /**
@@ -34,15 +34,11 @@ public class GSImageMosaicEncoderTest extends TestCase {
 
     public GSImageMosaicEncoderTest() {
     }
+  /**
+   * Default logger
+   */
+  private static final Logger LOG = Logger.getLogger(GSImageMosaicEncoderTest.class.getName());
 
-    /**
-     * Default logger
-     */
-    protected final static Logger LOGGER = LoggerFactory.getLogger(GSImageMosaicEncoderTest.class);
-
-    /**
-     * TODO implement this test
-     */
     @Test
     public void testAll() {
         final GSImageMosaicEncoder encoder = new GSImageMosaicEncoder();
@@ -61,7 +57,7 @@ public class GSImageMosaicEncoderTest extends TestCase {
 
         Assert.isTrue(encoder.getSuggestedTileSize().equalsIgnoreCase("512,512"));
 
-        LOGGER.info(encoder.toString());
+        LOG.info(encoder.toString());
 
         encoder.addSUGGESTED_TILE_SIZE("512,512");
 

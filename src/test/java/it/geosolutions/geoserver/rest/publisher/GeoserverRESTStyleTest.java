@@ -34,6 +34,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import org.apache.commons.io.IOUtils;
@@ -43,8 +44,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -57,7 +57,9 @@ import org.springframework.core.io.ClassPathResource;
  */
 public class GeoserverRESTStyleTest extends GeoserverRESTTest {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(GeoserverRESTStyleTest.class);
+  private static final Logger LOG = Logger.getLogger(GeoserverRESTStyleTest.class.getName());
+
+    
 
     @Before
     public void setup() throws Exception {
@@ -124,7 +126,7 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
     protected void cleanupTestStyle(final String styleName) {
         // dry run delete to work in a known state
         if (reader.existsStyle(styleName)) {
-            LOGGER.info("Clearing stale test style " + styleName);
+            LOG.info("Clearing stale test style " + styleName);
             boolean ok = publisher.removeStyle(styleName);
             if (!ok) {
                 fail("Could not unpublish style " + styleName);
@@ -278,7 +280,7 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
 
         {
             RESTLayer layer = reader.getLayer(layerName);
-            LOGGER.info("Layer style is " + layer.getDefaultStyle());
+            LOG.info("Layer style is " + layer.getDefaultStyle());
             assertEquals(styleName, layer.getDefaultStyle());
         }
 
@@ -288,7 +290,7 @@ public class GeoserverRESTStyleTest extends GeoserverRESTTest {
 
         {
             RESTLayer layer = reader.getLayer(layerName);
-            LOGGER.info("Layer style is " + layer.getDefaultStyle());
+            LOG.info("Layer style is " + layer.getDefaultStyle());
             assertEquals(styleName2, layer.getDefaultStyle());
         }
 

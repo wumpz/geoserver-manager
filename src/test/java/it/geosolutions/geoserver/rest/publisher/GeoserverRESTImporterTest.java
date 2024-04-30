@@ -27,13 +27,13 @@ package it.geosolutions.geoserver.rest.publisher;
 
 import static org.junit.Assert.assertEquals;
 import it.geosolutions.geoserver.rest.GeoserverRESTTest;
+import java.util.logging.Logger;
 import net.sf.json.JSONObject;
 
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -46,7 +46,9 @@ import org.springframework.core.io.ClassPathResource;
  */
 public class GeoserverRESTImporterTest extends GeoserverRESTTest {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(GeoserverRESTImporterTest.class);
+  private static final Logger LOG = Logger.getLogger(GeoserverRESTImporterTest.class.getName());
+
+    
     
     @After
     public void cleanUp() {

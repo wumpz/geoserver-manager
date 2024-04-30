@@ -7,14 +7,14 @@ import it.geosolutions.geoserver.rest.encoder.identifier.GSIdentifierInfoEncoder
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 
 import junit.framework.Assert;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -26,7 +26,7 @@ import org.springframework.core.io.ClassPathResource;
  */
 public class LayerDecoder21Test{
 
-	private final static Logger LOGGER = LoggerFactory.getLogger(LayerDecoder21Test.class);
+  private static final Logger LOG = Logger.getLogger(LayerDecoder21Test.class.getName());
 
 	RESTLayer21 layer;
 	
@@ -46,7 +46,7 @@ public class LayerDecoder21Test{
 	public void testAuthorityURLs() {
 		List<GSAuthorityURLInfoEncoder> authorityURLs = layer
 				.getEncodedAuthorityURLInfoList();
-		LOGGER.debug("Number of authority URLs: " + authorityURLs.size());
+		LOG.fine("Number of authority URLs: " + authorityURLs.size());
 		Assert.assertEquals("authority1", authorityURLs.get(0).getName());
 		Assert.assertEquals("http://www.authority1.org", authorityURLs.get(0)
 				.getHref());

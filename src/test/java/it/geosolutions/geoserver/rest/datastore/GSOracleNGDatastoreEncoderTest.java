@@ -58,7 +58,7 @@ import java.net.MalformedURLException;
  */
 public class GSOracleNGDatastoreEncoderTest extends StoreIntegrationTest {
 
-//    private final static Logger LOGGER = LoggerFactory.getLogger(GSOracleNGDatastoreEncoderTest.class);
+//    private final static Logger LOG = LoggerFactory.getLogger(GSOracleNGDatastoreEncoderTest.class);
     
     public GSOracleNGDatastoreEncoderTest() throws IllegalArgumentException, MalformedURLException {
         super(System.getProperty("pgIgnore", "true").equalsIgnoreCase("true"));
