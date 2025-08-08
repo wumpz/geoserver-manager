@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import org.jdom.Element;
 
@@ -58,6 +59,10 @@ public class RESTMetadataList implements Iterable<RESTMetadataList.RESTMetadataE
   public RESTMetadataElement get(int index) {
     return new RESTMetadataElement(metadataList.get(index));
   }
+	
+	public Optional<RESTMetadataElement> get(String key) {
+		return metadataList.stream().map(elm -> new RESTMetadataElement(elm)).filter(item -> key.equals(item.getKey())).findFirst();
+	}
 
   /* (non-Javadoc)
      * @see java.lang.Iterable#iterator()
