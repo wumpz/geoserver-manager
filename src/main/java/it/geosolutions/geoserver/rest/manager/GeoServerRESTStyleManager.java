@@ -597,22 +597,29 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
     if (raw) {
       Util.appendParameter(sUrl, "raw", "true");
     }
-    LOG.fine("POSTing new style " + styleName + " to " + sUrl);
+    LOG.log(Level.FINE, "POSTing new style {0} to {1}", new Object[]{styleName, sUrl});
 
-    GeoServerRESTPublisher.Format format = GeoServerRESTPublisher.Format.SLD;
-    String fileName = styleFile.getName().toLowerCase();
-
-    if (fileName.endsWith(".css")) {
-      format = GeoServerRESTPublisher.Format.CSS;
-    } else if (fileName.endsWith(".ysld") || fileName.endsWith(".yaml")) {
-      format = GeoServerRESTPublisher.Format.YSLD;
-    } else if (fileName.endsWith(".zip")) {
-      format = GeoServerRESTPublisher.Format.ZIP;
-    }
+    GeoServerRESTPublisher.Format format = formatFromFilename(styleFile);
 
     String result = HTTPUtils.post(sUrl.toString(), styleFile, format.getContentType(), gsuser, gspass);
     return result != null;
   }
+
+	/**
+	 * Extract mime format for specific style format. 
+	 */
+	private GeoServerRESTPublisher.Format formatFromFilename(File styleFile) {
+		GeoServerRESTPublisher.Format format = GeoServerRESTPublisher.Format.SLD;
+		String fileName = styleFile.getName().toLowerCase();
+		if (fileName.endsWith(".css")) {
+			format = GeoServerRESTPublisher.Format.CSS;
+		} else if (fileName.endsWith(".ysld") || fileName.endsWith(".yaml")) {
+			format = GeoServerRESTPublisher.Format.YSLD;
+		} else if (fileName.endsWith(".zip")) {
+			format = GeoServerRESTPublisher.Format.ZIP;
+		}
+		return format;
+	}
 
   /**
    * Update a Style.
@@ -662,6 +669,23 @@ public class GeoServerRESTStyleManager extends GeoServerRESTAbstractManager {
 
     final String result = HTTPUtils.put(sUrl, sldFile,
             "application/vnd.ogc.sld+xml", gsuser, gspass);
+    return result != null;
+  }
+	
+	public boolean updateStyleInWorkspace(final String workspace, final File styleFile, final String styleName, boolean raw)
+          throws IllegalArgumentException {
+		final StringBuilder sUrl = new StringBuilder(buildUrl(workspace, styleName, null));
+		if (raw) {
+      Util.appendParameter(sUrl, "raw", "true");
+    }
+		
+		LOG.log(Level.FINE, "Updating style {0} to {1}", new Object[]{styleName, sUrl});
+
+    GeoServerRESTPublisher.Format format = formatFromFilename(styleFile);
+
+    final String result = HTTPUtils.put(sUrl.toString(), styleFile,
+            format.getContentType(), gsuser, gspass);
+		
     return result != null;
   }
 
