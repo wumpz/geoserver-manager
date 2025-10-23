@@ -528,10 +528,6 @@ public class GeoServerRESTPublisher {
     return styleManager.publishStyleInWorkspace(workspace, sldFile, name);
   }
 
-  /**
-   * @since GeoServer 2.2
-   * @see GeoServerRESTStyleManager#publishStyleInWorkspace(java.lang.String, java.io.File, java.lang.String)
-   */
   public boolean publishStyleInWorkspace(String workspace, File sldFile, String name, boolean raw) {
     return styleManager.publishStyleInWorkspace(workspace, sldFile, name, raw);
   }
@@ -550,6 +546,10 @@ public class GeoServerRESTPublisher {
    */
   public boolean updateStyleInWorkspace(String workspace, File sldFile, String name) throws IllegalArgumentException {
     return styleManager.updateStyleInWorkspace(workspace, sldFile, name);
+  }
+	
+	public boolean updateStyleInWorkspace(String workspace, File sldFile, String name, boolean raw) throws IllegalArgumentException {
+    return styleManager.updateStyleInWorkspace(workspace, sldFile, name, raw);
   }
 
   /**
