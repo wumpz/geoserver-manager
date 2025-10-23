@@ -152,6 +152,15 @@ public class RESTLayer {
   public String getTypeString() {
     return layerElem.getChildText("type");
   }
+	
+	public RESTMetadataList getMetadata() {
+		RESTMetadataList metadataList = null;
+		Element metadataRoot = layerElem.getChild("metadata");
+		if ( metadataRoot != null ) {
+			metadataList = new RESTMetadataList(metadataRoot);
+		}
+		return metadataList;		
+	}
 
   public Type getType() {
     return Type.get(getTypeString());

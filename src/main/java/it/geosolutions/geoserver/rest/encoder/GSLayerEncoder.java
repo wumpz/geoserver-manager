@@ -24,8 +24,10 @@
  */
 package it.geosolutions.geoserver.rest.encoder;
 
+import static it.geosolutions.geoserver.rest.encoder.GSLayerEncoder21.METADATA;
 import it.geosolutions.geoserver.rest.encoder.authorityurl.GSAuthorityURLInfoEncoder;
 import it.geosolutions.geoserver.rest.encoder.identifier.GSIdentifierInfoEncoder;
+import it.geosolutions.geoserver.rest.encoder.utils.NestedElementEncoder;
 import it.geosolutions.geoserver.rest.encoder.utils.PropertyXMLEncoder;
 
 import org.jdom.Element;
@@ -285,4 +287,22 @@ public class GSLayerEncoder extends PropertyXMLEncoder {
     return (identifierListEncoder.removeContent(GSIdentifierInfoEncoder
             .getFilterByHref(authority))).size() == 0 ? false : true;
   }
+	
+	
+	private class GSMetadataEncoder extends NestedElementEncoder {
+
+    public GSMetadataEncoder() {
+      super("metadata");
+    }
+  }
+	
+	private GSMetadataEncoder metadata = null;
+	
+	public void addMetadata(String key, String value) {
+		if ( metadata ==  null) {
+			metadata = new GSMetadataEncoder();
+			addContent(metadata.getRoot());
+		}
+		metadata.add(key, value);
+	}
 }

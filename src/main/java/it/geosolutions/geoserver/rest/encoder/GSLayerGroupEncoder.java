@@ -36,6 +36,7 @@ import org.jdom.Element;
 public class GSLayerGroupEncoder extends PropertyXMLEncoder {
 
   protected Element nameElem;
+	protected Element titleElem;
   protected Element workspaceElem;
   protected Element boundsElem;
   protected Element publishablesElem;
@@ -52,6 +53,10 @@ public class GSLayerGroupEncoder extends PropertyXMLEncoder {
   public void setName(String name) {
     nameElem = elem("name", name);
   }
+	
+	public void setTitle(String title) {
+		titleElem = elem("title", title);
+	}
 
   public void addLayer(String layer) {
     addLayer(layer, null);
@@ -114,7 +119,7 @@ public class GSLayerGroupEncoder extends PropertyXMLEncoder {
 
   @Override
   public String toString() {
-    addToRoot(nameElem, workspaceElem, boundsElem, publishablesElem, stylesElem);
+    addToRoot(nameElem, titleElem, workspaceElem, boundsElem, publishablesElem, stylesElem);
     return super.toString();
   }
 }
