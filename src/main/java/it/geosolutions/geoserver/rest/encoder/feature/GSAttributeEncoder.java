@@ -30,8 +30,9 @@ import it.geosolutions.geoserver.rest.encoder.utils.PropertyXMLEncoder;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.jdom.Element;
-import org.jdom.filter.Filter;
+import org.jdom2.Element;
+import org.jdom2.filter.AbstractFilter;
+import org.jdom2.filter.Filter;
 
 /**
  *
@@ -40,7 +41,7 @@ import org.jdom.filter.Filter;
  */
 public class GSAttributeEncoder extends PropertyXMLEncoder {
 
-  public static class filterByName implements Filter {
+  public static class filterByName extends AbstractFilter {
 
     final private String key;
 
@@ -50,12 +51,12 @@ public class GSAttributeEncoder extends PropertyXMLEncoder {
 
     private static final long serialVersionUID = 1L;
 
-    public boolean matches(Object obj) {
+    public Object filter(Object obj) {
       Element el = ((Element) obj).getChild(FeatureTypeAttribute.name.toString());
       if (el != null && el.getTextTrim().equals(key)) {
-        return true;
+        return el;
       }
-      return false;
+      return null;
     }
   }
 

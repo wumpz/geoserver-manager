@@ -27,7 +27,7 @@ package it.geosolutions.geoserver.rest.encoder;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 /**
  * LayerGroup encoder for GeoServer >= 2.3

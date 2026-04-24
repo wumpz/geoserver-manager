@@ -31,8 +31,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jdom.Element;
-import org.jdom.filter.Filter;
+import org.jdom2.Element;
+import org.jdom2.filter.AbstractFilter;
+import org.jdom2.filter.Filter;
 
 /**
  * Use this encoder for ImageMosaic coverages.
@@ -55,7 +56,7 @@ public class GSImageMosaicEncoder extends GSCoverageEncoder {
     addContent(parameters.getRoot());
   }
 
-  static class parametersFilter implements Filter {
+  static class parametersFilter extends AbstractFilter {
 
     final String name;
 
@@ -65,19 +66,19 @@ public class GSImageMosaicEncoder extends GSCoverageEncoder {
 
     private static final long serialVersionUID = 1L;
 
-    public boolean matches(Object obj) {
+    public Object filter(Object obj) {
       if (obj instanceof Element element) {
         if (element.getName().equals(ENTRY)) {
           final Element el = element.getChild(STRING);
           if (el == null) {
-            return false;
+            return null;
           }
           if (el.getText().equals(this.name)) {
-            return true;
+            return element;
           }
         }
       }
-      return false;
+      return null;
     }
   };
 

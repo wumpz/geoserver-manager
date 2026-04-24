@@ -24,7 +24,7 @@
  */
 package it.geosolutions.geoserver.rest.encoder.utils;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 /**
  * Creates an XML document by mapping properties to XML nodes.<br/>

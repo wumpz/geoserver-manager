@@ -31,8 +31,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jdom.Element;
-import org.jdom.Namespace;
+import org.jdom2.Element;
+import org.jdom2.Namespace;
 
 /**
  * This decode turns index format for a GeoServer StructuredGridCoverageReader into something useful, giving access to

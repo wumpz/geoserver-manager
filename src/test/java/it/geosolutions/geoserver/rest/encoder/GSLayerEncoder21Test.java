@@ -27,7 +27,7 @@ import it.geosolutions.geoserver.rest.encoder.identifier.GSIdentifierInfoEncoder
 import it.geosolutions.geoserver.rest.encoder.identifier.IdentifierInfo;
 import junit.framework.Assert;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 import org.junit.Before;
 import org.junit.Test;
 

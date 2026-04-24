@@ -26,7 +26,7 @@ package it.geosolutions.geoserver.rest.encoder;
 
 import it.geosolutions.geoserver.rest.encoder.utils.PropertyXMLEncoder;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 /**
  * LayerGroup encoder for GeoServer < 2.3

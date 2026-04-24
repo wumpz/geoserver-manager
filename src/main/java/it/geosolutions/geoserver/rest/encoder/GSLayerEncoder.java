@@ -24,14 +24,13 @@
  */
 package it.geosolutions.geoserver.rest.encoder;
 
-import static it.geosolutions.geoserver.rest.encoder.GSLayerEncoder21.METADATA;
 import it.geosolutions.geoserver.rest.encoder.authorityurl.GSAuthorityURLInfoEncoder;
 import it.geosolutions.geoserver.rest.encoder.identifier.GSIdentifierInfoEncoder;
 import it.geosolutions.geoserver.rest.encoder.utils.NestedElementEncoder;
 import it.geosolutions.geoserver.rest.encoder.utils.PropertyXMLEncoder;
 
-import org.jdom.Element;
-import org.jdom.filter.Filter;
+import org.jdom2.Element;
+import org.jdom2.filter.AbstractFilter;
 
 /**
  * Layer encoder for Geoserver >= 2.2
@@ -224,14 +223,14 @@ public class GSLayerEncoder extends PropertyXMLEncoder {
   public boolean delStyle(final String style) {
     final Element el = new Element("style");
     el.setText(style);
-    return (stylesEncoder.removeContent(new Filter() {
+    return (stylesEncoder.removeContent(new AbstractFilter() {
       private static final long serialVersionUID = 1L;
 
-      public boolean matches(Object obj) {
+      public Object filter(Object obj) {
         if (((Element) obj).getText().equals(style)) {
-          return true;
+          return obj;
         }
-        return false;
+        return null;
       }
     })).size() == 0 ? false : true;
   }

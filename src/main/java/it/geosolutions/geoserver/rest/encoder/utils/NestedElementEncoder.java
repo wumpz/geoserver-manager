@@ -27,8 +27,8 @@ package it.geosolutions.geoserver.rest.encoder.utils;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jdom.Element;
-import org.jdom.filter.Filter;
+import org.jdom2.Element;
+import org.jdom2.filter.AbstractFilter;
 
 /**
  * Encodes lists of entries with key attribute. <br/>
@@ -91,7 +91,7 @@ public class NestedElementEncoder extends XmlElement {
   public final static String ENTRY = "entry";
   public final static String KEY = "key";
 
-  static class NestedElementFilter implements Filter {
+  static class NestedElementFilter extends AbstractFilter {
 
     private static final long serialVersionUID = 1L;
     private final String key;
@@ -111,7 +111,7 @@ public class NestedElementEncoder extends XmlElement {
       this.value = value;
     }
 
-    public boolean matches(Object obj) {
+    public Object filter(Object obj) {
       if (obj instanceof Element element) {
         final Element el = element;
         if (root.isAncestor(el)) {
@@ -125,14 +125,14 @@ public class NestedElementEncoder extends XmlElement {
               }
             }
             if (value != null) {
-              return keyCheck && checkChilds(el, value);
+              return (keyCheck && checkChilds(el, value))?el:null;
             } else {
-              return keyCheck;
+              return keyCheck?el:null;
             }
           }
         }
       }
-      return false;
+      return null;
     }
 
     private static boolean checkChilds(Element el, String value) {

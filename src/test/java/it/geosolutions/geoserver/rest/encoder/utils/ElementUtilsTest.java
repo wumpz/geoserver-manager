@@ -4,8 +4,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.jdom.Element;
-import org.jdom.filter.Filter;
+import org.jdom2.Element;
+import org.jdom2.filter.AbstractFilter;
+import org.jdom2.filter.Filter;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,14 +19,14 @@ public class ElementUtilsTest {
   final static String NAME = "TEST";
   final Element root = new Element(NAME);
   final int maxDepth = 5;
-  final Filter filter = new Filter() {
-    public boolean matches(Object obj) {
+  final Filter filter = new AbstractFilter() {
+    public Object filter(Object obj) {
       if (obj instanceof Element element) {
         if (element.getName().equals(NAME)) {
-          return true;
+          return obj;
         }
       }
-      return false;
+      return null;
     }
   };
 
@@ -62,17 +63,17 @@ public class ElementUtilsTest {
     final List<Element> list2 = ElementUtils.search(this.root, filter, 6);
     Assert.assertEquals(maxDepth, list2.size());
 
-    final Filter myFilter = new Filter() {
-      public boolean matches(Object obj) {
+    final Filter myFilter = new AbstractFilter() {
+      public Object filter(Object obj) {
         if (obj instanceof Element element) {
           final Element el = element;
           if (el.getName().equals(NAME)) {
             if (el.getText().equals("1") || el.getText().equals("3")) {
-              return true;
+              return el;
             }
           }
         }
-        return false;
+        return null;
       }
     };
     final List<Element> list3 = ElementUtils.search(this.root, myFilter, 3);

@@ -6,7 +6,7 @@ import it.geosolutions.geoserver.rest.encoder.identifier.GSIdentifierInfoEncoder
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 /**
  * Parse <TT>Layer</TT>s returned as XML REST objects. Applicable to GS 2.1 for decoding: - AuthorityURLs - Identifiers

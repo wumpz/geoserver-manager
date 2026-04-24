@@ -28,7 +28,7 @@ import it.geosolutions.geoserver.rest.encoder.utils.ElementUtils;
 import java.util.logging.Logger;
 import junit.framework.TestCase;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 import org.junit.Assert;
 import org.junit.Test;
 

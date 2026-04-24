@@ -27,8 +27,9 @@ package it.geosolutions.geoserver.rest.encoder.identifier;
 import it.geosolutions.geoserver.rest.encoder.utils.ElementUtils;
 import it.geosolutions.geoserver.rest.encoder.utils.XmlElement;
 
-import org.jdom.Element;
-import org.jdom.filter.Filter;
+import org.jdom2.Element;
+import org.jdom2.filter.AbstractFilter;
+import org.jdom2.filter.Filter;
 
 /**
  * GSIdentifierInfoEncoder - encodes an Identifier for a given GeoServer layer as follows:
@@ -58,7 +59,7 @@ public class GSIdentifierInfoEncoder extends XmlElement {
    *
    *
    */
-  private static class filterByAuthority implements Filter {
+  private static class filterByAuthority extends AbstractFilter {
 
     final private String key;
 
@@ -68,13 +69,13 @@ public class GSIdentifierInfoEncoder extends XmlElement {
 
     private static final long serialVersionUID = 1L;
 
-    public boolean matches(Object obj) {
+    public Object filter(Object obj) {
       Element el = ((Element) obj).getChild(IdentifierInfo.authority
               .toString());
       if (el != null && el.getTextTrim().equals(key)) {
-        return true;
+        return el;
       }
-      return false;
+      return null;
     }
   }
 

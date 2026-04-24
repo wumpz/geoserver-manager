@@ -7,7 +7,7 @@ import it.geosolutions.geoserver.rest.encoder.metadata.virtualtable.VTParameter;
 import it.geosolutions.geoserver.rest.encoder.metadata.virtualtable.VTParameterEncoder;
 import junit.framework.Assert;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 import org.junit.Test;
 
 /**

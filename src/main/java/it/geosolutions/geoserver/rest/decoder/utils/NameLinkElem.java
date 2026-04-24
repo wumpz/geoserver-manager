@@ -24,7 +24,7 @@
  */
 package it.geosolutions.geoserver.rest.decoder.utils;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 /**
  *

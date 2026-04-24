@@ -29,8 +29,8 @@ import it.geosolutions.geoserver.rest.encoder.utils.XmlElement;
 
 import java.util.List;
 
-import org.jdom.Element;
-import org.jdom.filter.Filter;
+import org.jdom2.Element;
+import org.jdom2.filter.AbstractFilter;
 
 /**
  * GSVirtualTableEncoder - Encodes a metadata VirtualTable for a GeoServer featureType.
@@ -245,14 +245,14 @@ public class GSVirtualTableEncoder extends XmlElement {
   public boolean delKeyColumn(final String keycolumn) {
     final Element el = new Element(KEYCOLUMN);
     el.setText(keycolumn);
-    return (this.getRoot().removeContent(new Filter() {
+    return (this.getRoot().removeContent(new AbstractFilter() {
       private static final long serialVersionUID = 1L;
 
-      public boolean matches(Object obj) {
+      public Object filter(Object obj) {
         if (((Element) obj).getText().equals(keycolumn)) {
-          return true;
+          return obj;
         }
-        return false;
+        return null;
       }
     })).size() == 0 ? false : true;
   }
