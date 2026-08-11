@@ -27,8 +27,9 @@ package it.geosolutions.geoserver.rest.encoder.metadata.virtualtable;
 import it.geosolutions.geoserver.rest.encoder.utils.ElementUtils;
 import it.geosolutions.geoserver.rest.encoder.utils.XmlElement;
 
-import org.jdom.Element;
-import org.jdom.filter.Filter;
+import org.jdom2.Element;
+import org.jdom2.filter.AbstractFilter;
+import org.jdom2.filter.Filter;
 
 /**
  * VTGeometryEncoder - Encodes a metadata VirtualTable geometry for a GeoServer featureType, as follows:
@@ -64,7 +65,7 @@ public class VTGeometryEncoder extends XmlElement {
    * A class to filter the VirtualTable geometries by name
    *
    */
-  private static class filterByName implements Filter {
+  private static class filterByName extends AbstractFilter {
 
     final private String key;
 
@@ -74,13 +75,13 @@ public class VTGeometryEncoder extends XmlElement {
 
     private static final long serialVersionUID = 1L;
 
-    public boolean matches(Object obj) {
+    public Object filter(Object obj) {
       Element el = ((Element) obj)
               .getChild(VTGeometry.name.toString());
       if (el != null && el.getTextTrim().equals(key)) {
-        return true;
+        return el;
       }
-      return false;
+      return null;
     }
   }
 

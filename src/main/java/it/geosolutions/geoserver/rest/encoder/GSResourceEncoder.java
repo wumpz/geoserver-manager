@@ -34,8 +34,8 @@ import it.geosolutions.geoserver.rest.encoder.utils.NestedElementEncoder;
 import it.geosolutions.geoserver.rest.encoder.utils.PropertyXMLEncoder;
 import it.geosolutions.geoserver.rest.encoder.utils.XmlElement;
 
-import org.jdom.Element;
-import org.jdom.filter.Filter;
+import org.jdom2.Element;
+import org.jdom2.filter.AbstractFilter;
 
 /**
  *
@@ -214,14 +214,14 @@ public abstract class GSResourceEncoder extends PropertyXMLEncoder {
           final String vocabulary) {
     checkKeyword(keyword);
     final String text = buildKeyword(keyword, language, vocabulary);
-    return (keywordsListEncoder.removeContent(new Filter() {
+    return (keywordsListEncoder.removeContent(new AbstractFilter() {
       private static final long serialVersionUID = 1L;
 
-      public boolean matches(Object obj) {
+      public Object filter(Object obj) {
         if (((Element) obj).getText().equals(text)) {
-          return true;
+          return obj;
         }
-        return false;
+        return null;
       }
     })).size() == 0 ? false : true;
   }

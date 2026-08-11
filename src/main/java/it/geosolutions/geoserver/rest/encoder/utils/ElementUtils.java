@@ -29,8 +29,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.jdom.Element;
-import org.jdom.filter.Filter;
+import org.jdom2.Element;
+import org.jdom2.filter.AbstractFilter;
+import org.jdom2.filter.Filter;
 
 /**
  *
@@ -172,16 +173,16 @@ public abstract class ElementUtils {
       throw new IllegalArgumentException("Bad arguments: root=" + root
               + " name=" + name + " val=" + val);
     }
-    final Filter filter = new Filter() {
+    final Filter filter = new AbstractFilter() {
       private static final long serialVersionUID = 1L;
 
-      public boolean matches(Object obj) {
+      public Object filter(Object obj) {
         if (obj instanceof Element el) {
           if (el.getName().equals(name) && el.getText().equals(val)) {
-            return true;
+            return el;
           }
         }
-        return false;
+        return null;
       }
     };
     final Iterator<Element> it = search(root, filter).iterator();
@@ -217,16 +218,16 @@ public abstract class ElementUtils {
               + " name=" + name);
     }
 
-    final Filter filter = new Filter() {
+    final Filter filter = new AbstractFilter() {
       private static final long serialVersionUID = 1L;
 
-      public boolean matches(Object obj) {
+      public Object filter(Object obj) {
         if (obj instanceof Element el) {
           if (el.getName().equals(name)) {
-            return true;
+            return el;
           }
         }
-        return false;
+        return null;
       }
     };
     final Iterator<Element> it = search(root, filter, deep).iterator();
@@ -250,19 +251,19 @@ public abstract class ElementUtils {
       throw new IllegalArgumentException("Bad arguments: root=" + root
               + " element=" + el);
     }
-    final Filter filter = new Filter() {
+    final Filter filter = new AbstractFilter() {
       /**
        *
        */
       private static final long serialVersionUID = 1L;
 
-      public boolean matches(Object obj) {
+      public Object filter(Object obj) {
         if (obj instanceof Element element) {
           if (element.equals(el)) {
-            return true;
+            return element;
           }
         }
-        return false;
+        return null;
       }
     };
     final Iterator<Element> it = search(root, filter).iterator();

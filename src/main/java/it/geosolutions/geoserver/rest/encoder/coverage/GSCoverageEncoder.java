@@ -24,7 +24,7 @@
  */
 package it.geosolutions.geoserver.rest.encoder.coverage;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 import it.geosolutions.geoserver.rest.encoder.GSResourceEncoder;
 import it.geosolutions.geoserver.rest.encoder.dimensions.GSCoverageDimensionEncoder;

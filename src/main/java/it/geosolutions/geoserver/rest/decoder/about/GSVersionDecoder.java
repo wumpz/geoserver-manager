@@ -28,8 +28,8 @@ import it.geosolutions.geoserver.rest.decoder.utils.JDOMBuilder;
 import it.geosolutions.geoserver.rest.encoder.utils.ElementUtils;
 import it.geosolutions.geoserver.rest.encoder.utils.XmlElement;
 
-import org.jdom.Attribute;
-import org.jdom.Element;
+import org.jdom2.Attribute;
+import org.jdom2.Element;
 
 /**
  * Encode an XML for about/version.xml
@@ -160,6 +160,7 @@ public class GSVersionDecoder extends XmlElement {
     v210(210, "2\\.10([^0-9]|$).*"),
     v211(211, "2\\.11([^0-9]|$).*"),
     ABOVE(9999, "2\\..+"),
+		V3(300, "3\\.0([^0-9]|$).*"),
     UNRECOGNIZED(-1, null);
 
     final private int version;

@@ -167,7 +167,7 @@ public class GeoServerRESTReader {
    * @return true if a GeoServer instance was found at the configured URL.
    */
   public boolean existGeoserver() {
-    return HTTPUtils.httpPing(baseurl + "/rest/", username, password);
+    return HTTPUtils.httpPing(baseurl + "/rest", username, password);
   }
 
   /**

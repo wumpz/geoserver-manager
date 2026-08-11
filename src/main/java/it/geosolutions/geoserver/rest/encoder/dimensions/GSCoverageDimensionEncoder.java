@@ -27,8 +27,9 @@ package it.geosolutions.geoserver.rest.encoder.dimensions;
 import it.geosolutions.geoserver.rest.encoder.utils.ElementUtils;
 import it.geosolutions.geoserver.rest.encoder.utils.XmlElement;
 
-import org.jdom.Element;
-import org.jdom.filter.Filter;
+import org.jdom2.Element;
+import org.jdom2.filter.AbstractFilter;
+import org.jdom2.filter.Filter;
 
 /**
  * GSCoverageDimension - encodes a CoverageDimension for a given GeoServer Resource (feature type /coverage), as
@@ -72,7 +73,7 @@ public class GSCoverageDimensionEncoder extends XmlElement {
    *
    *
    */
-  private static class filterByContent implements Filter {
+  private static class filterByContent extends AbstractFilter {
 
     final private String key;
 
@@ -82,12 +83,12 @@ public class GSCoverageDimensionEncoder extends XmlElement {
 
     private static final long serialVersionUID = 1L;
 
-    public boolean matches(Object obj) {
+    public Object filter(Object obj) {
       Element el = ((Element) obj).getChild("name");
       if (el != null && el.getTextTrim().equals(key)) {
-        return true;
+        return el;
       }
-      return false;
+      return null;
     }
   }
 

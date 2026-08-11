@@ -26,7 +26,7 @@ package it.geosolutions.geoserver.rest.decoder;
 
 import it.geosolutions.geoserver.rest.decoder.utils.NameLinkElem;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 /**
  * Parse a <TT>published</TT> returned as XML REST objects.

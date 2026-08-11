@@ -24,11 +24,11 @@
  */
 package it.geosolutions.geoserver.rest.encoder.utils;
 
-import org.jdom.Content;
-import org.jdom.Element;
-import org.jdom.Text;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
+import org.jdom2.Content;
+import org.jdom2.Element;
+import org.jdom2.Text;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 /**
  *

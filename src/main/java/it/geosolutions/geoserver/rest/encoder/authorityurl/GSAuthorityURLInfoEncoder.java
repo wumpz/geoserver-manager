@@ -26,9 +26,11 @@ package it.geosolutions.geoserver.rest.encoder.authorityurl;
 
 import it.geosolutions.geoserver.rest.encoder.utils.ElementUtils;
 import it.geosolutions.geoserver.rest.encoder.utils.XmlElement;
+import java.util.List;
 
-import org.jdom.Element;
-import org.jdom.filter.Filter;
+import org.jdom2.Element;
+import org.jdom2.filter.AbstractFilter;
+import org.jdom2.filter.Filter;
 
 /**
  * GSAuthorityURLInfoEncoder - encodes an authorityURL for a given GeoServer layer as follows:
@@ -58,7 +60,7 @@ public class GSAuthorityURLInfoEncoder extends XmlElement {
    *
    *
    */
-  private static class filterByHref implements Filter {
+  private static class filterByHref extends AbstractFilter {
 
     final private String key;
 
@@ -68,13 +70,14 @@ public class GSAuthorityURLInfoEncoder extends XmlElement {
 
     private static final long serialVersionUID = 1L;
 
-    public boolean matches(Object obj) {
+		@Override
+    public Object filter(Object obj) {
       Element el = ((Element) obj).getChild(AuthorityURLInfo.href
               .toString());
       if (el != null && el.getTextTrim().equals(key)) {
-        return true;
+        return el;
       }
-      return false;
+      return null;
     }
   }
 

@@ -25,8 +25,8 @@ import it.geosolutions.geoserver.rest.GeoserverRESTTest;
 import it.geosolutions.geoserver.rest.decoder.about.GSVersionDecoder;
 import junit.framework.Assert;
 
-import org.jdom.Element;
-import org.jdom.output.XMLOutputter;
+import org.jdom2.Element;
+import org.jdom2.output.XMLOutputter;
 import org.junit.Test;
 
 /**

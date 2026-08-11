@@ -1,6 +1,6 @@
 package it.geosolutions.geoserver.rest.decoder;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 /**
  * Parse a Boundingbox of the following structure
