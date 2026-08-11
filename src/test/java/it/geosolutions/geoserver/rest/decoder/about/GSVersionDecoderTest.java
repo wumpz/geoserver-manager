@@ -49,7 +49,7 @@ public class GSVersionDecoderTest {
     assertEquals(GSVersionDecoder.VERSION.ABOVE, GSVersionDecoder.VERSION.getVersion("2.42"));
     assertEquals(GSVersionDecoder.VERSION.ABOVE, GSVersionDecoder.VERSION.getVersion("2.42-SNAPSHOT"));
 
-    assertEquals(GSVersionDecoder.VERSION.UNRECOGNIZED, GSVersionDecoder.VERSION.getVersion("3.0"));
+    assertEquals(GSVersionDecoder.VERSION.UNRECOGNIZED, GSVersionDecoder.VERSION.getVersion("4.0"));
     assertEquals(GSVersionDecoder.VERSION.UNRECOGNIZED, GSVersionDecoder.VERSION.getVersion("anystring"));
     assertEquals(GSVersionDecoder.VERSION.UNRECOGNIZED, GSVersionDecoder.VERSION.getVersion(null));
   }
